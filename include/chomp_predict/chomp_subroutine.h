@@ -56,8 +56,7 @@ class Solver{
         
         // solve and return the result
         OptimResult solve(VectorXd x0, OptimParam optimization_param); // run optimization routine                 
-        Vector2d evaluate_costs(VectorXd x); // evaluate costs at x (not weigthed). {prior,nonlinear}           
+        Vector2d evaluate_costs(VectorXd x); // evaluate costs at x (not weigthed). {prior,nonlinear} if provided           
 };
-
 
 }

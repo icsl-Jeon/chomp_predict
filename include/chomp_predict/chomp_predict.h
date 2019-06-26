@@ -24,8 +24,7 @@ class chomp_predict{
 
 
     public: 
-        void callback_target_state(geometry_msgs::PoseConstPtr pose_ptr);
-
+        void callback_target_state(geometry_msgs::PoseConstPtr pose_ptr);        
         // flags 
         bool is_state_recieved;
 

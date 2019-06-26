@@ -340,6 +340,9 @@ message_runtime_DIR:PATH=/opt/ros/kinetic/share/message_runtime/cmake
 //The directory containing a CMake configuration file for nav_msgs.
 nav_msgs_DIR:PATH=/opt/ros/kinetic/share/nav_msgs/cmake
 
+//The directory containing a CMake configuration file for octomap.
+octomap_DIR:PATH=/opt/ros/kinetic/share/octomap
+
 //The directory containing a CMake configuration file for rosconsole.
 rosconsole_DIR:PATH=/opt/ros/kinetic/share/rosconsole/cmake
 

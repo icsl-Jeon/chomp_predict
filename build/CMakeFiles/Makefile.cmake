@@ -101,6 +101,8 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/opt/ros/kinetic/share/nav_msgs/cmake/nav_msgs-msg-extras.cmake"
   "/opt/ros/kinetic/share/nav_msgs/cmake/nav_msgsConfig-version.cmake"
   "/opt/ros/kinetic/share/nav_msgs/cmake/nav_msgsConfig.cmake"
+  "/opt/ros/kinetic/share/octomap/octomap-config-version.cmake"
+  "/opt/ros/kinetic/share/octomap/octomap-config.cmake"
   "/opt/ros/kinetic/share/rosconsole/cmake/rosconsole-extras.cmake"
   "/opt/ros/kinetic/share/rosconsole/cmake/rosconsoleConfig-version.cmake"
   "/opt/ros/kinetic/share/rosconsole/cmake/rosconsoleConfig.cmake"

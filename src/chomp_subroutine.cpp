@@ -1,7 +1,5 @@
 #include "chomp_predict/chomp_subroutine.h"
 
-
-
 using namespace CHOMP;
 
 Solver::Solver(){};
@@ -27,7 +25,11 @@ OptimResult Solver::solve(VectorXd x0, OptimParam optim_param){
     double term_cond = optim_param.termination_cond;
     int max_iter = optim_param.max_iter;
     double weight_prior = optim_param.weight_prior;
+    double learning_rate = optim_param.descending_rate;
+
+
     VectorXd x_prev = x0;
+    VectorXd x;    
 
 
     // dimension of optimization variable 
@@ -36,7 +38,6 @@ OptimResult Solver::solve(VectorXd x0, OptimParam optim_param){
     int iter = 0;
 
     while (iter <= max_iter && innovation > term_cond){
-
 
         // cost computation                 
         Vector2d costs = evaluate_costs(x_prev);
@@ -50,17 +51,22 @@ OptimResult Solver::solve(VectorXd x0, OptimParam optim_param){
         optim_info.prior_cost_history.push_back(prior_cost);
         optim_info.total_cost_history.push_back(weight_prior*prior_cost + nonlinear_cost);
         
-        // new variable
-        VectorXd x;
-        
-        
-
-
-
+        // update
+        VectorXd update = -learning_rate*(this->prior_inverse)*(grad_cost);
+        x = x_prev + update; 
 
         iter++;
         innovation = (x-x0).norm();  
+
+        // is it mature?
+        if (iter > max_iter)
+            std::cout<<"[CHOMP] reached maximum number of iteration."<<std::endl;
+
     }
+    OptimResult optim_result;
+    optim_result.result_verbose = optim_info;
+    optim_result.solution = x;
+    return optim_result;
 }
 
 Vector2d Solver::evaluate_costs(VectorXd x){
