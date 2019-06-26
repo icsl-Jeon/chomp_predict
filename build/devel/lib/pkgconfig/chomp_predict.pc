@@ -1,0 +1,8 @@
+prefix=/home/jbs/catkin_ws/src/chomp_predict/build/devel
+
+Name: chomp_predict
+Description: Description of chomp_predict
+Version: 0.0.0
+Cflags: -I/home/jbs/catkin_ws/src/chomp_predict/include
+Libs: -L/home/jbs/catkin_ws/src/chomp_predict/build/devel/lib -lchomp_predict
+Requires: 

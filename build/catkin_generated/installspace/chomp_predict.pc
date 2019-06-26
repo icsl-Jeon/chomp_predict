@@ -1,0 +1,8 @@
+prefix=/usr/local
+
+Name: chomp_predict
+Description: Description of chomp_predict
+Version: 0.0.0
+Cflags: -I/usr/local/include
+Libs: -L/usr/local/lib -lchomp_predict
+Requires: 
