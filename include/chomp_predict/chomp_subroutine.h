@@ -29,6 +29,8 @@ struct OptimParam{
     double termination_cond; // norm of innovation to be terminated  
     double descending_rate; // step rate      
     double weight_prior; // weight for prior
+    double gamma; // discount
+    int n_step; // discount
 };
 
 // information after optimization (record for history)

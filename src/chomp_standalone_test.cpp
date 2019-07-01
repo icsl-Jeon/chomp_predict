@@ -54,20 +54,25 @@ int main(int argc,char *argv[]){
         geometry_msgs::Point g;
         g.x = 3; g.y = 4;
 
-        // parameters
-        double gamma = 0.2; 
-        int N_step = 5; 
-        OptimParam optim_param; 
-        optim_param.descending_rate = 0.1;
-        optim_param.max_iter = 300;
-        optim_param.weight_prior =  1e-3;
-        optim_param.termination_cond = 1e-1;
+        // update markers
+        chomp_wrapper.load_markers_prior_pnts(prior_path,g);
 
-        chomp_wrapper.build_matrix(A,b,prior_path,gamma,g,N_step);
-        VectorXd x0 = chomp_wrapper.prepare_chomp(A,b,prior_path,g);
-        chomp_wrapper.solve_chomp(x0,optim_param);
-        
-        
+        // 2. Solve optimization 
+        chomp_wrapper.build_matrix(A,b,prior_path,g); // A,b matrix 
+        VectorXd x0 = chomp_wrapper.prepare_chomp(A,b,prior_path,g); // initial guess 
+
+        std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
+        chomp_wrapper.solve_chomp(x0); // optimization from the initial guess 
+        std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+        double diff = std::chrono::duration_cast<chrono::nanoseconds>( end - start ).count()*1e-9;
+        printf("[CHOMP] dynamic EDT computed in %f [sec]",diff);
+
+        // 3. Publish routine 
+        ros::Rate loop_rate(30);
+        while(ros::ok()){            
+            chomp_wrapper.publish_routine();
+            loop_rate.sleep();
+        }
 
 
     // read error returns NULL

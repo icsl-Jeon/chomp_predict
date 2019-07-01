@@ -16,6 +16,11 @@ LinearModel linear_regression(const Eigen::VectorXd& ts,const Eigen::VectorXd& x
     return model;
 }
 
+
+double model_eval(const LinearModel& model,double t){
+    return model.beta0+model.beta1*t;
+};
+
 // convert nav_msgs::Path to vector set x/y/z
 void vec2path(std::vector<double> &xs,std::vector<double> &ys,std::vector<double> &zs,nav_msgs::Path& path){
 
@@ -46,7 +51,3 @@ void path2vec(const nav_msgs::Path& path,std::vector<double> &xs,std::vector<dou
         zs[i]=path.poses[i].pose.position.z;
     }
 };
-
-double model_eval(const LinearModel& model,double t){
-    return model.beta0+model.beta1*t;
-}

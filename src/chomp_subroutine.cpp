@@ -37,7 +37,7 @@ OptimResult Solver::solve(VectorXd x0, OptimParam optim_param){
     int iter = 0;
 
     while (iter <= max_iter && innovation > term_cond){
-
+        
         // cost computation                 
         Vector2d costs = evaluate_costs(x_prev);
         double prior_cost = costs(0), nonlinear_cost = costs(1);
@@ -49,18 +49,23 @@ OptimResult Solver::solve(VectorXd x0, OptimParam optim_param){
         optim_info.nonlinear_cost_history.push_back(nonlinear_cost);
         optim_info.prior_cost_history.push_back(prior_cost);
         optim_info.total_cost_history.push_back(weight_prior*prior_cost + nonlinear_cost);
-        
+
+
         // update
         VectorXd update = -learning_rate*(this->prior_inverse)*(grad_cost);
         x = x_prev + update; 
 
         iter++;
-        innovation = (x-x0).norm();  
+        innovation = (x-x_prev).norm();  
+
+        // print 
+        printf("[CHOMP] iter %d = obst_cost : %f / prior_cost %f / total_cost %f // innovation: %f\n",iter,
+                nonlinear_cost,weight_prior*prior_cost,weight_prior*prior_cost + nonlinear_cost,innovation);
 
         // is it mature?
         if (iter > max_iter)
             std::cout<<"[CHOMP] reached maximum number of iteration."<<std::endl;
-
+        x_prev = x;
     }
 
     std::cout<<"[CHOMP] optimization finished at "<<iter<<" iteration."<<std::endl;
@@ -118,10 +123,10 @@ VectorXd Solver::grad_cost_obstacle(VectorXd x){
     // length(x) = dim x H
     int H = x.size()/2;
     double cost0 = cost_obstacle(x); // original cost 
-    VectorXd grad;    
+    VectorXd grad(x.size());    
     for(int h = 0;h<H;h++){
         VectorXd pert_x(x.size()); pert_x.setZero(); pert_x(2*h) = cost_param.dx; grad(2*h) = (cost_obstacle(x+pert_x) - cost0)/cost_param.dx;
-        VectorXd pert_y(x.size()); pert_y.setZero(); pert_x(2*h+1) = cost_param.dx; grad(2*h+1) = (cost_obstacle(x+pert_y) - cost0)/cost_param.dx;
+        VectorXd pert_y(x.size()); pert_y.setZero(); pert_y(2*h+1) = cost_param.dx; grad(2*h+1) = (cost_obstacle(x+pert_y) - cost0)/cost_param.dx;
     }
     return grad;
 }

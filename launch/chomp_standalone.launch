@@ -33,6 +33,11 @@
 	</node>
 
 	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find chomp_predict)/rviz/rviz.rviz"/>
+	
+	<node name="chomp_predict_standalone" pkg="chomp_predict" type="chomp_predict_basic_test_node" output="screen" args="$(find chomp_predict)/worlds/$(arg bt_name).bt">
+		<rosparam command="load" file="$(find chomp_predict)/params/chomp_param.yaml" />
+	</node>
+
 
 
 </launch>
