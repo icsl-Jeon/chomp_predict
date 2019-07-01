@@ -3,6 +3,7 @@
 /home/jbs/catkin_ws/src/chomp_predict/build/CMakeFiles/edit_cache.dir
 /home/jbs/catkin_ws/src/chomp_predict/build/CMakeFiles/test.dir
 /home/jbs/catkin_ws/src/chomp_predict/build/CMakeFiles/install/strip.dir
+/home/jbs/catkin_ws/src/chomp_predict/build/CMakeFiles/chomp_predict_basic_test_node.dir
 /home/jbs/catkin_ws/src/chomp_predict/build/CMakeFiles/actionlib_msgs_generate_messages_nodejs.dir
 /home/jbs/catkin_ws/src/chomp_predict/build/CMakeFiles/actionlib_msgs_generate_messages_lisp.dir
 /home/jbs/catkin_ws/src/chomp_predict/build/CMakeFiles/install/local.dir

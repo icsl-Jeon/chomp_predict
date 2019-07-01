@@ -10,6 +10,9 @@
 
 #include <cmath>
 #include <vector>
+#include <functional>
+#include <string>
+
 
 
 // linear regression 

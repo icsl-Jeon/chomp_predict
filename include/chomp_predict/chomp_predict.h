@@ -21,10 +21,11 @@ class chomp_predict{
         ros::Subscriber sub_pose_target; // sub for poseStamped msgs for target state
         TargetPredict::ObservationPath observation_path; 
         DynamicEDTOctomap *edf_ptr; //  
-
+        
 
     public: 
-        void callback_target_state(geometry_msgs::PoseConstPtr pose_ptr);        
+        void callback_target_state(geometry_msgs::PoseConstPtr pose_ptr);
+
         // flags 
         bool is_state_recieved;
 

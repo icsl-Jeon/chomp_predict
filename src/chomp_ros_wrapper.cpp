@@ -4,11 +4,13 @@ using namespace CHOMP;
 
 Wrapper::Wrapper(){    
     nh.param("ground_rejection_height",ground_rejection_height,0.4);
+    nh.param("r_safe",r_safe,3.4);
+    nh.param<string>("world_frame_id",world_frame_id,"/world");    
+    pub_path_cur_solution = nh.advertise<nav_msgs::Path>("chomp_solution_path",1);
 };
 
 // load EDF map from octree. The octree is assumed to be provided from outside 
-void Wrapper::load_map(octomap::OcTree* octree_ptr){
-    
+void Wrapper::load_map(octomap::OcTree* octree_ptr){    
     // EDT map scale = octomap  
     double x,y,z;
     octree_ptr->getMetricMin(x,y,z);
@@ -17,8 +19,7 @@ void Wrapper::load_map(octomap::OcTree* octree_ptr){
     octree_ptr->getMetricMax(x,y,z);
     octomap::point3d boundary_max(x,y,z); 
     dx = octree_ptr->getResolution();
-
-    double edf_max_dist = 3.0;
+    double edf_max_dist = r_safe;
     bool unknownAsOccupied = false;
 
     // EDF completed
@@ -26,70 +27,145 @@ void Wrapper::load_map(octomap::OcTree* octree_ptr){
         boundary_min,
         boundary_max,unknownAsOccupied);
     edf_ptr->update();
+
     
     // flag 
     is_map_load = true;
 };
 
-// evaluate cost at one point 
-double Wrapper::cost_at_point(geometry_msgs::Point p){    
-    try{
-        if (!is_map_load)
-            throw 1;        
-        double distance_raw = edf_ptr->getDistance(octomap::point3d(p.x,p.y,p.z));
-        // compute real cost from distance value 
-        if (distance_raw <=0 )
-           return (-distance_raw + 0.5*r_safe); 
-        else if((0<distance_raw) and (distance_raw < r_safe) ){
-            return 1/(2*r_safe)*pow(distance_raw - r_safe,2);                
-        }else        
-            return 0;
+/**
+ * @brief build prior term from prior points (start_pnt) of length No+1(No observations and one final point) 
+ * to make 1/2x'Ax+bx
+ * @param A insert matrix to A 
+ * @param b insert matrix to b 
+ * @param prior_points points of length No<=N
+ * @param gamma weight factor for prior points 
+ * @param goal goal point 
+ * @param N total time index
+ */
+void Wrapper::build_matrix(MatrixXd &A,VectorXd &b,nav_msgs::Path prior_points,double gamma,geometry_msgs::Point goal,int N){
+        
+    // init     
+    int No = prior_points.poses.size();
+    int m_row = (No + (N-1) + (N-2) + 1) * dim;  // prior points + velocity + acceleration + goal
+    A = MatrixXd(m_row,dim*N);
+    b = VectorXd(m_row);
 
-    }catch(exception e){
-        std::cout<<"error in evaulating EDT value. Is edf completely loaded?"<<std::endl;
+    // init    
+    MatrixXd A0 = MatrixXd::Zero(dim*(No+1),dim*N);
+    VectorXd b0 = VectorXd::Zero(dim*(No+1));
+
+    // 1. prior points + goal fitting 
+    for(int n = 0;n<No;n++){
+        double factor = n/N;
+        geometry_msgs::Point p = prior_points.poses[n].pose.position;            
+        A0.block(dim*n,dim*n,dim,dim) = (sqrt(gamma*exp(factor)) * VectorXd::Ones(dim)).asDiagonal();        
+        b0.block(dim*n,0,dim,1) << sqrt(gamma*exp(factor))*p.x, 
+                                   sqrt(gamma*exp(factor))*p.y;                                                    
     }
+    
+    A0.block(dim*No,dim*(N-1),dim,dim) =  (sqrt(gamma*exp(1)) * VectorXd::Ones(dim)).asDiagonal();     
+    b0.block(dim*No,0,dim,1) << sqrt(gamma*exp(1))*goal.x, 
+                                sqrt(gamma*exp(1))*goal.y;       
+
+    // 2. 1st order derivatives  
+    MatrixXd A1 = MatrixXd::Zero(dim*(N-1),dim*N);
+    VectorXd b1= VectorXd::Zero(dim*(N-1));
+    
+    for(int n = 0;n<N-1;n++){
+        A1.block((dim*n),(dim*n),dim,dim) = MatrixXd::Identity(dim,dim);        
+        A1.block((dim*n),(dim*(n+1)),dim,dim) = -MatrixXd::Identity(dim,dim);            
+    }
+
+    // 3. 2nd order derivatives  
+    MatrixXd A2= MatrixXd::Zero(dim*(N-2),dim*N);
+    VectorXd b2= VectorXd::Zero(dim*(N-2));
+
+    for(int n = 0;n<N-2;n++){
+        A2.block((dim*n),(dim*n),dim,dim) = MatrixXd::Identity(dim,dim);        
+        A2.block((dim*n),(dim*(n+1)),dim,dim) = -2*MatrixXd::Identity(dim,dim);            
+        A2.block((dim*n),(dim*(n+2)),dim,dim) = MatrixXd::Identity(dim,dim);            
+    }
+
+    // matrix construct 
+    A << A0,
+         A1,
+         A2;
+
+    b << b0,
+         b1,
+         b2;
 }
-// TODO : calculating cost and its gradient can be placed together. It might improve the performance 
-// evalute cost of a path 
-double Wrapper::cost_obstacle(VectorXd x){
-    // length(x) = dim x H
-    double cost = 0;
-    int H = x.size()/2;
-    for(int h = 0;h<H;h++){
-            geometry_msgs::Point p;
-            p.x = x(2*h);
-            p.y = x(2*h+1);      
-            p.z = ground_rejection_height+1e-2;                          
-            cost += cost_at_point(p);        
+
+
+// Prepare chomp by setting cost matrix and fitting points. Also, it outputs initial guess    
+VectorXd Wrapper::prepare_chomp(MatrixXd A,VectorXd b,nav_msgs::Path prior_path,geometry_msgs::Point goal){
+    if (A.rows() == b.size()){
+        
+        int N = A.rows()/dim;
+        int No = prior_path.poses.size();
+
+
+        CostParam cost_param;
+        cost_param.dx = dx;
+        cost_param.ground_height = ground_rejection_height;
+        cost_param.r_safe = r_safe;
+        // complete problem with obstacle functions 
+        solver.set_problem(A,b,this->edf_ptr,cost_param);
+
+        // Intiial guess generation 
+        VectorXd ts = VectorXd::LinSpaced(N,0,1);   
+        VectorXd t_regress(No+1);
+        t_regress << ts.block(0,0,No,1) , 1; // regression target : prior point and goal 
+
+        vector<double> xs_regress,ys_regress,zs_regress;
+        path2vec(prior_path,xs_regress,ys_regress,zs_regress);
+        xs_regress.push_back(goal.x);
+        ys_regress.push_back(goal.y);
+        zs_regress.push_back(goal.z);
+                
+        LinearModel initial_guess_model_x =  linear_regression(t_regress,Map<VectorXd>(xs_regress.data(),N));                                        
+        LinearModel initial_guess_model_y =  linear_regression(t_regress,Map<VectorXd>(ys_regress.data(),N));                                        
+        LinearModel initial_guess_model_z =  linear_regression(t_regress,Map<VectorXd>(zs_regress.data(),N)); // will not be used in 2D case                                        
+
+        VectorXd x0(dim*N);
+        for (int n=0;n<N;n++){
+            x0(dim*n) = model_eval(initial_guess_model_x,ts(n)); 
+            x0(dim*n+1) = model_eval(initial_guess_model_y,ts(n));
         }
-}
 
-// evaluate gradient of cost of a path 
-VectorXd Wrapper::grad_cost_obstacle(VectorXd x){
-    // length(x) = dim x H
-    int H = x.size()/2;
-    double cost0 = cost_obstacle(x); // original cost 
-    VectorXd grad;    
-    for(int h = 0;h<H;h++){
-        VectorXd pert_x(x.size()); pert_x.setZero(); pert_x(2*h) = dx; grad(2*h) = (cost_obstacle(x+pert_x) - cost0)/dx;
-        VectorXd pert_y(x.size()); pert_y.setZero(); pert_x(2*h+1) = dx; grad(2*h+1) = (cost_obstacle(x+pert_y) - cost0)/dx;
+        return x0;
     }
-    return grad;
+    else{
+        cerr<<"[CHOMP] dimension error for optimizatoin returning zero-filled initial guess."<<endl;
+        return VectorXd::Zero(A.rows());
+    }
 }
 
-void Wrapper::prepare_chomp(MatrixXd A,VectorXd b){
-
-    if (A.rows() == b.size())
-    // complete problem with obstacle functions 
-        solver.set_problem(A,b,this->cost_obstacle,this->grad_cost_obstacle);
-    else
-        cerr<<"[CHOMP] dimension error for optimizatoin"<<endl;
-}
-
+// start chomp routine 
 bool Wrapper::solve_chomp(VectorXd x0,OptimParam param){
     recent_optim_result = solver.solve(x0,param);    
+
+    // if solved, 
+    VectorXd x_sol = recent_optim_result.solution;
+    nav_msgs::Path path;
+    path.header.frame_id = world_frame_id;
+
+    for (int h = 0; h<x_sol.size();h++){
+
+        double x = x_sol(h*2);
+        double y = x_sol(h*2+1);
+        
+        geometry_msgs::PoseStamped pose_stamped;
+        pose_stamped.header.frame_id = world_frame_id;
+        pose_stamped.pose.position.x = x;
+        pose_stamped.pose.position.y = y; 
+        path.poses.push_back(pose_stamped);
+    }    
+
+    std::cout<<"[CHOMP] path uploaded"<<std::endl;
 }
-nav_msgs::Path Wrapper::get_solution_path(){
 
-
+void Wrapper::publish_routine(){
+    pub_path_cur_solution.publish(current_path);
 }
