@@ -50,18 +50,22 @@ struct OptimResult{
 class Solver{
 
     private: 
+        int map_type;     
         bool is_problem_set; // should be checked whether programming is set
         MatrixXd prior_inverse; 
         MatrixXd A;
         MatrixXd b;
-        DynamicEDTOctomap* edf_ptr; 
+        // only one of the followings will be used for distnace query 
+        DynamicEDTOctomap* edf_ptr = NULL; 
+        voxblox::EsdfServer* esdf_ptr = NULL; 
         CostParam cost_param; // cost param
 
     public:
         //constructor     
         Solver();
         // setting optimization problem
-        void set_problem(MatrixXd A,VectorXd b,DynamicEDTOctomap*,CostParam);       
+        void set_problem(MatrixXd A,VectorXd b,DynamicEDTOctomap*,CostParam);
+        void set_problem(MatrixXd A,VectorXd b,voxblox::EsdfServer*,CostParam);                      
         // solve and return the result
         OptimResult solve(VectorXd x0, OptimParam optimization_param); // run optimization routine                 
         // cost (edf should be given first)

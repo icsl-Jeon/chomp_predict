@@ -7,6 +7,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   geometry_msgs
   nav_msgs
+  voxblox_ros
 )
 
 find_package(dynamicEDT3D REQUIRED)

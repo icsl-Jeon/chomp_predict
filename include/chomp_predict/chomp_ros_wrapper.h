@@ -26,6 +26,8 @@ namespace CHOMP{
 
             // map 
             DynamicEDTOctomap *edf_ptr; // Euclidean Distance Field 
+            voxblox::EsdfServer voxblox_server;  // voxblox server 
+            
             // related parameters 
             double ground_rejection_height;            
             double dx; // obtain from octomap 
@@ -40,16 +42,15 @@ namespace CHOMP{
 
 
         public:
-            Wrapper();
+            int map_type; // 0 = octomap, 1 = voxblox 
+            Wrapper(const ros::NodeHandle & );
             //ros
             void load_markers_prior_pnts(nav_msgs::Path prior_path,geometry_msgs::Point goal);
             void publish_routine();
             // map and edf 
             void load_map(octomap::OcTree* octree_ptr);
+            void load_map(string file_name);            
             // cost evaluation
-            double cost_at_point(geometry_msgs::Point p); // cost of point p 
-            double cost_obstacle(VectorXd x);
-            VectorXd grad_cost_obstacle(VectorXd x);
             
             // optimization routine 
             void build_matrix(MatrixXd &A,VectorXd &b,nav_msgs::Path prior_points,geometry_msgs::Point goal);

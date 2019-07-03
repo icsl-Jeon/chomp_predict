@@ -13,8 +13,25 @@ void Solver::set_problem(MatrixXd A,VectorXd b,DynamicEDTOctomap* edf,CostParam 
     this->edf_ptr = edf;
     if(this->edf_ptr!=NULL)
         is_problem_set = true;
+    map_type = 0; // octomap         
     this->cost_param = cost_param;
 }
+
+void Solver::set_problem(MatrixXd A,VectorXd b,voxblox::EsdfServer* esdf_ptr,CostParam cost_param){
+    // compute inverse in advance for the future use in optimization loop 
+    prior_inverse = A.inverse();
+    // set quadratic term
+    this->A = A;
+    this->b = b;
+    this->esdf_ptr = esdf_ptr;
+    cout<<"esdf ptf: ";
+    cout<<esdf_ptr<<endl;
+    if(this->esdf_ptr!=NULL)
+        is_problem_set = true;
+    map_type = 1; // voxblox        
+    this->cost_param = cost_param;      
+}
+
 
 OptimResult Solver::solve(VectorXd x0, OptimParam optim_param){
     // history 
@@ -89,8 +106,15 @@ Vector2d Solver::evaluate_costs(VectorXd x){
 double Solver::cost_at_point(geometry_msgs::Point p){    
     try{
         if (!is_problem_set)
-            throw 1;        
-        double distance_raw = edf_ptr->getDistance(octomap::point3d(p.x,p.y,p.z));
+            throw 1;
+        double distance_raw = 0;
+
+        if (map_type == 0)
+            distance_raw = edf_ptr->getDistance(octomap::point3d(p.x,p.y,p.z));
+        else{
+             Vector3d position(p.x,p.y,p.z);
+             esdf_ptr->getEsdfMapPtr()->getDistanceAtPosition(position,&distance_raw);
+        }
         // compute real cost from distance value 
         if (distance_raw <=0 )
            return (-distance_raw + 0.5*cost_param.r_safe); 

@@ -2,7 +2,7 @@
 
 using namespace CHOMP;
 
-Wrapper::Wrapper():nh("~"){    
+Wrapper::Wrapper(const ros::NodeHandle& nh_global):nh("~"),voxblox_server(nh,nh_global){    
     // parameter parsing 
     nh.param("cost_param/r_safe",r_safe,3.4);
     nh.param("cost_param/ground_reject_height",ground_rejection_height,0.5);
@@ -36,6 +36,7 @@ void Wrapper::load_markers_prior_pnts(nav_msgs::Path prior_path,geometry_msgs::P
     obsrv_markers.color.b = 1;
     obsrv_markers.color.a = 0.8;
         for (int n =0;n<prior_path.poses.size();n++){
+        prior_path.poses[n].pose.position.z = ground_rejection_height;
         obsrv_markers.points.push_back(prior_path.poses[n].pose.position);
     }
     goal_marker.action = 0;
@@ -70,6 +71,14 @@ void Wrapper::load_map(octomap::OcTree* octree_ptr){
 
     
     // flag 
+    is_map_load = true;
+};
+
+void Wrapper::load_map(string file_name){    
+    // EDT map scale = octomap  
+    voxblox_server.loadMap(file_name);
+    dx = voxblox_server.getEsdfMapPtr()->voxel_size(); // voxel_size 
+    cout<<"resolution of ESDF : "<<dx<<endl;
     is_map_load = true;
 };
 
@@ -160,9 +169,13 @@ VectorXd Wrapper::prepare_chomp(MatrixXd M,VectorXd h,nav_msgs::Path prior_path,
         cost_param.dx = dx;
         cost_param.ground_height = ground_rejection_height;
         cost_param.r_safe = r_safe;
-        // complete problem with obstacle functions 
-        solver.set_problem(M,h,this->edf_ptr,cost_param);
 
+        // complete problem with obstacle functions 
+        if (map_type == 0) // octomap 
+            solver.set_problem(M,h,this->edf_ptr,cost_param);
+        else
+            solver.set_problem(M,h,&(this->voxblox_server),cost_param);
+        
         // Intiial guess generation 
         VectorXd ts = VectorXd::LinSpaced(N,0,1);   
         VectorXd t_regress(No+1);
@@ -205,6 +218,7 @@ bool Wrapper::solve_chomp(VectorXd x0){
 
         double x = x_sol(h*2);
         double y = x_sol(h*2+1);
+        double z = ground_rejection_height; // the height  of the path  
         
         geometry_msgs::PoseStamped pose_stamped;
         pose_stamped.header.frame_id = world_frame_id;
@@ -223,4 +237,11 @@ void Wrapper::publish_routine(){
     // marker publish 
     pub_vis_goal.publish(goal_marker);
     pub_vis_observations.publish(obsrv_markers);
+
+    // esdf publish 
+    if(this->map_type == 1){
+        this->voxblox_server.setSliceLevel(ground_rejection_height - 0.3);
+        this->voxblox_server.publishSlices();
+        this->voxblox_server.publishPointclouds();
+    }
 }

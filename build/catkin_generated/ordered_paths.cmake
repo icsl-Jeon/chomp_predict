@@ -1,1 +1,1 @@
-set(ORDERED_PATHS "/opt/ros/kinetic/lib")
+set(ORDERED_PATHS "/home/jbs/catkin_ws/devel/.private/voxblox_ros/lib;/home/jbs/catkin_ws/devel/.private/gflags_catkin/lib;/home/jbs/catkin_ws/devel/.private/glog_catkin/lib;/home/jbs/catkin_ws/devel/.private/voxblox/lib;/home/jbs/catkin_ws/devel/.private/eigen_checks/lib;/home/jbs/catkin_ws/devel/.private/voxblox_rviz_plugin/lib;/opt/ros/kinetic/lib")
