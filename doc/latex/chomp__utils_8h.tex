@@ -1,0 +1,180 @@
+\hypertarget{chomp__utils_8h}{}\section{include/chomp\+\_\+utils.h File Reference}
+\label{chomp__utils_8h}\index{include/chomp\+\_\+utils.\+h@{include/chomp\+\_\+utils.\+h}}
+{\ttfamily \#include $<$eigen3/\+Eigen/\+Core$>$}\\*
+{\ttfamily \#include $<$geometry\+\_\+msgs/\+Pose\+Stamped.\+h$>$}\\*
+{\ttfamily \#include $<$nav\+\_\+msgs/\+Path.\+h$>$}\\*
+{\ttfamily \#include $<$octomap/octomap.\+h$>$}\\*
+{\ttfamily \#include $<$octomap/\+Oc\+Tree.\+h$>$}\\*
+{\ttfamily \#include $<$octomap/\+Oc\+Tree\+Base.\+h$>$}\\*
+{\ttfamily \#include $<$octomap/octomap\+\_\+types.\+h$>$}\\*
+{\ttfamily \#include $<$dynamic\+E\+D\+T3\+D/dynamic\+E\+D\+T\+Octomap.\+h$>$}\\*
+{\ttfamily \#include $<$voxblox\+\_\+ros/esdf\+\_\+server.\+h$>$}\\*
+{\ttfamily \#include $<$cmath$>$}\\*
+{\ttfamily \#include $<$vector$>$}\\*
+{\ttfamily \#include $<$functional$>$}\\*
+{\ttfamily \#include $<$string$>$}\\*
+{\ttfamily \#include $<$chrono$>$}\\*
+Include dependency graph for chomp\+\_\+utils.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{chomp__utils_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{chomp__utils_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{struct_linear_model}{Linear\+Model}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{struct_linear_model}{Linear\+Model} \hyperlink{chomp__utils_8h_a01e43aa8fc67413d2ad3ee7e840bb66e}{linear\+\_\+regression} (const Eigen\+::\+Vector\+Xd \&ts, const Eigen\+::\+Vector\+Xd \&xs)
+\item 
+double \hyperlink{chomp__utils_8h_ada013a3d8e591b8122e95dfab24eace1}{model\+\_\+eval} (const \hyperlink{struct_linear_model}{Linear\+Model} \&model, double t)
+\item 
+void \hyperlink{chomp__utils_8h_a18dbbf76a331741ef17e17e5550585df}{path2vec} (const nav\+\_\+msgs\+::\+Path \&path, std\+::vector$<$ double $>$ \&xs, std\+::vector$<$ double $>$ \&ys, std\+::vector$<$ double $>$ \&zs)
+\item 
+void \hyperlink{chomp__utils_8h_ad9f1c9686aec6d42004aee2c109bea82}{vec2path} (std\+::vector$<$ double $>$ \&xs, std\+::vector$<$ double $>$ \&ys, std\+::vector$<$ double $>$ \&zs, nav\+\_\+msgs\+::\+Path \&path)
+\item 
+Eigen\+::\+Vector\+Xd \hyperlink{chomp__utils_8h_a375713c39c1bc5b4ba9357af46a3082e}{get\+\_\+time\+\_\+stamps\+\_\+from\+\_\+nav\+\_\+path} (const nav\+\_\+msgs\+::\+Path \&path)
+\item 
+double \hyperlink{chomp__utils_8h_a0fa75528fdd2f1dc601c4d4e7da6a6b0}{interpolate} (Eigen\+::\+Vector\+Xd \&x\+Data, Eigen\+::\+Vector\+Xd \&y\+Data, double x, bool extrapolate)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\index{chomp\+\_\+utils.\+h@{chomp\+\_\+utils.\+h}!get\+\_\+time\+\_\+stamps\+\_\+from\+\_\+nav\+\_\+path@{get\+\_\+time\+\_\+stamps\+\_\+from\+\_\+nav\+\_\+path}}
+\index{get\+\_\+time\+\_\+stamps\+\_\+from\+\_\+nav\+\_\+path@{get\+\_\+time\+\_\+stamps\+\_\+from\+\_\+nav\+\_\+path}!chomp\+\_\+utils.\+h@{chomp\+\_\+utils.\+h}}
+\subsubsection[{\texorpdfstring{get\+\_\+time\+\_\+stamps\+\_\+from\+\_\+nav\+\_\+path(const nav\+\_\+msgs\+::\+Path \&path)}{get_time_stamps_from_nav_path(const nav_msgs::Path &path)}}]{\setlength{\rightskip}{0pt plus 5cm}Eigen\+::\+Vector\+Xd get\+\_\+time\+\_\+stamps\+\_\+from\+\_\+nav\+\_\+path (
+\begin{DoxyParamCaption}
+\item[{const nav\+\_\+msgs\+::\+Path \&}]{path}
+\end{DoxyParamCaption}
+)}\hypertarget{chomp__utils_8h_a375713c39c1bc5b4ba9357af46a3082e}{}\label{chomp__utils_8h_a375713c39c1bc5b4ba9357af46a3082e}
+
+
+Definition at line 55 of file chomp\+\_\+utils.\+cpp.
+
+\index{chomp\+\_\+utils.\+h@{chomp\+\_\+utils.\+h}!interpolate@{interpolate}}
+\index{interpolate@{interpolate}!chomp\+\_\+utils.\+h@{chomp\+\_\+utils.\+h}}
+\subsubsection[{\texorpdfstring{interpolate(\+Eigen\+::\+Vector\+Xd \&x\+Data, Eigen\+::\+Vector\+Xd \&y\+Data, double x, bool extrapolate)}{interpolate(Eigen::VectorXd &xData, Eigen::VectorXd &yData, double x, bool extrapolate)}}]{\setlength{\rightskip}{0pt plus 5cm}double interpolate (
+\begin{DoxyParamCaption}
+\item[{Eigen\+::\+Vector\+Xd \&}]{x\+Data, }
+\item[{Eigen\+::\+Vector\+Xd \&}]{y\+Data, }
+\item[{double}]{x, }
+\item[{bool}]{extrapolate}
+\end{DoxyParamCaption}
+)}\hypertarget{chomp__utils_8h_a0fa75528fdd2f1dc601c4d4e7da6a6b0}{}\label{chomp__utils_8h_a0fa75528fdd2f1dc601c4d4e7da6a6b0}
+
+
+Definition at line 67 of file chomp\+\_\+utils.\+cpp.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{chomp__utils_8h_a0fa75528fdd2f1dc601c4d4e7da6a6b0_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{chomp\+\_\+utils.\+h@{chomp\+\_\+utils.\+h}!linear\+\_\+regression@{linear\+\_\+regression}}
+\index{linear\+\_\+regression@{linear\+\_\+regression}!chomp\+\_\+utils.\+h@{chomp\+\_\+utils.\+h}}
+\subsubsection[{\texorpdfstring{linear\+\_\+regression(const Eigen\+::\+Vector\+Xd \&ts, const Eigen\+::\+Vector\+Xd \&xs)}{linear_regression(const Eigen::VectorXd &ts, const Eigen::VectorXd &xs)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Linear\+Model} linear\+\_\+regression (
+\begin{DoxyParamCaption}
+\item[{const Eigen\+::\+Vector\+Xd \&}]{ts, }
+\item[{const Eigen\+::\+Vector\+Xd \&}]{xs}
+\end{DoxyParamCaption}
+)}\hypertarget{chomp__utils_8h_a01e43aa8fc67413d2ad3ee7e840bb66e}{}\label{chomp__utils_8h_a01e43aa8fc67413d2ad3ee7e840bb66e}
+
+
+Definition at line 3 of file chomp\+\_\+utils.\+cpp.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{chomp__utils_8h_a01e43aa8fc67413d2ad3ee7e840bb66e_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{chomp\+\_\+utils.\+h@{chomp\+\_\+utils.\+h}!model\+\_\+eval@{model\+\_\+eval}}
+\index{model\+\_\+eval@{model\+\_\+eval}!chomp\+\_\+utils.\+h@{chomp\+\_\+utils.\+h}}
+\subsubsection[{\texorpdfstring{model\+\_\+eval(const Linear\+Model \&model, double t)}{model_eval(const LinearModel &model, double t)}}]{\setlength{\rightskip}{0pt plus 5cm}double model\+\_\+eval (
+\begin{DoxyParamCaption}
+\item[{const {\bf Linear\+Model} \&}]{model, }
+\item[{double}]{t}
+\end{DoxyParamCaption}
+)}\hypertarget{chomp__utils_8h_ada013a3d8e591b8122e95dfab24eace1}{}\label{chomp__utils_8h_ada013a3d8e591b8122e95dfab24eace1}
+
+
+Definition at line 20 of file chomp\+\_\+utils.\+cpp.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{chomp__utils_8h_ada013a3d8e591b8122e95dfab24eace1_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{chomp\+\_\+utils.\+h@{chomp\+\_\+utils.\+h}!path2vec@{path2vec}}
+\index{path2vec@{path2vec}!chomp\+\_\+utils.\+h@{chomp\+\_\+utils.\+h}}
+\subsubsection[{\texorpdfstring{path2vec(const nav\+\_\+msgs\+::\+Path \&path, std\+::vector$<$ double $>$ \&xs, std\+::vector$<$ double $>$ \&ys, std\+::vector$<$ double $>$ \&zs)}{path2vec(const nav_msgs::Path &path, std::vector< double > &xs, std::vector< double > &ys, std::vector< double > &zs)}}]{\setlength{\rightskip}{0pt plus 5cm}void path2vec (
+\begin{DoxyParamCaption}
+\item[{const nav\+\_\+msgs\+::\+Path \&}]{path, }
+\item[{std\+::vector$<$ double $>$ \&}]{xs, }
+\item[{std\+::vector$<$ double $>$ \&}]{ys, }
+\item[{std\+::vector$<$ double $>$ \&}]{zs}
+\end{DoxyParamCaption}
+)}\hypertarget{chomp__utils_8h_a18dbbf76a331741ef17e17e5550585df}{}\label{chomp__utils_8h_a18dbbf76a331741ef17e17e5550585df}
+
+
+Definition at line 40 of file chomp\+\_\+utils.\+cpp.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{chomp__utils_8h_a18dbbf76a331741ef17e17e5550585df_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{chomp\+\_\+utils.\+h@{chomp\+\_\+utils.\+h}!vec2path@{vec2path}}
+\index{vec2path@{vec2path}!chomp\+\_\+utils.\+h@{chomp\+\_\+utils.\+h}}
+\subsubsection[{\texorpdfstring{vec2path(std\+::vector$<$ double $>$ \&xs, std\+::vector$<$ double $>$ \&ys, std\+::vector$<$ double $>$ \&zs, nav\+\_\+msgs\+::\+Path \&path)}{vec2path(std::vector< double > &xs, std::vector< double > &ys, std::vector< double > &zs, nav_msgs::Path &path)}}]{\setlength{\rightskip}{0pt plus 5cm}void vec2path (
+\begin{DoxyParamCaption}
+\item[{std\+::vector$<$ double $>$ \&}]{xs, }
+\item[{std\+::vector$<$ double $>$ \&}]{ys, }
+\item[{std\+::vector$<$ double $>$ \&}]{zs, }
+\item[{nav\+\_\+msgs\+::\+Path \&}]{path}
+\end{DoxyParamCaption}
+)}\hypertarget{chomp__utils_8h_ad9f1c9686aec6d42004aee2c109bea82}{}\label{chomp__utils_8h_ad9f1c9686aec6d42004aee2c109bea82}
+
+
+Definition at line 25 of file chomp\+\_\+utils.\+cpp.
+

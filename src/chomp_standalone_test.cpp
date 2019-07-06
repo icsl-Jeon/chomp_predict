@@ -2,9 +2,11 @@
 
 using namespace octomap;
 using namespace CHOMP;
-
-int main(int argc,char *argv[]){
-    
+/**
+ * @brief test code for path generation from chomp with several prior points and goal.  
+ * @details voxblox and octomap is supported. But voxblox is recommended. 
+ */
+int main(int argc,char *argv[]){    
     int file_type; // 0 = octomap / 1 = voxblox
 
     // 1. Load octomap by argument parsing
@@ -96,5 +98,6 @@ int main(int argc,char *argv[]){
     
     return 0;
 }
+
 
 

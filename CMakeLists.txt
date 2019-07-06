@@ -42,5 +42,19 @@ target_link_libraries(chomp_predict_basic_test_node
   ${catkin_LIBRARIES}
 )
 
+# module2 : prediction node 
+add_executable(chomp_predict_node
+src/chomp_predict_main.cpp
+src/chomp_predict.cpp 
+src/chomp_utils.cpp
+src/chomp_subroutine.cpp
+src/chomp_ros_wrapper.cpp
+)
+
+target_link_libraries(chomp_predict_node
+  ${catkin_LIBRARIES}
+)
+
+
 
 

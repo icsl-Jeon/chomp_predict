@@ -51,3 +51,39 @@ void path2vec(const nav_msgs::Path& path,std::vector<double> &xs,std::vector<dou
         zs[i]=path.poses[i].pose.position.z;
     }
 };
+
+Eigen::VectorXd get_time_stamps_from_nav_path(const nav_msgs::Path& path){
+
+    int n_step = path.poses.size();
+    Eigen::VectorXd time_stamps(n_step);
+    for(int n =0; n<n_step;n++){
+        time_stamps(n)  = (path.poses[n].header.stamp.toSec() + 
+                                path.poses[n].header.stamp.toNSec()*(1e-9));
+    }
+
+    return time_stamps;
+}
+
+double interpolate( Eigen::VectorXd &xData, Eigen::VectorXd &yData, double x, bool extrapolate )
+{
+    int size = xData.size();
+
+    int i = 0;                                                                  // find left end of interval for interpolation
+    if ( x >= xData(size - 2) )                                                 // special case: beyond right end
+    {
+        i = size - 2;
+    }
+    else
+    {
+        while ( x > xData(i+1) ) i++;
+    }
+    double xL = xData(i), yL = yData(i), xR = xData(i+1), yR = yData(i+1);      // points on either side (unless beyond ends)
+    if ( !extrapolate )                                                         // if beyond ends of array and not extrapolating
+    {
+        if ( x < xL ) yR = yL;
+        if ( x > xR ) yL = yR;
+    }
+
+    double dydx = ( yR - yL ) / ( xR - xL );                                    // gradient
+    return yL + dydx * ( x - xL );                                              // linear interpolation
+}

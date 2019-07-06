@@ -60,6 +60,14 @@ class Solver{
         voxblox::EsdfServer* esdf_ptr = NULL; 
         CostParam cost_param; // cost param
 
+
+        // sub moudles 
+        // cost (edf should be given first)
+        Vector2d evaluate_costs(VectorXd x); // evaluate costs at x (not weigthed). {prior,nonlinear} if provided           
+        double cost_at_point(geometry_msgs::Point p); // c(x)
+        double cost_obstacle(VectorXd x); 
+        VectorXd grad_cost_obstacle(VectorXd x);        
+        
     public:
         //constructor     
         Solver();
@@ -68,11 +76,7 @@ class Solver{
         void set_problem(MatrixXd A,VectorXd b,voxblox::EsdfServer*,CostParam);                      
         // solve and return the result
         OptimResult solve(VectorXd x0, OptimParam optimization_param); // run optimization routine                 
-        // cost (edf should be given first)
-        Vector2d evaluate_costs(VectorXd x); // evaluate costs at x (not weigthed). {prior,nonlinear} if provided           
-        double cost_at_point(geometry_msgs::Point p); // c(x)
-        double cost_obstacle(VectorXd x); 
-        VectorXd grad_cost_obstacle(VectorXd x);
+
 };
 
 }

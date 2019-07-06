@@ -27,8 +27,5 @@ double model_eval(const LinearModel& model,double t);
 // conversion between nav_msgs::Path to vector set x/y/z
 void path2vec(const nav_msgs::Path& path,std::vector<double> &xs,std::vector<double> &ys,std::vector<double> &zs);
 void vec2path(std::vector<double> &xs,std::vector<double> &ys,std::vector<double> &zs,nav_msgs::Path& path);
-
-
-
-
-
+Eigen::VectorXd get_time_stamps_from_nav_path(const nav_msgs::Path& path);
+double interpolate( Eigen::VectorXd &xData, Eigen::VectorXd &yData, double x, bool extrapolate );

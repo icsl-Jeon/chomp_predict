@@ -1,0 +1,321 @@
+\hypertarget{class_c_h_o_m_p_1_1_wrapper}{}\section{C\+H\+O\+MP\+:\+:Wrapper Class Reference}
+\label{class_c_h_o_m_p_1_1_wrapper}\index{C\+H\+O\+M\+P\+::\+Wrapper@{C\+H\+O\+M\+P\+::\+Wrapper}}
+
+
+{\ttfamily \#include $<$chomp\+\_\+ros\+\_\+wrapper.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_c_h_o_m_p_1_1_wrapper_a6eb8cdd0f948a2a5e698c66e890e8e0e}{Wrapper} (const ros\+::\+Node\+Handle \&)
+\item 
+void \hyperlink{class_c_h_o_m_p_1_1_wrapper_a6ddf801481c8cb4d567ea7cb073a819b}{load\+\_\+markers\+\_\+prior\+\_\+pnts} (nav\+\_\+msgs\+::\+Path prior\+\_\+path, geometry\+\_\+msgs\+::\+Point goal)
+\item 
+void \hyperlink{class_c_h_o_m_p_1_1_wrapper_a84f5c4690636e65aca526e6e5b8abcf4}{publish\+\_\+routine} ()
+\item 
+void \hyperlink{class_c_h_o_m_p_1_1_wrapper_a095c001d0a11f0fa4229e38f602e5931}{load\+\_\+map} (octomap\+::\+Oc\+Tree $\ast$octree\+\_\+ptr)
+\item 
+void \hyperlink{class_c_h_o_m_p_1_1_wrapper_a93b14d4809f5bf3170473fc10a93a755}{load\+\_\+map} (string file\+\_\+name)
+\item 
+void \hyperlink{class_c_h_o_m_p_1_1_wrapper_ab51d0a655ed4b03ca3225c0af737f2dc}{build\+\_\+matrix} (Matrix\+Xd \&A, Vector\+Xd \&b, nav\+\_\+msgs\+::\+Path prior\+\_\+points, geometry\+\_\+msgs\+::\+Point goal, \hyperlink{struct_c_h_o_m_p_1_1_optim_param}{Optim\+Param} $\ast$param=N\+U\+LL)
+\begin{DoxyCompactList}\small\item\em build prior term from prior points (start\+\_\+pnt) of length No+1(No observations and one final point) to make 1/2x\textquotesingle{}Mx+hx \end{DoxyCompactList}\item 
+Vector\+Xd \hyperlink{class_c_h_o_m_p_1_1_wrapper_a138ac0d5088055c3698d93bbf9432126}{prepare\+\_\+chomp} (Matrix\+Xd A, Vector\+Xd b, nav\+\_\+msgs\+::\+Path prior\+\_\+path, geometry\+\_\+msgs\+::\+Point goal, \hyperlink{struct_c_h_o_m_p_1_1_optim_param}{Optim\+Param} $\ast$param=N\+U\+LL)
+\item 
+bool \hyperlink{class_c_h_o_m_p_1_1_wrapper_ac8fa793a31b7872feccc711c55c1da20}{solve\+\_\+chomp} (Vector\+Xd x0)
+\item 
+Matrix\+Xd \hyperlink{class_c_h_o_m_p_1_1_wrapper_ae94071b38bb2cd68d4a281c9f93e9587}{get\+\_\+current\+\_\+prediction\+\_\+path} ()
+\item 
+\hyperlink{struct_c_h_o_m_p_1_1_optim_param}{Optim\+Param} \hyperlink{class_c_h_o_m_p_1_1_wrapper_ac31da0a2c980d5b64541852f01deebbf}{get\+\_\+default\+\_\+optim\+\_\+param} ()
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{class_c_h_o_m_p_1_1_wrapper_a8e7d4dd9f8678e2752ef05e55a36ffe1}{map\+\_\+type}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 12 of file chomp\+\_\+ros\+\_\+wrapper.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{C\+H\+O\+M\+P\+::\+Wrapper@{C\+H\+O\+M\+P\+::\+Wrapper}!Wrapper@{Wrapper}}
+\index{Wrapper@{Wrapper}!C\+H\+O\+M\+P\+::\+Wrapper@{C\+H\+O\+M\+P\+::\+Wrapper}}
+\subsubsection[{\texorpdfstring{Wrapper(const ros\+::\+Node\+Handle \&)}{Wrapper(const ros::NodeHandle &)}}]{\setlength{\rightskip}{0pt plus 5cm}Wrapper\+::\+Wrapper (
+\begin{DoxyParamCaption}
+\item[{const ros\+::\+Node\+Handle \&}]{nh\+\_\+global}
+\end{DoxyParamCaption}
+)}\hypertarget{class_c_h_o_m_p_1_1_wrapper_a6eb8cdd0f948a2a5e698c66e890e8e0e}{}\label{class_c_h_o_m_p_1_1_wrapper_a6eb8cdd0f948a2a5e698c66e890e8e0e}
+
+
+Definition at line 5 of file chomp\+\_\+ros\+\_\+wrapper.\+cpp.
+
+
+
+\subsection{Member Function Documentation}
+\index{C\+H\+O\+M\+P\+::\+Wrapper@{C\+H\+O\+M\+P\+::\+Wrapper}!build\+\_\+matrix@{build\+\_\+matrix}}
+\index{build\+\_\+matrix@{build\+\_\+matrix}!C\+H\+O\+M\+P\+::\+Wrapper@{C\+H\+O\+M\+P\+::\+Wrapper}}
+\subsubsection[{\texorpdfstring{build\+\_\+matrix(\+Matrix\+Xd \&\+A, Vector\+Xd \&b, nav\+\_\+msgs\+::\+Path prior\+\_\+points, geometry\+\_\+msgs\+::\+Point goal, Optim\+Param $\ast$param=\+N\+U\+L\+L)}{build_matrix(MatrixXd &A, VectorXd &b, nav_msgs::Path prior_points, geometry_msgs::Point goal, OptimParam *param=NULL)}}]{\setlength{\rightskip}{0pt plus 5cm}void Wrapper\+::build\+\_\+matrix (
+\begin{DoxyParamCaption}
+\item[{Matrix\+Xd \&}]{M, }
+\item[{Vector\+Xd \&}]{h, }
+\item[{nav\+\_\+msgs\+::\+Path}]{prior\+\_\+points, }
+\item[{geometry\+\_\+msgs\+::\+Point}]{goal, }
+\item[{{\bf Optim\+Param} $\ast$}]{param = {\ttfamily NULL}}
+\end{DoxyParamCaption}
+)}\hypertarget{class_c_h_o_m_p_1_1_wrapper_ab51d0a655ed4b03ca3225c0af737f2dc}{}\label{class_c_h_o_m_p_1_1_wrapper_ab51d0a655ed4b03ca3225c0af737f2dc}
+
+
+build prior term from prior points (start\+\_\+pnt) of length No+1(No observations and one final point) to make 1/2x\textquotesingle{}Mx+hx 
+
+
+\begin{DoxyParams}{Parameters}
+{\em M} & insert matrix to M \\
+\hline
+{\em h} & insert matrix to h \\
+\hline
+{\em prior\+\_\+points} & points of length No$<$=N \\
+\hline
+{\em gamma} & weight factor for prior points \\
+\hline
+{\em goal} & goal point \\
+\hline
+{\em N} & total time index \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 94 of file chomp\+\_\+ros\+\_\+wrapper.\+cpp.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_c_h_o_m_p_1_1_wrapper_ab51d0a655ed4b03ca3225c0af737f2dc_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{C\+H\+O\+M\+P\+::\+Wrapper@{C\+H\+O\+M\+P\+::\+Wrapper}!get\+\_\+current\+\_\+prediction\+\_\+path@{get\+\_\+current\+\_\+prediction\+\_\+path}}
+\index{get\+\_\+current\+\_\+prediction\+\_\+path@{get\+\_\+current\+\_\+prediction\+\_\+path}!C\+H\+O\+M\+P\+::\+Wrapper@{C\+H\+O\+M\+P\+::\+Wrapper}}
+\subsubsection[{\texorpdfstring{get\+\_\+current\+\_\+prediction\+\_\+path()}{get_current_prediction_path()}}]{\setlength{\rightskip}{0pt plus 5cm}Matrix\+Xd Wrapper\+::get\+\_\+current\+\_\+prediction\+\_\+path (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_c_h_o_m_p_1_1_wrapper_ae94071b38bb2cd68d4a281c9f93e9587}{}\label{class_c_h_o_m_p_1_1_wrapper_ae94071b38bb2cd68d4a281c9f93e9587}
+
+
+Definition at line 263 of file chomp\+\_\+ros\+\_\+wrapper.\+cpp.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_c_h_o_m_p_1_1_wrapper_ae94071b38bb2cd68d4a281c9f93e9587_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{C\+H\+O\+M\+P\+::\+Wrapper@{C\+H\+O\+M\+P\+::\+Wrapper}!get\+\_\+default\+\_\+optim\+\_\+param@{get\+\_\+default\+\_\+optim\+\_\+param}}
+\index{get\+\_\+default\+\_\+optim\+\_\+param@{get\+\_\+default\+\_\+optim\+\_\+param}!C\+H\+O\+M\+P\+::\+Wrapper@{C\+H\+O\+M\+P\+::\+Wrapper}}
+\subsubsection[{\texorpdfstring{get\+\_\+default\+\_\+optim\+\_\+param()}{get_default_optim_param()}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Optim\+Param} Wrapper\+::get\+\_\+default\+\_\+optim\+\_\+param (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_c_h_o_m_p_1_1_wrapper_ac31da0a2c980d5b64541852f01deebbf}{}\label{class_c_h_o_m_p_1_1_wrapper_ac31da0a2c980d5b64541852f01deebbf}
+
+
+Definition at line 284 of file chomp\+\_\+ros\+\_\+wrapper.\+cpp.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_c_h_o_m_p_1_1_wrapper_ac31da0a2c980d5b64541852f01deebbf_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{C\+H\+O\+M\+P\+::\+Wrapper@{C\+H\+O\+M\+P\+::\+Wrapper}!load\+\_\+map@{load\+\_\+map}}
+\index{load\+\_\+map@{load\+\_\+map}!C\+H\+O\+M\+P\+::\+Wrapper@{C\+H\+O\+M\+P\+::\+Wrapper}}
+\subsubsection[{\texorpdfstring{load\+\_\+map(octomap\+::\+Oc\+Tree $\ast$octree\+\_\+ptr)}{load_map(octomap::OcTree *octree_ptr)}}]{\setlength{\rightskip}{0pt plus 5cm}void Wrapper\+::load\+\_\+map (
+\begin{DoxyParamCaption}
+\item[{octomap\+::\+Oc\+Tree $\ast$}]{octree\+\_\+ptr}
+\end{DoxyParamCaption}
+)}\hypertarget{class_c_h_o_m_p_1_1_wrapper_a095c001d0a11f0fa4229e38f602e5931}{}\label{class_c_h_o_m_p_1_1_wrapper_a095c001d0a11f0fa4229e38f602e5931}
+
+
+Definition at line 53 of file chomp\+\_\+ros\+\_\+wrapper.\+cpp.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_c_h_o_m_p_1_1_wrapper_a095c001d0a11f0fa4229e38f602e5931_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{C\+H\+O\+M\+P\+::\+Wrapper@{C\+H\+O\+M\+P\+::\+Wrapper}!load\+\_\+map@{load\+\_\+map}}
+\index{load\+\_\+map@{load\+\_\+map}!C\+H\+O\+M\+P\+::\+Wrapper@{C\+H\+O\+M\+P\+::\+Wrapper}}
+\subsubsection[{\texorpdfstring{load\+\_\+map(string file\+\_\+name)}{load_map(string file_name)}}]{\setlength{\rightskip}{0pt plus 5cm}void Wrapper\+::load\+\_\+map (
+\begin{DoxyParamCaption}
+\item[{string}]{file\+\_\+name}
+\end{DoxyParamCaption}
+)}\hypertarget{class_c_h_o_m_p_1_1_wrapper_a93b14d4809f5bf3170473fc10a93a755}{}\label{class_c_h_o_m_p_1_1_wrapper_a93b14d4809f5bf3170473fc10a93a755}
+
+
+Definition at line 76 of file chomp\+\_\+ros\+\_\+wrapper.\+cpp.
+
+\index{C\+H\+O\+M\+P\+::\+Wrapper@{C\+H\+O\+M\+P\+::\+Wrapper}!load\+\_\+markers\+\_\+prior\+\_\+pnts@{load\+\_\+markers\+\_\+prior\+\_\+pnts}}
+\index{load\+\_\+markers\+\_\+prior\+\_\+pnts@{load\+\_\+markers\+\_\+prior\+\_\+pnts}!C\+H\+O\+M\+P\+::\+Wrapper@{C\+H\+O\+M\+P\+::\+Wrapper}}
+\subsubsection[{\texorpdfstring{load\+\_\+markers\+\_\+prior\+\_\+pnts(nav\+\_\+msgs\+::\+Path prior\+\_\+path, geometry\+\_\+msgs\+::\+Point goal)}{load_markers_prior_pnts(nav_msgs::Path prior_path, geometry_msgs::Point goal)}}]{\setlength{\rightskip}{0pt plus 5cm}void Wrapper\+::load\+\_\+markers\+\_\+prior\+\_\+pnts (
+\begin{DoxyParamCaption}
+\item[{nav\+\_\+msgs\+::\+Path}]{prior\+\_\+path, }
+\item[{geometry\+\_\+msgs\+::\+Point}]{goal}
+\end{DoxyParamCaption}
+)}\hypertarget{class_c_h_o_m_p_1_1_wrapper_a6ddf801481c8cb4d567ea7cb073a819b}{}\label{class_c_h_o_m_p_1_1_wrapper_a6ddf801481c8cb4d567ea7cb073a819b}
+
+
+Definition at line 25 of file chomp\+\_\+ros\+\_\+wrapper.\+cpp.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_c_h_o_m_p_1_1_wrapper_a6ddf801481c8cb4d567ea7cb073a819b_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{C\+H\+O\+M\+P\+::\+Wrapper@{C\+H\+O\+M\+P\+::\+Wrapper}!prepare\+\_\+chomp@{prepare\+\_\+chomp}}
+\index{prepare\+\_\+chomp@{prepare\+\_\+chomp}!C\+H\+O\+M\+P\+::\+Wrapper@{C\+H\+O\+M\+P\+::\+Wrapper}}
+\subsubsection[{\texorpdfstring{prepare\+\_\+chomp(\+Matrix\+Xd A, Vector\+Xd b, nav\+\_\+msgs\+::\+Path prior\+\_\+path, geometry\+\_\+msgs\+::\+Point goal, Optim\+Param $\ast$param=\+N\+U\+L\+L)}{prepare_chomp(MatrixXd A, VectorXd b, nav_msgs::Path prior_path, geometry_msgs::Point goal, OptimParam *param=NULL)}}]{\setlength{\rightskip}{0pt plus 5cm}Vector\+Xd Wrapper\+::prepare\+\_\+chomp (
+\begin{DoxyParamCaption}
+\item[{Matrix\+Xd}]{A, }
+\item[{Vector\+Xd}]{b, }
+\item[{nav\+\_\+msgs\+::\+Path}]{prior\+\_\+path, }
+\item[{geometry\+\_\+msgs\+::\+Point}]{goal, }
+\item[{{\bf Optim\+Param} $\ast$}]{param = {\ttfamily NULL}}
+\end{DoxyParamCaption}
+)}\hypertarget{class_c_h_o_m_p_1_1_wrapper_a138ac0d5088055c3698d93bbf9432126}{}\label{class_c_h_o_m_p_1_1_wrapper_a138ac0d5088055c3698d93bbf9432126}
+
+
+Definition at line 167 of file chomp\+\_\+ros\+\_\+wrapper.\+cpp.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_c_h_o_m_p_1_1_wrapper_a138ac0d5088055c3698d93bbf9432126_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_c_h_o_m_p_1_1_wrapper_a138ac0d5088055c3698d93bbf9432126_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{C\+H\+O\+M\+P\+::\+Wrapper@{C\+H\+O\+M\+P\+::\+Wrapper}!publish\+\_\+routine@{publish\+\_\+routine}}
+\index{publish\+\_\+routine@{publish\+\_\+routine}!C\+H\+O\+M\+P\+::\+Wrapper@{C\+H\+O\+M\+P\+::\+Wrapper}}
+\subsubsection[{\texorpdfstring{publish\+\_\+routine()}{publish_routine()}}]{\setlength{\rightskip}{0pt plus 5cm}void Wrapper\+::publish\+\_\+routine (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_c_h_o_m_p_1_1_wrapper_a84f5c4690636e65aca526e6e5b8abcf4}{}\label{class_c_h_o_m_p_1_1_wrapper_a84f5c4690636e65aca526e6e5b8abcf4}
+
+
+Definition at line 246 of file chomp\+\_\+ros\+\_\+wrapper.\+cpp.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_c_h_o_m_p_1_1_wrapper_a84f5c4690636e65aca526e6e5b8abcf4_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{C\+H\+O\+M\+P\+::\+Wrapper@{C\+H\+O\+M\+P\+::\+Wrapper}!solve\+\_\+chomp@{solve\+\_\+chomp}}
+\index{solve\+\_\+chomp@{solve\+\_\+chomp}!C\+H\+O\+M\+P\+::\+Wrapper@{C\+H\+O\+M\+P\+::\+Wrapper}}
+\subsubsection[{\texorpdfstring{solve\+\_\+chomp(\+Vector\+Xd x0)}{solve_chomp(VectorXd x0)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Wrapper\+::solve\+\_\+chomp (
+\begin{DoxyParamCaption}
+\item[{Vector\+Xd}]{x0}
+\end{DoxyParamCaption}
+)}\hypertarget{class_c_h_o_m_p_1_1_wrapper_ac8fa793a31b7872feccc711c55c1da20}{}\label{class_c_h_o_m_p_1_1_wrapper_ac8fa793a31b7872feccc711c55c1da20}
+
+
+Definition at line 222 of file chomp\+\_\+ros\+\_\+wrapper.\+cpp.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_c_h_o_m_p_1_1_wrapper_ac8fa793a31b7872feccc711c55c1da20_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_c_h_o_m_p_1_1_wrapper_ac8fa793a31b7872feccc711c55c1da20_icgraph}
+\end{center}
+\end{figure}
+
+
+
+
+\subsection{Member Data Documentation}
+\index{C\+H\+O\+M\+P\+::\+Wrapper@{C\+H\+O\+M\+P\+::\+Wrapper}!map\+\_\+type@{map\+\_\+type}}
+\index{map\+\_\+type@{map\+\_\+type}!C\+H\+O\+M\+P\+::\+Wrapper@{C\+H\+O\+M\+P\+::\+Wrapper}}
+\subsubsection[{\texorpdfstring{map\+\_\+type}{map_type}}]{\setlength{\rightskip}{0pt plus 5cm}int C\+H\+O\+M\+P\+::\+Wrapper\+::map\+\_\+type}\hypertarget{class_c_h_o_m_p_1_1_wrapper_a8e7d4dd9f8678e2752ef05e55a36ffe1}{}\label{class_c_h_o_m_p_1_1_wrapper_a8e7d4dd9f8678e2752ef05e55a36ffe1}
+
+
+Definition at line 46 of file chomp\+\_\+ros\+\_\+wrapper.\+h.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/chomp\+\_\+predict/\hyperlink{chomp__ros__wrapper_8h}{chomp\+\_\+ros\+\_\+wrapper.\+h}\item 
+src/\hyperlink{chomp__ros__wrapper_8cpp}{chomp\+\_\+ros\+\_\+wrapper.\+cpp}\end{DoxyCompactItemize}

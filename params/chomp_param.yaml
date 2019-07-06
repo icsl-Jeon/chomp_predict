@@ -1,3 +1,18 @@
 cost_param: {r_safe: 2.8,ground_reject_height: 1.0}
-optim_param: {descending_rate: 0.01,max_iter: 1000,weight_prior: 0.01, term_cond: 0.001, gamma: 3, n_step: 15}
+
+optim_param: {descending_rate: 0.01,
+                max_iter: 300,
+                weight_prior: 0.01, 
+                term_cond: 0.01,
+                gamma: 3,
+                n_step: 15}
+
+pred_param: {prediction_size_max: 12,
+             prediction_size_min: 5, 
+             prediction_horizon: 4,
+             observation_size: 5,
+             observation_horizon: 4}
+
+             
+target_waypoint: {x: [0, 1, 2], y:[2, 3, 4]}
 

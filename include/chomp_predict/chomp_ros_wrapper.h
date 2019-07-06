@@ -23,7 +23,6 @@ namespace CHOMP{
             visualization_msgs::Marker obsrv_markers;
             visualization_msgs::Marker goal_marker;
             
-
             // map 
             DynamicEDTOctomap *edf_ptr; // Euclidean Distance Field 
             voxblox::EsdfServer voxblox_server;  // voxblox server 
@@ -32,7 +31,9 @@ namespace CHOMP{
             double ground_rejection_height;            
             double dx; // obtain from octomap 
             double r_safe; // safe clearance (outside of r_safe, cost = 0) 
-            OptimParam optim_param; // optimization parameters           
+            OptimParam optim_param; // optimization parameters       
+            OptimParam optim_param_default; // optimization parameters           
+    
             int dim = 2;
             // flags 
             bool is_map_load = false; // is map loaded             
@@ -53,8 +54,14 @@ namespace CHOMP{
             // cost evaluation
             
             // optimization routine 
-            void build_matrix(MatrixXd &A,VectorXd &b,nav_msgs::Path prior_points,geometry_msgs::Point goal);
-            VectorXd prepare_chomp(MatrixXd A,VectorXd b,nav_msgs::Path prior_path,geometry_msgs::Point goal);
-            bool solve_chomp(VectorXd x0);            
+            void build_matrix(MatrixXd &A,VectorXd &b,nav_msgs::Path prior_points,geometry_msgs::Point goal,OptimParam* param = NULL);
+            VectorXd prepare_chomp(MatrixXd A,VectorXd b,nav_msgs::Path prior_path,geometry_msgs::Point goal,OptimParam* param = NULL );
+            bool solve_chomp(VectorXd x0);
+
+            // result retreive
+            MatrixXd get_current_prediction_path();
+            OptimParam get_default_optim_param();
+
+
     };
 }

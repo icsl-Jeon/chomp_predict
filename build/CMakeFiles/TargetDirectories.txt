@@ -88,6 +88,7 @@
 /home/jbs/catkin_ws/src/chomp_predict/build/CMakeFiles/pcl_msgs_generate_messages_lisp.dir
 /home/jbs/catkin_ws/src/chomp_predict/build/CMakeFiles/std_msgs_generate_messages_nodejs.dir
 /home/jbs/catkin_ws/src/chomp_predict/build/CMakeFiles/voxblox_msgs_generate_messages_eus.dir
+/home/jbs/catkin_ws/src/chomp_predict/build/CMakeFiles/chomp_predict_node.dir
 /home/jbs/catkin_ws/src/chomp_predict/build/CMakeFiles/dynamic_reconfigure_generate_messages_cpp.dir
 /home/jbs/catkin_ws/src/chomp_predict/build/CMakeFiles/bond_generate_messages_nodejs.dir
 /home/jbs/catkin_ws/src/chomp_predict/build/CMakeFiles/visualization_msgs_generate_messages_eus.dir

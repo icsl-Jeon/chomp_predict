@@ -7,13 +7,12 @@ Wrapper::Wrapper(const ros::NodeHandle& nh_global):nh("~"),voxblox_server(nh,nh_
     nh.param("cost_param/r_safe",r_safe,3.4);
     nh.param("cost_param/ground_reject_height",ground_rejection_height,0.5);
 
-    nh.param("optim_param/descending_rate",optim_param.descending_rate,0.1);
-    nh.param("optim_param/max_iter",optim_param.max_iter,300);
-    nh.param("optim_param/weight_prior",optim_param.weight_prior,1e-2);
-    nh.param("optim_param/term_cond",optim_param.termination_cond,1e-2);
-    nh.param("optim_param/gamma",optim_param.gamma,0.4);
-    nh.param("optim_param/n_step",optim_param.n_step,10);
-
+    nh.param("optim_param/descending_rate",optim_param_default.descending_rate,0.1);
+    nh.param("optim_param/max_iter",optim_param_default.max_iter,300);
+    nh.param("optim_param/weight_prior",optim_param_default.weight_prior,1e-2);
+    nh.param("optim_param/term_cond",optim_param_default.termination_cond,1e-2);
+    nh.param("optim_param/gamma",optim_param_default.gamma,0.4);
+    nh.param("optim_param/n_step",optim_param_default.n_step,10);
 
     nh.param<string>("world_frame_id",world_frame_id,"/world");    
     pub_path_cur_solution = nh.advertise<nav_msgs::Path>("chomp_solution_path",1);
@@ -32,8 +31,6 @@ void Wrapper::load_markers_prior_pnts(nav_msgs::Path prior_path,geometry_msgs::P
     obsrv_markers.scale.x = scale;
     obsrv_markers.scale.y = scale;
     obsrv_markers.scale.z = scale;
-    // obsrv_markers.color.r = 0;
-    obsrv_markers.color.b = 1;
     obsrv_markers.color.a = 0.8;
         for (int n =0;n<prior_path.poses.size();n++){
         prior_path.poses[n].pose.position.z = ground_rejection_height;
@@ -46,7 +43,7 @@ void Wrapper::load_markers_prior_pnts(nav_msgs::Path prior_path,geometry_msgs::P
     goal_marker.scale.x = scale;
     goal_marker.scale.y = scale;
     goal_marker.scale.z = scale;
-    goal_marker.color.r = 1;
+    goal_marker.color.r = 1; // current gaol 
     goal_marker.color.a = 0.8;
 }
 
@@ -92,9 +89,15 @@ void Wrapper::load_map(string file_name){
  * @param goal goal point 
  * @param N total time index
  */
-void Wrapper::build_matrix(MatrixXd &M,VectorXd &h,nav_msgs::Path prior_points,geometry_msgs::Point goal){
+void Wrapper::build_matrix(MatrixXd &M,VectorXd &h,nav_msgs::Path prior_points,geometry_msgs::Point goal,OptimParam* param){
         
     // init     
+    // if external parameter is given 
+    if(param == NULL)
+        optim_param = optim_param_default;
+    else
+        optim_param = *param;
+
     // here, A,b is |Ax-b|^2
     int N = optim_param.n_step; 
     int No = prior_points.poses.size();
@@ -159,7 +162,15 @@ void Wrapper::build_matrix(MatrixXd &M,VectorXd &h,nav_msgs::Path prior_points,g
 
 
 // Prepare chomp by setting cost matrix and fitting points. Also, it outputs initial guess    
-VectorXd Wrapper::prepare_chomp(MatrixXd M,VectorXd h,nav_msgs::Path prior_path,geometry_msgs::Point goal){
+VectorXd Wrapper::prepare_chomp(MatrixXd M,VectorXd h,nav_msgs::Path prior_path,geometry_msgs::Point goal,OptimParam* param){
+
+    // if external parameter is given 
+    if(param == NULL)
+        optim_param = optim_param_default;
+    else
+        optim_param = *param;
+        
+    
     if (M.rows() == h.size()){
         
         int N = M.rows()/dim;
@@ -244,4 +255,31 @@ void Wrapper::publish_routine(){
         this->voxblox_server.publishSlices();
         this->voxblox_server.publishPointclouds();
     }
+}
+
+// return path. the returned path will be endowed with times. This function returns the solution path in the form of matrix  
+MatrixXd Wrapper::get_current_prediction_path(){
+
+    MatrixXd prediction_path; // N x 3 matrix 
+    if(current_path.poses.size()){
+
+        int N = current_path.poses.size(); // number of path  
+        
+        prediction_path  = MatrixXd(N,3);
+        for (int n = 0; n<current_path.poses.size(); n++){
+            prediction_path(n,0)  = current_path.poses[n].pose.position.x; 
+            prediction_path(n,1)  = current_path.poses[n].pose.position.y; 
+            prediction_path(n,2)  = current_path.poses[n].pose.position.z;         
+        }
+
+    }else    
+        cerr<<"No prediction path loaded"<<endl;
+        
+    return prediction_path;     
+}
+
+// return default optim_param 
+OptimParam Wrapper::get_default_optim_param(){
+
+    return optim_param_default;
 }

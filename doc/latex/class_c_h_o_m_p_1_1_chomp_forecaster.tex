@@ -1,0 +1,234 @@
+\hypertarget{class_c_h_o_m_p_1_1_chomp_forecaster}{}\section{C\+H\+O\+MP\+:\+:Chomp\+Forecaster Class Reference}
+\label{class_c_h_o_m_p_1_1_chomp_forecaster}\index{C\+H\+O\+M\+P\+::\+Chomp\+Forecaster@{C\+H\+O\+M\+P\+::\+Chomp\+Forecaster}}
+
+
+{\ttfamily \#include $<$chomp\+\_\+predict.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_c_h_o_m_p_1_1_chomp_forecaster_a58176b34170de8485029f182e05f12c5}{Chomp\+Forecaster} ()
+\item 
+void \hyperlink{class_c_h_o_m_p_1_1_chomp_forecaster_ac05e634464c8859c8cc3e8bdb1a40ded}{callback\+\_\+target\+\_\+state} (geometry\+\_\+msgs\+::\+Pose\+Stamped\+Const\+Ptr pose\+\_\+stamped\+\_\+ptr)
+\item 
+void \hyperlink{class_c_h_o_m_p_1_1_chomp_forecaster_a02a3930b78aaf72a9058cb3ce6ae8143}{predict\+\_\+with\+\_\+obsrv\+\_\+queue} ()
+\item 
+geometry\+\_\+msgs\+::\+Point \hyperlink{class_c_h_o_m_p_1_1_chomp_forecaster_a8b3e5ea0d8a5092b371a23efcddd5c73}{eval\+\_\+prediction} (ros\+::\+Time eval\+\_\+time)
+\begin{DoxyCompactList}\small\item\em Once prediction model is acquired, then we can evaluate the prediction in time. \end{DoxyCompactList}\item 
+void \hyperlink{class_c_h_o_m_p_1_1_chomp_forecaster_a56e9984f3c85563170c58708aaa97056}{publish\+\_\+routine} ()
+\begin{DoxyCompactList}\small\item\em publish \+: current goal / observation queue / prediction path during prediction horizon \end{DoxyCompactList}\item 
+void \hyperlink{class_c_h_o_m_p_1_1_chomp_forecaster_af225bf2af3fede364b922e27be410f0b}{run} ()
+\begin{DoxyCompactList}\small\item\em code to be run in the main loop \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{class_c_h_o_m_p_1_1_chomp_forecaster_ae642d133970543c83eebd153d74e8459}{is\+\_\+state\+\_\+received}
+\item 
+bool \hyperlink{class_c_h_o_m_p_1_1_chomp_forecaster_ae092aa988e2587db915e287fc3fa0aff}{is\+\_\+predicted}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 98 of file chomp\+\_\+predict.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{C\+H\+O\+M\+P\+::\+Chomp\+Forecaster@{C\+H\+O\+M\+P\+::\+Chomp\+Forecaster}!Chomp\+Forecaster@{Chomp\+Forecaster}}
+\index{Chomp\+Forecaster@{Chomp\+Forecaster}!C\+H\+O\+M\+P\+::\+Chomp\+Forecaster@{C\+H\+O\+M\+P\+::\+Chomp\+Forecaster}}
+\subsubsection[{\texorpdfstring{Chomp\+Forecaster()}{ChompForecaster()}}]{\setlength{\rightskip}{0pt plus 5cm}Chomp\+Forecaster\+::\+Chomp\+Forecaster (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_c_h_o_m_p_1_1_chomp_forecaster_a58176b34170de8485029f182e05f12c5}{}\label{class_c_h_o_m_p_1_1_chomp_forecaster_a58176b34170de8485029f182e05f12c5}
+
+
+Definition at line 6 of file chomp\+\_\+predict.\+cpp.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_c_h_o_m_p_1_1_chomp_forecaster_a58176b34170de8485029f182e05f12c5_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+\subsection{Member Function Documentation}
+\index{C\+H\+O\+M\+P\+::\+Chomp\+Forecaster@{C\+H\+O\+M\+P\+::\+Chomp\+Forecaster}!callback\+\_\+target\+\_\+state@{callback\+\_\+target\+\_\+state}}
+\index{callback\+\_\+target\+\_\+state@{callback\+\_\+target\+\_\+state}!C\+H\+O\+M\+P\+::\+Chomp\+Forecaster@{C\+H\+O\+M\+P\+::\+Chomp\+Forecaster}}
+\subsubsection[{\texorpdfstring{callback\+\_\+target\+\_\+state(geometry\+\_\+msgs\+::\+Pose\+Stamped\+Const\+Ptr pose\+\_\+stamped\+\_\+ptr)}{callback_target_state(geometry_msgs::PoseStampedConstPtr pose_stamped_ptr)}}]{\setlength{\rightskip}{0pt plus 5cm}void Chomp\+Forecaster\+::callback\+\_\+target\+\_\+state (
+\begin{DoxyParamCaption}
+\item[{geometry\+\_\+msgs\+::\+Pose\+Stamped\+Const\+Ptr}]{pose\+\_\+stamped\+\_\+ptr}
+\end{DoxyParamCaption}
+)}\hypertarget{class_c_h_o_m_p_1_1_chomp_forecaster_ac05e634464c8859c8cc3e8bdb1a40ded}{}\label{class_c_h_o_m_p_1_1_chomp_forecaster_ac05e634464c8859c8cc3e8bdb1a40ded}
+
+
+Definition at line 80 of file chomp\+\_\+predict.\+cpp.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_c_h_o_m_p_1_1_chomp_forecaster_ac05e634464c8859c8cc3e8bdb1a40ded_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{C\+H\+O\+M\+P\+::\+Chomp\+Forecaster@{C\+H\+O\+M\+P\+::\+Chomp\+Forecaster}!eval\+\_\+prediction@{eval\+\_\+prediction}}
+\index{eval\+\_\+prediction@{eval\+\_\+prediction}!C\+H\+O\+M\+P\+::\+Chomp\+Forecaster@{C\+H\+O\+M\+P\+::\+Chomp\+Forecaster}}
+\subsubsection[{\texorpdfstring{eval\+\_\+prediction(ros\+::\+Time eval\+\_\+time)}{eval_prediction(ros::Time eval_time)}}]{\setlength{\rightskip}{0pt plus 5cm}geometry\+\_\+msgs\+::\+Point Chomp\+Forecaster\+::eval\+\_\+prediction (
+\begin{DoxyParamCaption}
+\item[{ros\+::\+Time}]{eval\+\_\+time}
+\end{DoxyParamCaption}
+)}\hypertarget{class_c_h_o_m_p_1_1_chomp_forecaster_a8b3e5ea0d8a5092b371a23efcddd5c73}{}\label{class_c_h_o_m_p_1_1_chomp_forecaster_a8b3e5ea0d8a5092b371a23efcddd5c73}
+
+
+Once prediction model is acquired, then we can evaluate the prediction in time. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em eval\+\_\+time} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+geometry\+\_\+msgs\+::\+Point 
+\end{DoxyReturn}
+
+
+Definition at line 205 of file chomp\+\_\+predict.\+cpp.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_c_h_o_m_p_1_1_chomp_forecaster_a8b3e5ea0d8a5092b371a23efcddd5c73_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_c_h_o_m_p_1_1_chomp_forecaster_a8b3e5ea0d8a5092b371a23efcddd5c73_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{C\+H\+O\+M\+P\+::\+Chomp\+Forecaster@{C\+H\+O\+M\+P\+::\+Chomp\+Forecaster}!predict\+\_\+with\+\_\+obsrv\+\_\+queue@{predict\+\_\+with\+\_\+obsrv\+\_\+queue}}
+\index{predict\+\_\+with\+\_\+obsrv\+\_\+queue@{predict\+\_\+with\+\_\+obsrv\+\_\+queue}!C\+H\+O\+M\+P\+::\+Chomp\+Forecaster@{C\+H\+O\+M\+P\+::\+Chomp\+Forecaster}}
+\subsubsection[{\texorpdfstring{predict\+\_\+with\+\_\+obsrv\+\_\+queue()}{predict_with_obsrv_queue()}}]{\setlength{\rightskip}{0pt plus 5cm}void Chomp\+Forecaster\+::predict\+\_\+with\+\_\+obsrv\+\_\+queue (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_c_h_o_m_p_1_1_chomp_forecaster_a02a3930b78aaf72a9058cb3ce6ae8143}{}\label{class_c_h_o_m_p_1_1_chomp_forecaster_a02a3930b78aaf72a9058cb3ce6ae8143}
+
+
+Definition at line 100 of file chomp\+\_\+predict.\+cpp.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_c_h_o_m_p_1_1_chomp_forecaster_a02a3930b78aaf72a9058cb3ce6ae8143_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_c_h_o_m_p_1_1_chomp_forecaster_a02a3930b78aaf72a9058cb3ce6ae8143_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{C\+H\+O\+M\+P\+::\+Chomp\+Forecaster@{C\+H\+O\+M\+P\+::\+Chomp\+Forecaster}!publish\+\_\+routine@{publish\+\_\+routine}}
+\index{publish\+\_\+routine@{publish\+\_\+routine}!C\+H\+O\+M\+P\+::\+Chomp\+Forecaster@{C\+H\+O\+M\+P\+::\+Chomp\+Forecaster}}
+\subsubsection[{\texorpdfstring{publish\+\_\+routine()}{publish_routine()}}]{\setlength{\rightskip}{0pt plus 5cm}void Chomp\+Forecaster\+::publish\+\_\+routine (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_c_h_o_m_p_1_1_chomp_forecaster_a56e9984f3c85563170c58708aaa97056}{}\label{class_c_h_o_m_p_1_1_chomp_forecaster_a56e9984f3c85563170c58708aaa97056}
+
+
+publish \+: current goal / observation queue / prediction path during prediction horizon 
+
+
+
+Definition at line 140 of file chomp\+\_\+predict.\+cpp.
+
+\index{C\+H\+O\+M\+P\+::\+Chomp\+Forecaster@{C\+H\+O\+M\+P\+::\+Chomp\+Forecaster}!run@{run}}
+\index{run@{run}!C\+H\+O\+M\+P\+::\+Chomp\+Forecaster@{C\+H\+O\+M\+P\+::\+Chomp\+Forecaster}}
+\subsubsection[{\texorpdfstring{run()}{run()}}]{\setlength{\rightskip}{0pt plus 5cm}void Chomp\+Forecaster\+::run (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_c_h_o_m_p_1_1_chomp_forecaster_af225bf2af3fede364b922e27be410f0b}{}\label{class_c_h_o_m_p_1_1_chomp_forecaster_af225bf2af3fede364b922e27be410f0b}
+
+
+code to be run in the main loop 
+
+
+
+Definition at line 149 of file chomp\+\_\+predict.\+cpp.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_c_h_o_m_p_1_1_chomp_forecaster_af225bf2af3fede364b922e27be410f0b_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+\subsection{Member Data Documentation}
+\index{C\+H\+O\+M\+P\+::\+Chomp\+Forecaster@{C\+H\+O\+M\+P\+::\+Chomp\+Forecaster}!is\+\_\+predicted@{is\+\_\+predicted}}
+\index{is\+\_\+predicted@{is\+\_\+predicted}!C\+H\+O\+M\+P\+::\+Chomp\+Forecaster@{C\+H\+O\+M\+P\+::\+Chomp\+Forecaster}}
+\subsubsection[{\texorpdfstring{is\+\_\+predicted}{is_predicted}}]{\setlength{\rightskip}{0pt plus 5cm}bool C\+H\+O\+M\+P\+::\+Chomp\+Forecaster\+::is\+\_\+predicted}\hypertarget{class_c_h_o_m_p_1_1_chomp_forecaster_ae092aa988e2587db915e287fc3fa0aff}{}\label{class_c_h_o_m_p_1_1_chomp_forecaster_ae092aa988e2587db915e287fc3fa0aff}
+
+
+Definition at line 133 of file chomp\+\_\+predict.\+h.
+
+\index{C\+H\+O\+M\+P\+::\+Chomp\+Forecaster@{C\+H\+O\+M\+P\+::\+Chomp\+Forecaster}!is\+\_\+state\+\_\+received@{is\+\_\+state\+\_\+received}}
+\index{is\+\_\+state\+\_\+received@{is\+\_\+state\+\_\+received}!C\+H\+O\+M\+P\+::\+Chomp\+Forecaster@{C\+H\+O\+M\+P\+::\+Chomp\+Forecaster}}
+\subsubsection[{\texorpdfstring{is\+\_\+state\+\_\+received}{is_state_received}}]{\setlength{\rightskip}{0pt plus 5cm}bool C\+H\+O\+M\+P\+::\+Chomp\+Forecaster\+::is\+\_\+state\+\_\+received}\hypertarget{class_c_h_o_m_p_1_1_chomp_forecaster_ae642d133970543c83eebd153d74e8459}{}\label{class_c_h_o_m_p_1_1_chomp_forecaster_ae642d133970543c83eebd153d74e8459}
+
+
+Definition at line 132 of file chomp\+\_\+predict.\+h.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/chomp\+\_\+predict/\hyperlink{chomp__predict_8h}{chomp\+\_\+predict.\+h}\item 
+src/\hyperlink{chomp__predict_8cpp}{chomp\+\_\+predict.\+cpp}\end{DoxyCompactItemize}

@@ -24,8 +24,6 @@ void Solver::set_problem(MatrixXd A,VectorXd b,voxblox::EsdfServer* esdf_ptr,Cos
     this->A = A;
     this->b = b;
     this->esdf_ptr = esdf_ptr;
-    cout<<"esdf ptf: ";
-    cout<<esdf_ptr<<endl;
     if(this->esdf_ptr!=NULL)
         is_problem_set = true;
     map_type = 1; // voxblox        
@@ -74,7 +72,7 @@ OptimResult Solver::solve(VectorXd x0, OptimParam optim_param){
 
         iter++;
         innovation = (x-x_prev).norm();  
-
+        if(iter % 15 == 0)
         // print 
         printf("[CHOMP] iter %d = obst_cost : %f / prior_cost %f / total_cost %f // innovation: %f\n",iter,
                 nonlinear_cost,weight_prior*prior_cost,weight_prior*prior_cost + nonlinear_cost,innovation);
