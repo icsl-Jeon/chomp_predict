@@ -51,8 +51,7 @@ OptimResult Solver::solve(VectorXd x0, OptimParam optim_param){
     double innovation = 1e+4;
     int iter = 0;
 
-    while (iter <= max_iter && innovation > term_cond){
-        
+    while (iter <= max_iter && innovation > term_cond){        
         // cost computation                 
         Vector2d costs = evaluate_costs(x_prev);
         double prior_cost = costs(0), nonlinear_cost = costs(1);
@@ -72,7 +71,7 @@ OptimResult Solver::solve(VectorXd x0, OptimParam optim_param){
 
         iter++;
         innovation = (x-x_prev).norm();  
-        if(iter % 15 == 0)
+        if((iter % 15 == 0) or (iter == 1))
         // print 
         printf("[CHOMP] iter %d = obst_cost : %f / prior_cost %f / total_cost %f // innovation: %f\n",iter,
                 nonlinear_cost,weight_prior*prior_cost,weight_prior*prior_cost + nonlinear_cost,innovation);
@@ -97,6 +96,8 @@ Vector2d Solver::evaluate_costs(VectorXd x){
     double nonlinear_term = cost_obstacle(x); 
     costs(0) = prior_term;
     costs(1) = nonlinear_term;
+    // cout<<"[in function evaluate_costs] evaluted cost for nonlinear term: "<<nonlinear_term<<endl;
+
     return costs;
 } 
 
@@ -139,6 +140,8 @@ double Solver::cost_obstacle(VectorXd x){
             p.z = cost_param.ground_height+1e-2;                          
             cost += cost_at_point(p);        
         }
+
+    return cost;
 }
 // evaluate gradient of cost of a path 
 VectorXd Solver::grad_cost_obstacle(VectorXd x){

@@ -57,8 +57,7 @@ Eigen::VectorXd get_time_stamps_from_nav_path(const nav_msgs::Path& path){
     int n_step = path.poses.size();
     Eigen::VectorXd time_stamps(n_step);
     for(int n =0; n<n_step;n++){
-        time_stamps(n)  = (path.poses[n].header.stamp.toSec() + 
-                                path.poses[n].header.stamp.toNSec()*(1e-9));
+        time_stamps(n)  = (path.poses[n].header.stamp.toSec());
     }
 
     return time_stamps;

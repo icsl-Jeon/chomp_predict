@@ -27,7 +27,7 @@ void Wrapper::load_markers_prior_pnts(nav_msgs::Path prior_path,geometry_msgs::P
     obsrv_markers.action = 0;
     obsrv_markers.header.frame_id = world_frame_id;
     obsrv_markers.type = visualization_msgs::Marker::SPHERE_LIST;
-    float scale = 0.1;
+    float scale = 0.4;
     obsrv_markers.scale.x = scale;
     obsrv_markers.scale.y = scale;
     obsrv_markers.scale.z = scale;
@@ -40,6 +40,7 @@ void Wrapper::load_markers_prior_pnts(nav_msgs::Path prior_path,geometry_msgs::P
     goal_marker.type = visualization_msgs::Marker::SPHERE;
     goal_marker.header.frame_id = world_frame_id;
     goal_marker.pose.position = goal;
+    goal_marker.pose.position.z = 1.5; // hegith is arbitrarily
     goal_marker.scale.x = scale;
     goal_marker.scale.y = scale;
     goal_marker.scale.z = scale;
@@ -254,6 +255,7 @@ void Wrapper::publish_routine(){
         this->voxblox_server.setSliceLevel(ground_rejection_height - 0.3);
         this->voxblox_server.publishSlices();
         this->voxblox_server.publishPointclouds();
+        this->voxblox_server.publishTsdfSurfacePoints();
     }
 }
 

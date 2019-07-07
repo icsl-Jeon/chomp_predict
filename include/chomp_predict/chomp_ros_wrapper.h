@@ -61,6 +61,7 @@ namespace CHOMP{
             // result retreive
             MatrixXd get_current_prediction_path();
             OptimParam get_default_optim_param();
+            double get_ground_height() {return ground_rejection_height;};
 
 
     };

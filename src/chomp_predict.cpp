@@ -63,13 +63,13 @@ Vector3d PredictionTrajectory::eval_at_time(double t){
     VectorXd x_path = pred_path.block(0,0,pred_path.rows(),1);
     VectorXd y_path = pred_path.block(0,1,pred_path.rows(),1);
     VectorXd z_path = pred_path.block(0,2,pred_path.rows(),1);
-    output(0) = interpolate(time_seq,x_path,t,true);
-    output(1) = interpolate(time_seq,y_path,t,true);
-    output(2) = interpolate(time_seq,z_path,t,true);            
+    output(0) = interpolate(time_seq,x_path,t,false);
+    output(1) = interpolate(time_seq,y_path,t,false);
+    output(2) = interpolate(time_seq,z_path,t,false);            
     return output;
 }
 
-ChompForecaster::ChompForecaster():nh("~"),chomp_wrapper(nh){
+ChompForecaster::ChompForecaster():nh("~"),chomp_wrapper(nh),is_predicted(false){
     
     vector<double> target_waypoint_x;
     vector<double> target_waypoint_y;    
@@ -86,7 +86,6 @@ ChompForecaster::ChompForecaster():nh("~"),chomp_wrapper(nh){
 
     nh.param("pred_param/trigger_tol_accum_error",pred_param.trigger_tol_accum_error,2.0);
     
-    string world_frame_id; 
     nh.param<string>("world_frame_id",world_frame_id,"/world");
 
 
@@ -94,7 +93,7 @@ ChompForecaster::ChompForecaster():nh("~"),chomp_wrapper(nh){
     nh.getParam("target_waypoint/y",target_waypoint_y);
 
 
-    // if no param available
+    // if no param available, this target waypoints are for map3.vxblx 
     if (not nh.hasParam("target_waypoint/x")){
         
         target_waypoint_x.push_back(3.4578);
@@ -105,6 +104,10 @@ ChompForecaster::ChompForecaster():nh("~"),chomp_wrapper(nh){
 
         target_waypoint_x.push_back(8.3223);
         target_waypoint_y.push_back(3.9896);
+
+        target_waypoint_x.push_back(11.4981);
+        target_waypoint_y.push_back(8.0515);
+
     }
     
     //load target waypoints(via-points) 
@@ -123,7 +126,7 @@ ChompForecaster::ChompForecaster():nh("~"),chomp_wrapper(nh){
 
 
     // register advertise and subscriber 
-    pub_path_prediction = nh.advertise<nav_msgs::Path>("prediction_traj",1);
+    pub_path_prediction_traj = nh.advertise<nav_msgs::Path>("prediction_traj",1);
     pub_marker_waypoints = nh.advertise<visualization_msgs::Marker>("target_waypoints",1); 
     sub_pose_target = nh.subscribe("/target_pose",2,&ChompForecaster::callback_target_state,this);
 
@@ -152,7 +155,7 @@ ChompForecaster::ChompForecaster():nh("~"),chomp_wrapper(nh){
     // time initialization 
     last_callback_time = ros::Time::now(); // set timer 
     init_time = ros::Time::now(); // initial time 
-    cout<<"[CHOMP] time is initialized with: "<<init_time.toSec() + init_time.toNSec()*(1e-9)<<endl;
+    cout<<"[CHOMP] time is initialized with: "<<init_time.toSec()<<endl;
     
     // marker init 
     marker_target_waypoints.header.frame_id = world_frame_id;
@@ -172,7 +175,6 @@ ChompForecaster::ChompForecaster():nh("~"),chomp_wrapper(nh){
         marker_target_waypoints.points.push_back(position);
     }
 
-
 };
 
 
@@ -184,7 +186,7 @@ VectorXd ChompForecaster::get_observation_time_stamps(){
         Eigen::VectorXd time_stamps(n_step);
         int n = 0;
         for(auto it = observation_queue.begin(); it != observation_queue.end(); it++,n++)
-            time_stamps[n] = (it->header.stamp-init_time).toSec() +  (it->header.stamp-init_time).toNSec()*1e-9;
+            time_stamps[n] = (it->header.stamp-init_time).toSec();
         return time_stamps;
     }
     else{
@@ -208,10 +210,32 @@ double ChompForecaster::last_obsrv_to_goal(){
                               pow(most_recent_target_position.y - target_waypoints.front().y,2));
 }
 
+nav_msgs::Path ChompForecaster::windowed_prediction_traj_eval(ros::Time time_now){
+
+    double eval_t0 = (time_now - init_time).toSec(); 
+    double eval_tf = eval_t0 + pred_param.prediction_horizon; 
+    int N_step = 20;
+    VectorXd t_eval_set = VectorXd::LinSpaced(N_step,eval_t0,eval_tf);
+
+    nav_msgs::Path evaluated_prediction_traj;
+    evaluated_prediction_traj.header.frame_id = world_frame_id;
+    for (int n=0;n<N_step;n++){
+        double t_cur = t_eval_set(n);
+        geometry_msgs::PoseStamped pose_stamped;
+        Vector3d pnt_eval = prediction_traj.eval_at_time(t_cur);        
+        pose_stamped.pose.position.x = pnt_eval(0);
+        pose_stamped.pose.position.y = pnt_eval(1);
+        pose_stamped.pose.position.z = chomp_wrapper.get_ground_height();
+        evaluated_prediction_traj.poses.push_back(pose_stamped);
+    }
+    return evaluated_prediction_traj;
+}
+
+
 // update observation at every specified duration 
 void ChompForecaster::callback_target_state(geometry_msgs::PoseStampedConstPtr pose_stamped_ptr){
         
-    if(((ros::Time::now() - last_callback_time).toSec() + (ros::Time::now() - last_callback_time).toNSec()*(1e-9))
+    if(((ros::Time::now() - last_callback_time).toSec())
            > pred_param.observation_callback_duration()){  
           
         if( observation_queue.size() < pred_param.No) {// not full
@@ -223,7 +247,9 @@ void ChompForecaster::callback_target_state(geometry_msgs::PoseStampedConstPtr p
         else{
             //full
             observation_queue.pop_front();
-            observation_queue.push_back(*pose_stamped_ptr);
+            geometry_msgs::PoseStamped pose_stamped = *pose_stamped_ptr;
+            pose_stamped.header.stamp = ros::Time::now(); 
+            observation_queue.push_back(pose_stamped);
         }     
         last_callback_time = ros::Time::now();
     }
@@ -239,7 +265,7 @@ void ChompForecaster::predict_with_obsrv_queue(){
         for(auto it = this->observation_queue.begin();it != this->observation_queue.end();it++)
             prior_path.poses.push_back(*it);
 
-        geometry_msgs::Point g = this->target_waypoints.back();
+        geometry_msgs::Point g = this->target_waypoints.front();
         
         // update markers
         chomp_wrapper.load_markers_prior_pnts(prior_path,g);
@@ -251,12 +277,12 @@ void ChompForecaster::predict_with_obsrv_queue(){
         
         chomp_wrapper.build_matrix(M,h,prior_path,g,&optim_param); // A,b matrix 
         VectorXd x0 = chomp_wrapper.prepare_chomp(M,h,prior_path,g); // initial guess 
+        ros::Time tic = ros::Time::now();
         chomp_wrapper.solve_chomp(x0); // optimization from the initial guess 
-
+        cout<<"optimizaton solved at "<<(ros::Time::now() - tic).toSec()<<" [sec]"<<endl;
         // 3. TIme allocation and finishing  
         MatrixXd current_prediction = chomp_wrapper.get_current_prediction_path(); 
         VectorXd observation_time_stamp = get_observation_time_stamps();                                                     
-
         prediction_traj=PredictionTrajectory(observation_time_stamp,current_prediction); // the final result         
         is_predicted = true;
     
@@ -269,12 +295,15 @@ void ChompForecaster::predict_with_obsrv_queue(){
 }
 /**
  * @brief publish routine in while loop  
- * @details 1. current goal / 2. observation queue / 3.prediction path during prediction horizon (not entire path)
+ * @details / 2. observation queue / 3.prediction path during prediction horizon (not entire path)
  */
 void ChompForecaster::publish_routine(){
 
-    pub_marker_waypoints.publish(marker_target_waypoints);    
     
+    pub_marker_waypoints.publish(marker_target_waypoints);    
+    if(is_predicted)
+        pub_path_prediction_traj.publish(windowed_prediction_traj_eval(ros::Time::now()));
+
 }
 
 /**
@@ -324,10 +353,9 @@ void ChompForecaster::run(){
         // regular routine 
         ros::spinOnce();
         rate.sleep();            
-        // publish routine        
+        // publish routine 
         this->chomp_wrapper.publish_routine(); //inner loop(chomp_ros_wrapper) publisher 
         this->publish_routine(); // outer loop(chomp_predictor) publisher 
-                
     }
 }
 
@@ -339,7 +367,7 @@ void ChompForecaster::run(){
  */
 geometry_msgs::Point ChompForecaster::eval_prediction(ros::Time eval_time){    
     // time 
-    double t_eval_double = eval_time.toSec() + eval_time.toNSec()*1e-9;
+    double t_eval_double = eval_time.toSec();
     Vector3d output = prediction_traj.eval_at_time(t_eval_double);
     geometry_msgs::Point p; 
     p.x = output(0);

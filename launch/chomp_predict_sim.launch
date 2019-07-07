@@ -7,13 +7,14 @@
 	<!--visualization module-->
 	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find chomp_predict)/rviz/rviz_chomp_predictor.rviz"/>	
 	<node name="chomp_predict_sim" pkg="chomp_predict" type="chomp_predict_node" output="screen" args="$(find chomp_predict)/worlds/$(arg world_name).vxblx">
-		<rosparam command="load" file="$(find chomp_predict)/params/chomp_param.yaml" />
+		<rosparam command="load" file="$(find chomp_predict)/params/chomp_param_map3.yaml" />
 	</node>
 
 	<!--traj_gen for arbitaray target trajectory (no output will appear in terminal)-->
+<!--
 	<node pkg="traj_gen" type="traj_gen_client" name="traj_gen_ui">
 		<param name="world_frame_id" value="$(arg world_frame_id)" />
-		<remap from="/traj_gen_ui/control_pose" to="/target_pose" /> <!-- the online target tracking goal -->
+		<remap from="/traj_gen_ui/control_pose" to="/target_pose" /> 
 	</node>
-
+-->
 </launch>
