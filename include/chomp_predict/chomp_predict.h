@@ -5,7 +5,7 @@
 
 const double V_MAX = 1.5; // the speed of the target is bounded 
 const double BIG_T = 1e+5; // big big time 
-const double REACH_TOL = 1e-1; // if the target is observed to be located within this range, it is seen to reach the goal
+const double REACH_TOL = 0.5; // if the target is observed to be located within this range, it is seen to reach the goal
 
 
 namespace CHOMP{
@@ -67,7 +67,7 @@ namespace CHOMP{
             double last_obsrv_to_goal(); // distance to goal from the last observation 
             nav_msgs::Path windowed_prediction_traj_eval(ros::Time); // from now to PredictParam::prediction_horizon
             
-
+            bool is_goal_moved =false;
 
         public:
             ChompForecaster(); // constructor  

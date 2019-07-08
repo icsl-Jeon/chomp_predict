@@ -47,8 +47,8 @@ PredictionTrajectory::PredictionTrajectory(VectorXd obsrv_time_seq,MatrixXd path
     // print the result 
     MatrixXd result(N,4);
     result << time_seq , path;
-    cout <<"preidction traj: t/x/y/z"<<endl;
-    cout<< result <<endl;  
+    // cout <<"preidction traj: t/x/y/z"<<endl;
+    // cout<< result <<endl;  
 
 } 
 
@@ -80,15 +80,10 @@ ChompForecaster::ChompForecaster():nh("~"),chomp_wrapper(nh),is_predicted(false)
     nh.param("observation_size",pred_param.No,5);
     nh.param("pred_param/prediction_size_max",pred_param.Np_max,12);
     nh.param("pred_param/prediction_size_min",pred_param.Np_min,5);
-
     nh.param("pred_param/prediction_horizon",pred_param.prediction_horizon,4.0);
     nh.param("pred_param/observation_horizon",pred_param.observation_horizon,2.0);
-
-    nh.param("pred_param/trigger_tol_accum_error",pred_param.trigger_tol_accum_error,2.0);
-    
+    nh.param("pred_param/trigger_tol_accum_error",pred_param.trigger_tol_accum_error,2.0);    
     nh.param<string>("world_frame_id",world_frame_id,"/world");
-
-
     nh.getParam("target_waypoint/x",target_waypoint_x);
     nh.getParam("target_waypoint/y",target_waypoint_y);
 
@@ -278,7 +273,14 @@ void ChompForecaster::predict_with_obsrv_queue(){
         chomp_wrapper.build_matrix(M,h,prior_path,g,&optim_param); // A,b matrix 
         VectorXd x0 = chomp_wrapper.prepare_chomp(M,h,prior_path,g); // initial guess 
         ros::Time tic = ros::Time::now();
-        chomp_wrapper.solve_chomp(x0); // optimization from the initial guess 
+        if (~is_predicted or is_goal_moved or chomp_wrapper.recent_optim_result.distance_min < 0){
+            cout<<"[CHOMP] use interp for start of optim"<<endl;
+            chomp_wrapper.solve_chomp(x0); // optimization from the initial guess 
+        }
+        else{
+            cout<<"[CHOMP] reuse previous sol for start of optim"<<endl;            
+            chomp_wrapper.solve_chomp(VectorXd(0));
+        }
         cout<<"optimizaton solved at "<<(ros::Time::now() - tic).toSec()<<" [sec]"<<endl;
         // 3. TIme allocation and finishing  
         MatrixXd current_prediction = chomp_wrapper.get_current_prediction_path(); 
@@ -335,8 +337,9 @@ void ChompForecaster::run(){
 
             // check whether target reaches the imminent waypoint. If reached, move to the next one  
             if (last_obsrv_to_goal() < REACH_TOL)
-                to_next_target_waypoint();
-
+                {to_next_target_waypoint(); is_goal_moved = true;}
+            else 
+                is_goal_moved = false;
             
             
             // Check the trigger condition for the next prediction 
@@ -344,7 +347,7 @@ void ChompForecaster::run(){
             accum_error += 1.0/loop_fps * (pow(eval_prediction(ros::Time::now()).x - observation_queue.back().pose.position.x,2) 
                                         + pow(eval_prediction(ros::Time::now()).y - observation_queue.back().pose.position.y,2));  // the MSE integration
 
-            trigger_prediction = (duration_from_last_trigger > pred_param.prediction_horizon - 0.1 ) or 
+            trigger_prediction = (duration_from_last_trigger > pred_param.prediction_horizon - 0.01 ) or 
                                 (accum_error > pred_param.trigger_tol_accum_error );
 
         }

@@ -8,6 +8,9 @@ Wrapper::Wrapper(const ros::NodeHandle& nh_global):nh("~"),voxblox_server(nh,nh_
     nh.param("cost_param/ground_reject_height",ground_rejection_height,0.5);
 
     nh.param("optim_param/descending_rate",optim_param_default.descending_rate,0.1);
+    nh.param("optim_param/descending_rate_min",optim_param_default.descending_rate_min,0.1);
+    nh.param("optim_param/descending_rate_max",optim_param_default.descending_rate_max,0.1);
+
     nh.param("optim_param/max_iter",optim_param_default.max_iter,300);
     nh.param("optim_param/weight_prior",optim_param_default.weight_prior,1e-2);
     nh.param("optim_param/term_cond",optim_param_default.termination_cond,1e-2);
@@ -40,7 +43,7 @@ void Wrapper::load_markers_prior_pnts(nav_msgs::Path prior_path,geometry_msgs::P
     goal_marker.type = visualization_msgs::Marker::SPHERE;
     goal_marker.header.frame_id = world_frame_id;
     goal_marker.pose.position = goal;
-    goal_marker.pose.position.z = 1.5; // hegith is arbitrarily
+    goal_marker.pose.position.z = ground_rejection_height; // hegith is arbitrarily
     goal_marker.scale.x = scale;
     goal_marker.scale.y = scale;
     goal_marker.scale.z = scale;
@@ -219,7 +222,12 @@ VectorXd Wrapper::prepare_chomp(MatrixXd M,VectorXd h,nav_msgs::Path prior_path,
 
 // start chomp routine and save the solution in path 
 bool Wrapper::solve_chomp(VectorXd x0){
-    recent_optim_result = solver.solve(x0,optim_param);    
+
+    if (x0.size())
+        recent_optim_result = solver.solve2(x0,optim_param);    
+    else
+        recent_optim_result = solver.solve2(recent_optim_result.solution,optim_param);
+    
     // if solved, 
     VectorXd x_sol = recent_optim_result.solution;
     nav_msgs::Path path;
@@ -236,6 +244,8 @@ bool Wrapper::solve_chomp(VectorXd x0){
         pose_stamped.header.frame_id = world_frame_id;
         pose_stamped.pose.position.x = x;
         pose_stamped.pose.position.y = y; 
+        pose_stamped.pose.position.z = z; 
+        
         path.poses.push_back(pose_stamped);
     }    
     current_path = path;
@@ -252,7 +262,7 @@ void Wrapper::publish_routine(){
 
     // esdf publish 
     if(this->map_type == 1){
-        this->voxblox_server.setSliceLevel(ground_rejection_height - 0.3);
+        this->voxblox_server.setSliceLevel(ground_rejection_height);
         this->voxblox_server.publishSlices();
         this->voxblox_server.publishPointclouds();
         this->voxblox_server.publishTsdfSurfacePoints();

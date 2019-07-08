@@ -3,11 +3,53 @@
 <arg name="world_name" default="map3"/>
 <arg name="world_frame_id" default="/world"/>
 
-	
+
+
+
 	<!--visualization module-->
 	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find chomp_predict)/rviz/rviz_chomp_predictor.rviz"/>	
+
+
+	<!-- octomap server -->
+	<node pkg="octomap_server" type="octomap_tracking_server_node" name="octomap_talker" output="screen" args="$(find traj_gen_chasing)/worlds/$(arg world_name).bt"> 
+	
+
+	<!--node pkg="octomap_server" type="octomap_tracking_server_node" name="octomap_talker" output="screen"-->
+
+		<param name="resolution" value="0.25" />
+		<param name="frame_id" type="string" value="world" />
+		<param name="sensor_model/max_range" value="4.0" />
+		<param name="save_directory" value="$(optenv OCTOMAP_SAVE_DIR ./)" />
+		<param name="track_changes" value="true"/>
+		<param name="listen_changes" value="false"/>
+		<param name="topic_changes" value="/octomap_tracking_server/changeset" />
+		<!-- added by JBS -->
+		
+		<param name="height_map" value="false" />
+		
+		<param name="color/r" value="0.4" />
+		<param name="color/g" value="0.4" />
+		<param name="color/b" value="0.4" />
+		<param name="color/a" value="1.0" />
+		
+		<param name="occupancy_max_z" value="" />
+		<param name="occupancy_min_z" value="0.2" />
+		<param name="filter_ground" value="true" />
+		<param name="base_frame_id" value="/world" />
+		
+		<!--param name="change_id_frame" value="$(arg changeIdFrame)" /-->
+		<param name="min_change_pub" value="0" />
+		<!--In case of no bt file, let's -->
+		<!--remap from="cloud_in" to="$(arg mav_name)/vi_sensor/camera_depth/depth/points" /-->
+	</node>
+
+
+
+	<!--prediction module-->
+
 	<node name="chomp_predict_sim" pkg="chomp_predict" type="chomp_predict_node" output="screen" args="$(find chomp_predict)/worlds/$(arg world_name).vxblx">
-		<rosparam command="load" file="$(find chomp_predict)/params/chomp_param_map3.yaml" />
+		<rosparam command="load" file="$(find chomp_predict)/params/chomp_param_map3.yaml" />		
+		<param name="update_mesh_every_n_sec" value="10" />
 	</node>
 
 	<!--traj_gen for arbitaray target trajectory (no output will appear in terminal)-->

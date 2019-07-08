@@ -39,10 +39,11 @@ namespace CHOMP{
             bool is_map_load = false; // is map loaded             
             // chomp solver 
             Solver solver;
-            OptimResult recent_optim_result; // recent optimization result 
 
 
         public:
+            OptimResult recent_optim_result; // recent optimization result 
+
             int map_type; // 0 = octomap, 1 = voxblox 
             Wrapper(const ros::NodeHandle & );
             //ros
