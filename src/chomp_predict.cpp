@@ -335,8 +335,8 @@ void ChompForecaster::run(){
                 accum_error = 0;
             } 
 
-            // check whether target reaches the imminent waypoint. If reached, move to the next one  
-            if (last_obsrv_to_goal() < REACH_TOL)
+            // check whether target reaches the imminent waypoint. If reached, move to the next one. 
+            if (last_obsrv_to_goal() < REACH_TOL and (target_waypoints.size()>1))
                 {to_next_target_waypoint(); is_goal_moved = true;}
             else 
                 is_goal_moved = false;

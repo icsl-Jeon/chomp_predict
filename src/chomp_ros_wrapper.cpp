@@ -21,8 +21,23 @@ Wrapper::Wrapper(const ros::NodeHandle& nh_global):nh("~"),voxblox_server(nh,nh_
     pub_path_cur_solution = nh.advertise<nav_msgs::Path>("chomp_solution_path",1);
     pub_vis_goal= nh.advertise<visualization_msgs::Marker>("chomp_goal",1);
     pub_vis_observations = nh.advertise<visualization_msgs::Marker>("chomp_obsrv",1);
+    pub_marker_pnts_path = nh.advertise<visualization_msgs::Marker>("chomp_sol_pnts",1);
+
+
+
+    pnts_on_path_marker.action = 0;
+    pnts_on_path_marker.header.frame_id = world_frame_id;
+    pnts_on_path_marker.type = visualization_msgs::Marker::SPHERE_LIST;
+    double scale = 0.16;
+    pnts_on_path_marker.scale.x = scale;
+    pnts_on_path_marker.scale.y = scale;
+    pnts_on_path_marker.scale.z = scale;
+    pnts_on_path_marker.color.b = 0.8;
+    pnts_on_path_marker.color.g = 1.;    
+    pnts_on_path_marker.color.a = 0.8;
 
 };
+
 
 // update markers for prior_pnts 
 void Wrapper::load_markers_prior_pnts(nav_msgs::Path prior_path,geometry_msgs::Point goal){
@@ -30,11 +45,12 @@ void Wrapper::load_markers_prior_pnts(nav_msgs::Path prior_path,geometry_msgs::P
     obsrv_markers.action = 0;
     obsrv_markers.header.frame_id = world_frame_id;
     obsrv_markers.type = visualization_msgs::Marker::SPHERE_LIST;
-    float scale = 0.4;
+    float scale = 0.16;
     obsrv_markers.scale.x = scale;
     obsrv_markers.scale.y = scale;
     obsrv_markers.scale.z = scale;
     obsrv_markers.color.a = 0.8;
+    obsrv_markers.points.clear();
         for (int n =0;n<prior_path.poses.size();n++){
         prior_path.poses[n].pose.position.z = ground_rejection_height;
         obsrv_markers.points.push_back(prior_path.poses[n].pose.position);
@@ -233,7 +249,8 @@ bool Wrapper::solve_chomp(VectorXd x0){
     nav_msgs::Path path;
     path.header.frame_id = world_frame_id;
     int H = x_sol.size()/2; // dim = 2 assumed
-    // extract path from solution x_sol
+    // extract path from solution x_sol and let's make corresponding points along a path also
+    pnts_on_path_marker.points.clear();
     for (int h = 0; h<H;h++){
 
         double x = x_sol(h*2);
@@ -247,6 +264,7 @@ bool Wrapper::solve_chomp(VectorXd x0){
         pose_stamped.pose.position.z = z; 
         
         path.poses.push_back(pose_stamped);
+        pnts_on_path_marker.points.push_back(pose_stamped.pose.position);
     }    
     current_path = path;
     std::cout<<"[CHOMP] path uploaded"<<std::endl;
@@ -259,6 +277,7 @@ void Wrapper::publish_routine(){
     // marker publish 
     pub_vis_goal.publish(goal_marker);
     pub_vis_observations.publish(obsrv_markers);
+    pub_marker_pnts_path.publish(pnts_on_path_marker);
 
     // esdf publish 
     if(this->map_type == 1){

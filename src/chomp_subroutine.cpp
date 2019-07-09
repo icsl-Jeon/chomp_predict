@@ -91,7 +91,13 @@ OptimResult Solver::solve(VectorXd x0, OptimParam optim_param){
 }
 
 
-
+/**
+ * @brief modified optimization solving routine  
+ * @details momentum 
+ * @param x0 : initial guess 
+ * @param optim_param :
+ * @return OptimResult 
+ */
 OptimResult Solver::solve2(VectorXd x0, OptimParam optim_param){
     // history 
     OptimInfo optim_info;
@@ -139,7 +145,7 @@ OptimResult Solver::solve2(VectorXd x0, OptimParam optim_param){
         x = x_prev + update; 
 
         iter++;
-        // innovation = (x-x_prev).norm();  
+        // innovation = (x-x_prev).norm();  // this innovation is gradient norm version
         innovation = delta_cost;  
         // adaptation of  step size by total cost                  
         if (cost - cost_prev < 0){
@@ -154,18 +160,18 @@ OptimResult Solver::solve2(VectorXd x0, OptimParam optim_param){
         dist_min = distance_set.minCoeff(&min_idx);
         //cout<<"distance min value"<<endl;
         //cout<< dist_min<<endl;
-        // adaptation of step size by obstacle cost                  
+        // adaptation of obstacle weight by obstacle cost                  
         if (dist_min < 0){
-            obst_grad_weight = 1.5 * MatrixXd::Identity(x_prev.size(),x_prev.size()) ;
+            obst_grad_weight = 1.5 * obst_grad_weight;
         }
         else
            obst_grad_weight = MatrixXd::Identity(x_prev.size(),x_prev.size()); 
-        if((iter % 5 == 0) or (iter == 1)){
+        if((iter % 15 == 0) or (iter == 2)){
         // print 
         printf("[CHOMP] iter %d = obst_cost : %f / prior_cost %f / total_cost %f // cost_diff: %f / min_dist_val\n",iter,
                 nonlinear_cost,weight_prior*prior_cost,weight_prior*prior_cost + nonlinear_cost,innovation,dist_min);
 
-        printf("grad : prior %f / obstacle %f / total %f / final update %f // learning rate: %f \n ",
+        printf("    grad : prior %f / obstacle %f / total %f / final update %f // learning rate: %f \n ",
         weight_prior*optim_grad.prior_gard.norm(),(obst_grad_weight*optim_grad.nonlinear_grad).norm(),grad_cost.norm(),update.norm(),
         learning_rate);
 		}

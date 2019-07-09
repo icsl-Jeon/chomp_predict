@@ -19,9 +19,11 @@ namespace CHOMP{
             ros::Publisher pub_path_cur_solution; // publisher for path 
             ros::Publisher pub_vis_observations; // observations 
             ros::Publisher pub_vis_goal; // goal point 
+            ros::Publisher pub_marker_pnts_path; // pnts on the path 
             
             visualization_msgs::Marker obsrv_markers;
             visualization_msgs::Marker goal_marker;
+            visualization_msgs::Marker pnts_on_path_marker;
             
             // map 
             DynamicEDTOctomap *edf_ptr; // Euclidean Distance Field 
