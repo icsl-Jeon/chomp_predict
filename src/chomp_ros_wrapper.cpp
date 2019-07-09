@@ -95,7 +95,7 @@ void Wrapper::load_map(string file_name){
     // EDT map scale = octomap  
     voxblox_server.loadMap(file_name);
     dx = voxblox_server.getEsdfMapPtr()->voxel_size(); // voxel_size 
-    cout<<"resolution of ESDF : "<<dx<<endl;
+    cout<<"resolution of ESDF : "<<dx<<"/ block size: "<<voxblox_server.getEsdfMapPtr()->block_size()<<endl;
     is_map_load = true;
 };
 
@@ -240,9 +240,15 @@ VectorXd Wrapper::prepare_chomp(MatrixXd M,VectorXd h,nav_msgs::Path prior_path,
 bool Wrapper::solve_chomp(VectorXd x0){
 
     if (x0.size())
-        recent_optim_result = solver.solve2(x0,optim_param);    
+        if (map_type == 0)
+            recent_optim_result = solver.solve(x0,optim_param);    
+        else 
+            recent_optim_result = solver.solve2(x0,optim_param);
     else
-        recent_optim_result = solver.solve2(recent_optim_result.solution,optim_param);
+        if (map_type == 0)
+            recent_optim_result = solver.solve(recent_optim_result.solution,optim_param);    
+        else
+            recent_optim_result = solver.solve2(recent_optim_result.solution,optim_param);
     
     // if solved, 
     VectorXd x_sol = recent_optim_result.solution;

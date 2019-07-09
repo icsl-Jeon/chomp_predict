@@ -50,14 +50,21 @@ OptimResult Solver::solve(VectorXd x0, OptimParam optim_param){
     int N = x0.size();    
     double innovation = 1e+4;
     int iter = 0;
+    ros::Time tic,toc; 
+    double time_sum = 0;
 
     while (iter <= max_iter && innovation > term_cond){        
         // cost computation                 
+        tic = ros::Time::now();    
         Vector2d costs = evaluate_costs(x_prev);
         double prior_cost = costs(0), nonlinear_cost = costs(1);
         
         // gradient computation                 
-        VectorXd grad_cost = weight_prior * (A*x_prev + b) + grad_cost_obstacle(x_prev);                
+        VectorXd grad_nonlinear = grad_cost_obstacle(x_prev);
+        VectorXd grad_cost = weight_prior * (A*x_prev + b) + grad_nonlinear;                
+        toc = ros::Time::now();
+
+        time_sum += (toc - tic).toSec();
 
         // record
         optim_info.nonlinear_cost_history.push_back(nonlinear_cost);
@@ -71,11 +78,16 @@ OptimResult Solver::solve(VectorXd x0, OptimParam optim_param){
 
         iter++;
         innovation = (x-x_prev).norm();  
-        if((iter % 15 == 0) or (iter == 1))
+        if((iter % 15 == 0) or (iter == 1)){
         // print 
         printf("[CHOMP] iter %d = obst_cost : %f / prior_cost %f / total_cost %f // innovation: %f\n",iter,
                 nonlinear_cost,weight_prior*prior_cost,weight_prior*prior_cost + nonlinear_cost,innovation);
-
+        
+        printf("    grad : prior %f / obstacle %f / total %f / final update %f // learning rate: %f  /// eval_time = %f \n ",
+        weight_prior * (A*x_prev + b).norm(),(grad_nonlinear).norm(),grad_cost.norm(),update.norm(),
+        learning_rate,(time_sum /15.0));
+        time_sum = 0;
+        }
         // is it mature?
         if (iter > max_iter)
             std::cout<<"[CHOMP] reached maximum number of iteration."<<std::endl;
@@ -117,14 +129,18 @@ OptimResult Solver::solve2(VectorXd x0, OptimParam optim_param){
     int N = x0.size();    
     double innovation = 1e+4;
     int iter = 0;
-
-
+    ros::Time tic,toc; 
+    double time_sum = 0;
     while ((iter <= max_iter) && ((innovation > term_cond) or (dist_min < 0.)) ){        
         // cost computation              
 
         Vector2d costs;
         OptimGrad optim_grad;
+        tic = ros::Time::now();
         VectorXd distance_set = grad_and_cost_obstacle2(x_prev,costs,optim_grad); // evaluate cost and grad simultanously 
+        toc = ros::Time::now();
+        time_sum += (toc - tic).toSec();
+
         double prior_cost = costs(0), nonlinear_cost = costs(1);
        // cout<<"distance_set"<<endl;
        // cout<<distance_set.transpose()<<endl;        
@@ -148,33 +164,34 @@ OptimResult Solver::solve2(VectorXd x0, OptimParam optim_param){
         // innovation = (x-x_prev).norm();  // this innovation is gradient norm version
         innovation = delta_cost;  
         // adaptation of  step size by total cost                  
-        if (cost - cost_prev < 0){
-            learning_rate = (1.2 * learning_rate > optim_param.descending_rate_max) ?  optim_param.descending_rate_max : (1.2*learning_rate);
+        // if (cost - cost_prev < 0){
+        //     learning_rate = (1.2 * learning_rate > optim_param.descending_rate_max) ?  optim_param.descending_rate_max : (1.2*learning_rate);
 
-        }
-        else{
-            learning_rate = (0.6*learning_rate < optim_param.descending_rate_min) ?  optim_param.descending_rate_min : (0.6*learning_rate) ;
-        }
+        // }
+        // else{
+        //     learning_rate = (0.6*learning_rate < optim_param.descending_rate_min) ?  optim_param.descending_rate_min : (0.6*learning_rate) ;
+        // }
 
         Index min_idx;
         dist_min = distance_set.minCoeff(&min_idx);
         //cout<<"distance min value"<<endl;
         //cout<< dist_min<<endl;
         // adaptation of obstacle weight by obstacle cost                  
-        if (dist_min < 0){
-            obst_grad_weight = 1.5 * obst_grad_weight;
-        }
-        else
-           obst_grad_weight = MatrixXd::Identity(x_prev.size(),x_prev.size()); 
+        // if (dist_min < 0){
+        //     obst_grad_weight = 1.5 * obst_grad_weight;
+        // }
+        // else
+        //    obst_grad_weight = MatrixXd::Identity(x_prev.size(),x_prev.size()); 
         if((iter % 15 == 0) or (iter == 2)){
         // print 
-        printf("[CHOMP] iter %d = obst_cost : %f / prior_cost %f / total_cost %f // cost_diff: %f / min_dist_val\n",iter,
+        printf("[CHOMP] iter %d = obst_cost : %f / prior_cost %f / total_cost %f // cost_diff: %f / min_dist_val %f \n",iter,
                 nonlinear_cost,weight_prior*prior_cost,weight_prior*prior_cost + nonlinear_cost,innovation,dist_min);
 
-        printf("    grad : prior %f / obstacle %f / total %f / final update %f // learning rate: %f \n ",
+        printf("    grad : prior %f / obstacle %f / total %f / final update %f // learning rate: %f  /// eval_time = %f \n ",
         weight_prior*optim_grad.prior_gard.norm(),(obst_grad_weight*optim_grad.nonlinear_grad).norm(),grad_cost.norm(),update.norm(),
-        learning_rate);
-		}
+        learning_rate,(time_sum /15.0));
+        time_sum = 0;
+        }
 		// is it mature?
         if (iter > max_iter)
             std::cout<<"[CHOMP] reached maximum number of iteration."<<std::endl;

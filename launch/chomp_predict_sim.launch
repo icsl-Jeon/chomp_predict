@@ -30,7 +30,7 @@
 		<param name="color/r" value="0.4" />
 		<param name="color/g" value="0.4" />
 		<param name="color/b" value="0.4" />
-		<param name="color/a" value="1.0" />
+		<param name="color/a" value="0.3" />
 		
 		<param name="occupancy_max_z" value="" />
 		<param name="occupancy_min_z" value="0.2" />
@@ -45,10 +45,12 @@
 
 
 
-	<!--prediction module-->
+	<!--prediction module(set map3.vxblx for voxblox map and map3.bt for octomap)-->
 
-	<node name="chomp_predict_sim" pkg="chomp_predict" type="chomp_predict_node" output="screen" args="$(find chomp_predict)/worlds/$(arg world_name).vxblx">
-		<rosparam command="load" file="$(find chomp_predict)/params/chomp_param_map3.yaml" />		
+	<node name="chomp_predict_sim" pkg="chomp_predict" type="chomp_predict_node" output="screen">
+		<param name= "map_file_name" value = "$(find chomp_predict)/worlds/$(arg world_name).bt" />
+		<param name= "map_file_name" value = "$(find chomp_predict)/worlds/map3.vxblx" />
+	    <rosparam command="load" file="$(find chomp_predict)/params/chomp_param_map3.yaml" />		
 		<param name="update_mesh_every_n_sec" value="10" />
 	</node>
 

@@ -125,11 +125,28 @@ ChompForecaster::ChompForecaster():nh("~"),chomp_wrapper(nh),is_predicted(false)
     pub_marker_waypoints = nh.advertise<visualization_msgs::Marker>("target_waypoints",1); 
     sub_pose_target = nh.subscribe("/target_pose",2,&ChompForecaster::callback_target_state,this);
 
+    // map mode selection 
     string file_name;
     nh.param<string>("map_file_name",file_name,"/home/jbs/catkin_ws/chomp_predict/worlds/map3.vxblx");
 
-    this->chomp_wrapper.load_map(file_name); // voxblox mode 
-    this->chomp_wrapper.map_type = 1; // vxblx 
+    if(file_name.substr(file_name.find_last_of(".")+1)=="bt"){
+        std::cout << "Provided octomap file: "<<file_name<< std::endl;
+        octomap::OcTree* tree = new octomap::OcTree(file_name);
+        this->chomp_wrapper.load_map(tree);  
+        this->chomp_wrapper.map_type = 0;   
+    }
+    else if(file_name.substr(file_name.find_last_of(".")+1)=="vxblx"){
+        std::cout << "Provided voxblox file: "<<file_name<< std::endl;
+        this->chomp_wrapper.load_map(file_name); // voxblox mode 
+        this->chomp_wrapper.map_type = 1;
+    } // vxblx 
+    else{
+        std::cerr << "Usage: " << "NODE_NAME" << " OCTOMAP_FILE_NAME(.bt) or VOXBLOX_FILE_NAME(.vxblx)" << std::endl;
+        exit(0);
+    }        
+
+
+    
     /**
      * @todo currently, the following line will replace the mode selection phase
      */
