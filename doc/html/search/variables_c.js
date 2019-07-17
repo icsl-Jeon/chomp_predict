@@ -4,6 +4,7 @@ var searchData=
   ['pred_5fpath',['pred_path',['../struct_c_h_o_m_p_1_1_prediction_trajectory.html#af07e1c23267f79f9e7ec029bcbb246b8',1,'CHOMP::PredictionTrajectory']]],
   ['prediction_5fhorizon',['prediction_horizon',['../struct_c_h_o_m_p_1_1_predict_param.html#a89a58ef3d9c88c23132ab5e7c64b9659',1,'CHOMP::PredictParam']]],
   ['prior_5fcost_5fhistory',['prior_cost_history',['../struct_c_h_o_m_p_1_1_optim_info.html#af3837487472aa772f6aeace2c32f356a',1,'CHOMP::OptimInfo']]],
+  ['prior_5fgard',['prior_gard',['../struct_c_h_o_m_p_1_1_optim_grad.html#a0fc686f410e24fe733a474d2cf139714',1,'CHOMP::OptimGrad']]],
   ['project_5fcatkin_5fdepends',['PROJECT_CATKIN_DEPENDS',['../namespacepkg.html#a17c18447fad253ee1c0d76deec88028c',1,'pkg']]],
   ['project_5fname',['PROJECT_NAME',['../namespacepkg.html#a7dfbe99257c26f5e4a3a5483995d9ddc',1,'pkg']]],
   ['project_5fpkg_5fconfig_5finclude_5fdirs',['PROJECT_PKG_CONFIG_INCLUDE_DIRS',['../namespacepkg.html#a2760bf8266ff58da440f65ee91b203ab',1,'pkg']]],

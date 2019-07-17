@@ -4,6 +4,16 @@
 
 {\ttfamily \#include $<$chomp\+\_\+ros\+\_\+wrapper.\+h$>$}
 
+
+
+Collaboration diagram for C\+H\+O\+MP\+:\+:Wrapper\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=227pt]{class_c_h_o_m_p_1_1_wrapper__coll__graph}
+\end{center}
+\end{figure}
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -26,9 +36,13 @@ bool \hyperlink{class_c_h_o_m_p_1_1_wrapper_ac8fa793a31b7872feccc711c55c1da20}{s
 Matrix\+Xd \hyperlink{class_c_h_o_m_p_1_1_wrapper_ae94071b38bb2cd68d4a281c9f93e9587}{get\+\_\+current\+\_\+prediction\+\_\+path} ()
 \item 
 \hyperlink{struct_c_h_o_m_p_1_1_optim_param}{Optim\+Param} \hyperlink{class_c_h_o_m_p_1_1_wrapper_ac31da0a2c980d5b64541852f01deebbf}{get\+\_\+default\+\_\+optim\+\_\+param} ()
+\item 
+double \hyperlink{class_c_h_o_m_p_1_1_wrapper_aa4af50daa2bae57af10cdd344571c5af}{get\+\_\+ground\+\_\+height} ()
 \end{DoxyCompactItemize}
 \subsection*{Public Attributes}
 \begin{DoxyCompactItemize}
+\item 
+\hyperlink{struct_c_h_o_m_p_1_1_optim_result}{Optim\+Result} \hyperlink{class_c_h_o_m_p_1_1_wrapper_a5b349bddf6965d721705e451601687a7}{recent\+\_\+optim\+\_\+result}
 \item 
 int \hyperlink{class_c_h_o_m_p_1_1_wrapper_a8e7d4dd9f8678e2752ef05e55a36ffe1}{map\+\_\+type}
 \end{DoxyCompactItemize}
@@ -88,7 +102,7 @@ build prior term from prior points (start\+\_\+pnt) of length No+1(No observatio
 \end{DoxyParams}
 
 
-Definition at line 94 of file chomp\+\_\+ros\+\_\+wrapper.\+cpp.
+Definition at line 112 of file chomp\+\_\+ros\+\_\+wrapper.\+cpp.
 
 
 
@@ -111,7 +125,7 @@ Here is the caller graph for this function\+:
 )}\hypertarget{class_c_h_o_m_p_1_1_wrapper_ae94071b38bb2cd68d4a281c9f93e9587}{}\label{class_c_h_o_m_p_1_1_wrapper_ae94071b38bb2cd68d4a281c9f93e9587}
 
 
-Definition at line 263 of file chomp\+\_\+ros\+\_\+wrapper.\+cpp.
+Definition at line 298 of file chomp\+\_\+ros\+\_\+wrapper.\+cpp.
 
 
 
@@ -134,7 +148,7 @@ Here is the caller graph for this function\+:
 )}\hypertarget{class_c_h_o_m_p_1_1_wrapper_ac31da0a2c980d5b64541852f01deebbf}{}\label{class_c_h_o_m_p_1_1_wrapper_ac31da0a2c980d5b64541852f01deebbf}
 
 
-Definition at line 284 of file chomp\+\_\+ros\+\_\+wrapper.\+cpp.
+Definition at line 319 of file chomp\+\_\+ros\+\_\+wrapper.\+cpp.
 
 
 
@@ -148,6 +162,29 @@ Here is the caller graph for this function\+:
 \end{figure}
 
 
+\index{C\+H\+O\+M\+P\+::\+Wrapper@{C\+H\+O\+M\+P\+::\+Wrapper}!get\+\_\+ground\+\_\+height@{get\+\_\+ground\+\_\+height}}
+\index{get\+\_\+ground\+\_\+height@{get\+\_\+ground\+\_\+height}!C\+H\+O\+M\+P\+::\+Wrapper@{C\+H\+O\+M\+P\+::\+Wrapper}}
+\subsubsection[{\texorpdfstring{get\+\_\+ground\+\_\+height()}{get_ground_height()}}]{\setlength{\rightskip}{0pt plus 5cm}double C\+H\+O\+M\+P\+::\+Wrapper\+::get\+\_\+ground\+\_\+height (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_c_h_o_m_p_1_1_wrapper_aa4af50daa2bae57af10cdd344571c5af}{}\label{class_c_h_o_m_p_1_1_wrapper_aa4af50daa2bae57af10cdd344571c5af}
+
+
+Definition at line 67 of file chomp\+\_\+ros\+\_\+wrapper.\+h.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_c_h_o_m_p_1_1_wrapper_aa4af50daa2bae57af10cdd344571c5af_icgraph}
+\end{center}
+\end{figure}
+
+
 \index{C\+H\+O\+M\+P\+::\+Wrapper@{C\+H\+O\+M\+P\+::\+Wrapper}!load\+\_\+map@{load\+\_\+map}}
 \index{load\+\_\+map@{load\+\_\+map}!C\+H\+O\+M\+P\+::\+Wrapper@{C\+H\+O\+M\+P\+::\+Wrapper}}
 \subsubsection[{\texorpdfstring{load\+\_\+map(octomap\+::\+Oc\+Tree $\ast$octree\+\_\+ptr)}{load_map(octomap::OcTree *octree_ptr)}}]{\setlength{\rightskip}{0pt plus 5cm}void Wrapper\+::load\+\_\+map (
@@ -157,7 +194,7 @@ Here is the caller graph for this function\+:
 )}\hypertarget{class_c_h_o_m_p_1_1_wrapper_a095c001d0a11f0fa4229e38f602e5931}{}\label{class_c_h_o_m_p_1_1_wrapper_a095c001d0a11f0fa4229e38f602e5931}
 
 
-Definition at line 53 of file chomp\+\_\+ros\+\_\+wrapper.\+cpp.
+Definition at line 71 of file chomp\+\_\+ros\+\_\+wrapper.\+cpp.
 
 
 
@@ -180,7 +217,7 @@ Here is the caller graph for this function\+:
 )}\hypertarget{class_c_h_o_m_p_1_1_wrapper_a93b14d4809f5bf3170473fc10a93a755}{}\label{class_c_h_o_m_p_1_1_wrapper_a93b14d4809f5bf3170473fc10a93a755}
 
 
-Definition at line 76 of file chomp\+\_\+ros\+\_\+wrapper.\+cpp.
+Definition at line 94 of file chomp\+\_\+ros\+\_\+wrapper.\+cpp.
 
 \index{C\+H\+O\+M\+P\+::\+Wrapper@{C\+H\+O\+M\+P\+::\+Wrapper}!load\+\_\+markers\+\_\+prior\+\_\+pnts@{load\+\_\+markers\+\_\+prior\+\_\+pnts}}
 \index{load\+\_\+markers\+\_\+prior\+\_\+pnts@{load\+\_\+markers\+\_\+prior\+\_\+pnts}!C\+H\+O\+M\+P\+::\+Wrapper@{C\+H\+O\+M\+P\+::\+Wrapper}}
@@ -192,7 +229,7 @@ Definition at line 76 of file chomp\+\_\+ros\+\_\+wrapper.\+cpp.
 )}\hypertarget{class_c_h_o_m_p_1_1_wrapper_a6ddf801481c8cb4d567ea7cb073a819b}{}\label{class_c_h_o_m_p_1_1_wrapper_a6ddf801481c8cb4d567ea7cb073a819b}
 
 
-Definition at line 25 of file chomp\+\_\+ros\+\_\+wrapper.\+cpp.
+Definition at line 43 of file chomp\+\_\+ros\+\_\+wrapper.\+cpp.
 
 
 
@@ -219,12 +256,11 @@ Here is the caller graph for this function\+:
 )}\hypertarget{class_c_h_o_m_p_1_1_wrapper_a138ac0d5088055c3698d93bbf9432126}{}\label{class_c_h_o_m_p_1_1_wrapper_a138ac0d5088055c3698d93bbf9432126}
 
 
-Definition at line 167 of file chomp\+\_\+ros\+\_\+wrapper.\+cpp.
+Definition at line 185 of file chomp\+\_\+ros\+\_\+wrapper.\+cpp.
 
 
 
-Here is the call graph for this function\+:
-\nopagebreak
+Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -254,7 +290,7 @@ Here is the caller graph for this function\+:
 )}\hypertarget{class_c_h_o_m_p_1_1_wrapper_a84f5c4690636e65aca526e6e5b8abcf4}{}\label{class_c_h_o_m_p_1_1_wrapper_a84f5c4690636e65aca526e6e5b8abcf4}
 
 
-Definition at line 246 of file chomp\+\_\+ros\+\_\+wrapper.\+cpp.
+Definition at line 279 of file chomp\+\_\+ros\+\_\+wrapper.\+cpp.
 
 
 
@@ -277,7 +313,7 @@ Here is the caller graph for this function\+:
 )}\hypertarget{class_c_h_o_m_p_1_1_wrapper_ac8fa793a31b7872feccc711c55c1da20}{}\label{class_c_h_o_m_p_1_1_wrapper_ac8fa793a31b7872feccc711c55c1da20}
 
 
-Definition at line 222 of file chomp\+\_\+ros\+\_\+wrapper.\+cpp.
+Definition at line 240 of file chomp\+\_\+ros\+\_\+wrapper.\+cpp.
 
 
 
@@ -311,7 +347,14 @@ Here is the caller graph for this function\+:
 \subsubsection[{\texorpdfstring{map\+\_\+type}{map_type}}]{\setlength{\rightskip}{0pt plus 5cm}int C\+H\+O\+M\+P\+::\+Wrapper\+::map\+\_\+type}\hypertarget{class_c_h_o_m_p_1_1_wrapper_a8e7d4dd9f8678e2752ef05e55a36ffe1}{}\label{class_c_h_o_m_p_1_1_wrapper_a8e7d4dd9f8678e2752ef05e55a36ffe1}
 
 
-Definition at line 46 of file chomp\+\_\+ros\+\_\+wrapper.\+h.
+Definition at line 49 of file chomp\+\_\+ros\+\_\+wrapper.\+h.
+
+\index{C\+H\+O\+M\+P\+::\+Wrapper@{C\+H\+O\+M\+P\+::\+Wrapper}!recent\+\_\+optim\+\_\+result@{recent\+\_\+optim\+\_\+result}}
+\index{recent\+\_\+optim\+\_\+result@{recent\+\_\+optim\+\_\+result}!C\+H\+O\+M\+P\+::\+Wrapper@{C\+H\+O\+M\+P\+::\+Wrapper}}
+\subsubsection[{\texorpdfstring{recent\+\_\+optim\+\_\+result}{recent_optim_result}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Optim\+Result} C\+H\+O\+M\+P\+::\+Wrapper\+::recent\+\_\+optim\+\_\+result}\hypertarget{class_c_h_o_m_p_1_1_wrapper_a5b349bddf6965d721705e451601687a7}{}\label{class_c_h_o_m_p_1_1_wrapper_a5b349bddf6965d721705e451601687a7}
+
+
+Definition at line 47 of file chomp\+\_\+ros\+\_\+wrapper.\+h.
 
 
 

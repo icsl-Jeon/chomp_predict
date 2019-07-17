@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.11"/>
-<title>My Project: CHOMP::Solver Class Reference</title>
+<title>target prediction: CHOMP::Solver Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,9 +23,8 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">My Project
+   <div id="projectname">target prediction
    </div>
-   <div id="projectbrief">Motion prediction with covariant optimization</div>
   </td>
  </tr>
  </tbody>
@@ -108,10 +107,13 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a8a87ee9ad9182fd2e4e913cb24051a6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a677d1b1adb6a2c4f490d47f5fcabfe0d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_c_h_o_m_p_1_1_optim_result.html">OptimResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_h_o_m_p_1_1_solver.html#a677d1b1adb6a2c4f490d47f5fcabfe0d">solve</a> (VectorXd x0, <a class="el" href="struct_c_h_o_m_p_1_1_optim_param.html">OptimParam</a> optimization_param)</td></tr>
 <tr class="separator:a677d1b1adb6a2c4f490d47f5fcabfe0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43e2f6c0f831b988ae6c578117343e5d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_c_h_o_m_p_1_1_optim_result.html">OptimResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_h_o_m_p_1_1_solver.html#a43e2f6c0f831b988ae6c578117343e5d">solve2</a> (VectorXd x0, <a class="el" href="struct_c_h_o_m_p_1_1_optim_param.html">OptimParam</a> optimization_param)</td></tr>
+<tr class="memdesc:a43e2f6c0f831b988ae6c578117343e5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">modified optimization solving routine  <a href="#a43e2f6c0f831b988ae6c578117343e5d">More...</a><br /></td></tr>
+<tr class="separator:a43e2f6c0f831b988ae6c578117343e5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="chomp__subroutine_8h_source.html#l00050">50</a> of file <a class="el" href="chomp__subroutine_8h_source.html">chomp_subroutine.h</a>.</p>
+<p>Definition at line <a class="el" href="chomp__subroutine_8h_source.html#l00095">95</a> of file <a class="el" href="chomp__subroutine_8h_source.html">chomp_subroutine.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a9dfe7ae9ce617e8a6398be34284c907a"></a>
 <div class="memitem">
@@ -176,8 +178,9 @@ Here is the caller graph for this function:</div>
 <map name="class_c_h_o_m_p_1_1_solver_ac27fc3241bd65b38d832d9838ab64641_icgraph" id="class_c_h_o_m_p_1_1_solver_ac27fc3241bd65b38d832d9838ab64641_icgraph">
 <area shape="rect" id="node2" href="class_c_h_o_m_p_1_1_wrapper.html#a138ac0d5088055c3698d93bbf9432126" title="CHOMP::Wrapper::prepare\l_chomp" alt="" coords="196,35,376,76"/>
 <area shape="rect" id="node3" href="class_c_h_o_m_p_1_1_chomp_forecaster.html#a02a3930b78aaf72a9058cb3ce6ae8143" title="CHOMP::ChompForecaster\l::predict_with_obsrv_queue" alt="" coords="424,5,608,47"/>
-<area shape="rect" id="node5" href="chomp__standalone__test_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="491,71,541,98"/>
+<area shape="rect" id="node6" href="chomp__standalone__test_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="test code for path generation from chomp with several prior points and goal. " alt="" coords="491,71,541,98"/>
 <area shape="rect" id="node4" href="class_c_h_o_m_p_1_1_chomp_forecaster.html#af225bf2af3fede364b922e27be410f0b" title="code to be run in the main loop " alt="" coords="656,13,867,39"/>
+<area shape="rect" id="node5" href="chomp__predict__main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="915,13,965,39"/>
 </map>
 </div>
 </p>
@@ -248,7 +251,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="chomp__subroutine_8cpp_source.html#l00036">36</a> of file <a class="el" href="chomp__subroutine_8cpp_source.html">chomp_subroutine.cpp</a>.</p>
+<p>Definition at line <a class="el" href="chomp__subroutine_8cpp_source.html#l00034">34</a> of file <a class="el" href="chomp__subroutine_8cpp_source.html">chomp_subroutine.cpp</a>.</p>
 
 <p><div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -257,8 +260,61 @@ Here is the caller graph for this function:</div>
 <map name="class_c_h_o_m_p_1_1_solver_a677d1b1adb6a2c4f490d47f5fcabfe0d_icgraph" id="class_c_h_o_m_p_1_1_solver_a677d1b1adb6a2c4f490d47f5fcabfe0d_icgraph">
 <area shape="rect" id="node2" href="class_c_h_o_m_p_1_1_wrapper.html#ac8fa793a31b7872feccc711c55c1da20" title="CHOMP::Wrapper::solve\l_chomp" alt="" coords="209,35,377,76"/>
 <area shape="rect" id="node3" href="class_c_h_o_m_p_1_1_chomp_forecaster.html#a02a3930b78aaf72a9058cb3ce6ae8143" title="CHOMP::ChompForecaster\l::predict_with_obsrv_queue" alt="" coords="425,5,609,47"/>
-<area shape="rect" id="node5" href="chomp__standalone__test_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="492,71,543,98"/>
+<area shape="rect" id="node6" href="chomp__standalone__test_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="test code for path generation from chomp with several prior points and goal. " alt="" coords="492,71,543,98"/>
 <area shape="rect" id="node4" href="class_c_h_o_m_p_1_1_chomp_forecaster.html#af225bf2af3fede364b922e27be410f0b" title="code to be run in the main loop " alt="" coords="657,13,868,39"/>
+<area shape="rect" id="node5" href="chomp__predict__main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="916,13,967,39"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="a43e2f6c0f831b988ae6c578117343e5d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_c_h_o_m_p_1_1_optim_result.html">OptimResult</a> Solver::solve2 </td>
+          <td>(</td>
+          <td class="paramtype">VectorXd&#160;</td>
+          <td class="paramname"><em>x0</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_c_h_o_m_p_1_1_optim_param.html">OptimParam</a>&#160;</td>
+          <td class="paramname"><em>optim_param</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>modified optimization solving routine </p>
+<p>momentum </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x0</td><td>: initial guess </td></tr>
+    <tr><td class="paramname">optim_param</td><td>: </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="struct_c_h_o_m_p_1_1_optim_result.html">OptimResult</a> </dd></dl>
+
+<p>Definition at line <a class="el" href="chomp__subroutine_8cpp_source.html#l00113">113</a> of file <a class="el" href="chomp__subroutine_8cpp_source.html">chomp_subroutine.cpp</a>.</p>
+
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="class_c_h_o_m_p_1_1_solver_a43e2f6c0f831b988ae6c578117343e5d_icgraph.png" border="0" usemap="#class_c_h_o_m_p_1_1_solver_a43e2f6c0f831b988ae6c578117343e5d_icgraph" alt=""/></div>
+<map name="class_c_h_o_m_p_1_1_solver_a43e2f6c0f831b988ae6c578117343e5d_icgraph" id="class_c_h_o_m_p_1_1_solver_a43e2f6c0f831b988ae6c578117343e5d_icgraph">
+<area shape="rect" id="node2" href="class_c_h_o_m_p_1_1_wrapper.html#ac8fa793a31b7872feccc711c55c1da20" title="CHOMP::Wrapper::solve\l_chomp" alt="" coords="216,35,384,76"/>
+<area shape="rect" id="node3" href="class_c_h_o_m_p_1_1_chomp_forecaster.html#a02a3930b78aaf72a9058cb3ce6ae8143" title="CHOMP::ChompForecaster\l::predict_with_obsrv_queue" alt="" coords="432,5,616,47"/>
+<area shape="rect" id="node6" href="chomp__standalone__test_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="test code for path generation from chomp with several prior points and goal. " alt="" coords="499,71,549,98"/>
+<area shape="rect" id="node4" href="class_c_h_o_m_p_1_1_chomp_forecaster.html#af225bf2af3fede364b922e27be410f0b" title="code to be run in the main loop " alt="" coords="664,13,875,39"/>
+<area shape="rect" id="node5" href="chomp__predict__main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="923,13,973,39"/>
 </map>
 </div>
 </p>

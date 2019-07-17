@@ -1,0 +1,23 @@
+\subsection*{1. Usage}
+
+\subsubsection*{1) simple test}
+
+Without loop, one shot simulation is performed. We can do tuning parameters from this node.
+
+
+\begin{DoxyCode}
+roscd chomp\_predict
+rosrun chomp\_predict chomp\_predict\_basic\_test\_node ./worlds/map3.vxblx 
+\end{DoxyCode}
+
+
+\subsubsection*{2) prediction simulation from rosbag}
+
+
+\begin{DoxyCode}
+roslaunch chomp\_predict chomp\_predict\_sim 
+\textcolor{preprocessor}{# in other terminal }
+roscd chomp\_predict/data
+rosbag play -r 0.3 map3\_target\_move\_recode.bag
+\end{DoxyCode}
+ 

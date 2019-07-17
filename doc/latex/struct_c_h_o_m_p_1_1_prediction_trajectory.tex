@@ -9,9 +9,9 @@
 \item 
 \hyperlink{struct_c_h_o_m_p_1_1_prediction_trajectory_a51c4006f1e9ba69099e06b9052a14a1d}{Prediction\+Trajectory} ()
 \item 
-\hyperlink{struct_c_h_o_m_p_1_1_prediction_trajectory_aac8376bbb1a9b75bf87811fbcec6d062}{Prediction\+Trajectory} (Vector\+Xd obsrv\+\_\+time\+\_\+seq, Matrix\+Xd path)
+\hyperlink{struct_c_h_o_m_p_1_1_prediction_trajectory_afab886899c7e147618a3da0f02c3ac00}{Prediction\+Trajectory} (Vector\+Xd obsrv\+\_\+time\+\_\+seq, Matrix\+Xd path)
 \begin{DoxyCompactList}\small\item\em Construct a new Prediction Trajectory object. Also complete a prediction traj directly from observation traj and future path predicton. \end{DoxyCompactList}\item 
-Vector3d \hyperlink{struct_c_h_o_m_p_1_1_prediction_trajectory_a3e50b3be07e9531449128eae47c60442}{eval\+\_\+at\+\_\+time} (double t)
+Vector3d \hyperlink{struct_c_h_o_m_p_1_1_prediction_trajectory_a3074031665bc857a9482849679fed32f}{eval\+\_\+at\+\_\+time} (double t)
 \begin{DoxyCompactList}\small\item\em evalute the trajectory at time \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Public Attributes}
 \begin{DoxyCompactItemize}
@@ -43,12 +43,12 @@ Definition at line 33 of file chomp\+\_\+predict.\+h.
 
 \index{C\+H\+O\+M\+P\+::\+Prediction\+Trajectory@{C\+H\+O\+M\+P\+::\+Prediction\+Trajectory}!Prediction\+Trajectory@{Prediction\+Trajectory}}
 \index{Prediction\+Trajectory@{Prediction\+Trajectory}!C\+H\+O\+M\+P\+::\+Prediction\+Trajectory@{C\+H\+O\+M\+P\+::\+Prediction\+Trajectory}}
-\subsubsection[{\texorpdfstring{Prediction\+Trajectory(\+Vector\+Xd obsrv\+\_\+time\+\_\+seq, Matrix\+Xd path)}{PredictionTrajectory(VectorXd obsrv_time_seq, MatrixXd path)}}]{\setlength{\rightskip}{0pt plus 5cm}C\+H\+O\+M\+P\+::\+Prediction\+Trajectory\+::\+Prediction\+Trajectory (
+\subsubsection[{\texorpdfstring{Prediction\+Trajectory(\+Vector\+Xd obsrv\+\_\+time\+\_\+seq, Matrix\+Xd path)}{PredictionTrajectory(VectorXd obsrv_time_seq, MatrixXd path)}}]{\setlength{\rightskip}{0pt plus 5cm}Prediction\+Trajectory\+::\+Prediction\+Trajectory (
 \begin{DoxyParamCaption}
 \item[{Vector\+Xd}]{obsrv\+\_\+time\+\_\+seq, }
 \item[{Matrix\+Xd}]{path}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{struct_c_h_o_m_p_1_1_prediction_trajectory_aac8376bbb1a9b75bf87811fbcec6d062}{}\label{struct_c_h_o_m_p_1_1_prediction_trajectory_aac8376bbb1a9b75bf87811fbcec6d062}
+)}\hypertarget{struct_c_h_o_m_p_1_1_prediction_trajectory_afab886899c7e147618a3da0f02c3ac00}{}\label{struct_c_h_o_m_p_1_1_prediction_trajectory_afab886899c7e147618a3da0f02c3ac00}
 
 
 Construct a new Prediction Trajectory object. Also complete a prediction traj directly from observation traj and future path predicton. 
@@ -62,25 +62,25 @@ Construct a new Prediction Trajectory object. Also complete a prediction traj di
 \end{DoxyParams}
 
 
-Definition at line 42 of file chomp\+\_\+predict.\+h.
+Definition at line 12 of file chomp\+\_\+predict.\+cpp.
 
 
 
 \subsection{Member Function Documentation}
 \index{C\+H\+O\+M\+P\+::\+Prediction\+Trajectory@{C\+H\+O\+M\+P\+::\+Prediction\+Trajectory}!eval\+\_\+at\+\_\+time@{eval\+\_\+at\+\_\+time}}
 \index{eval\+\_\+at\+\_\+time@{eval\+\_\+at\+\_\+time}!C\+H\+O\+M\+P\+::\+Prediction\+Trajectory@{C\+H\+O\+M\+P\+::\+Prediction\+Trajectory}}
-\subsubsection[{\texorpdfstring{eval\+\_\+at\+\_\+time(double t)}{eval_at_time(double t)}}]{\setlength{\rightskip}{0pt plus 5cm}Vector3d C\+H\+O\+M\+P\+::\+Prediction\+Trajectory\+::eval\+\_\+at\+\_\+time (
+\subsubsection[{\texorpdfstring{eval\+\_\+at\+\_\+time(double t)}{eval_at_time(double t)}}]{\setlength{\rightskip}{0pt plus 5cm}Vector3d Prediction\+Trajectory\+::eval\+\_\+at\+\_\+time (
 \begin{DoxyParamCaption}
 \item[{double}]{t}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{struct_c_h_o_m_p_1_1_prediction_trajectory_a3e50b3be07e9531449128eae47c60442}{}\label{struct_c_h_o_m_p_1_1_prediction_trajectory_a3e50b3be07e9531449128eae47c60442}
+)}\hypertarget{struct_c_h_o_m_p_1_1_prediction_trajectory_a3074031665bc857a9482849679fed32f}{}\label{struct_c_h_o_m_p_1_1_prediction_trajectory_a3074031665bc857a9482849679fed32f}
 
 
 evalute the trajectory at time 
 
 
 \begin{DoxyParams}{Parameters}
-{\em t} & \\
+{\em t} & \+: ros\+::\+Time\+::now -\/ init\+\_\+time \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -88,7 +88,7 @@ Vector3d
 \end{DoxyReturn}
 
 
-Definition at line 84 of file chomp\+\_\+predict.\+h.
+Definition at line 61 of file chomp\+\_\+predict.\+cpp.
 
 
 
@@ -97,7 +97,7 @@ Here is the call graph for this function\+:
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=325pt]{struct_c_h_o_m_p_1_1_prediction_trajectory_a3e50b3be07e9531449128eae47c60442_cgraph}
+\includegraphics[width=325pt]{struct_c_h_o_m_p_1_1_prediction_trajectory_a3074031665bc857a9482849679fed32f_cgraph}
 \end{center}
 \end{figure}
 
@@ -109,7 +109,7 @@ Here is the caller graph for this function\+:
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{struct_c_h_o_m_p_1_1_prediction_trajectory_a3e50b3be07e9531449128eae47c60442_icgraph}
+\includegraphics[width=350pt]{struct_c_h_o_m_p_1_1_prediction_trajectory_a3074031665bc857a9482849679fed32f_icgraph}
 \end{center}
 \end{figure}
 
@@ -133,6 +133,7 @@ Definition at line 30 of file chomp\+\_\+predict.\+h.
 
 
 
-The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-include/chomp\+\_\+predict/\hyperlink{chomp__predict_8h}{chomp\+\_\+predict.\+h}\end{DoxyCompactItemize}
+include/chomp\+\_\+predict/\hyperlink{chomp__predict_8h}{chomp\+\_\+predict.\+h}\item 
+src/\hyperlink{chomp__predict_8cpp}{chomp\+\_\+predict.\+cpp}\end{DoxyCompactItemize}

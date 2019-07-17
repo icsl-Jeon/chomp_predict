@@ -1,4 +1,4 @@
 <map id="CHOMP::Wrapper::load_map" name="CHOMP::Wrapper::load_map">
 <area shape="rect" id="node2" href="$class_c_h_o_m_p_1_1_chomp_forecaster.html#a58176b34170de8485029f182e05f12c5" title="CHOMP::ChompForecaster\l::ChompForecaster" alt="" coords="247,5,431,47"/>
-<area shape="rect" id="node3" href="$chomp__standalone__test_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="313,71,364,98"/>
+<area shape="rect" id="node3" href="$chomp__standalone__test_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="test code for path generation from chomp with several prior points and goal. " alt="" coords="313,71,364,98"/>
 </map>

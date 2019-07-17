@@ -1,0 +1,21 @@
+<map id="main" name="main">
+<area shape="rect" id="node2" href="$class_c_h_o_m_p_1_1_chomp_forecaster.html#af225bf2af3fede364b922e27be410f0b" title="code to be run in the main loop " alt="" coords="104,373,315,399"/>
+<area shape="rect" id="node3" href="$class_c_h_o_m_p_1_1_chomp_forecaster.html#a02a3930b78aaf72a9058cb3ce6ae8143" title="CHOMP::ChompForecaster\l::predict_with_obsrv_queue" alt="" coords="363,201,547,243"/>
+<area shape="rect" id="node16" href="$class_c_h_o_m_p_1_1_chomp_forecaster.html#a8b3e5ea0d8a5092b371a23efcddd5c73" title="Once prediction model is acquired, then we can evaluate the prediction in time. " alt="" coords="363,332,547,373"/>
+<area shape="rect" id="node19" href="$class_c_h_o_m_p_1_1_wrapper.html#a84f5c4690636e65aca526e6e5b8abcf4" title="CHOMP::Wrapper::publish\l_routine" alt="" coords="365,397,544,439"/>
+<area shape="rect" id="node20" href="$class_c_h_o_m_p_1_1_chomp_forecaster.html#a56e9984f3c85563170c58708aaa97056" title="publish routine in while loop " alt="" coords="363,463,547,504"/>
+<area shape="rect" id="node4" href="$class_c_h_o_m_p_1_1_wrapper.html#a6ddf801481c8cb4d567ea7cb073a819b" title="CHOMP::Wrapper::load\l_markers_prior_pnts" alt="" coords="612,5,773,47"/>
+<area shape="rect" id="node5" href="$class_c_h_o_m_p_1_1_wrapper.html#ac31da0a2c980d5b64541852f01deebbf" title="CHOMP::Wrapper::get\l_default_optim_param" alt="" coords="615,71,770,112"/>
+<area shape="rect" id="node6" href="$class_c_h_o_m_p_1_1_wrapper.html#ab51d0a655ed4b03ca3225c0af737f2dc" title="build prior term from prior points (start_pnt) of length No+1(No observations and one final point) to..." alt="" coords="611,136,775,177"/>
+<area shape="rect" id="node7" href="$class_c_h_o_m_p_1_1_wrapper.html#a138ac0d5088055c3698d93bbf9432126" title="CHOMP::Wrapper::prepare\l_chomp" alt="" coords="603,201,783,243"/>
+<area shape="rect" id="node12" href="$class_c_h_o_m_p_1_1_wrapper.html#ac8fa793a31b7872feccc711c55c1da20" title="CHOMP::Wrapper::solve\l_chomp" alt="" coords="609,267,777,308"/>
+<area shape="rect" id="node15" href="$class_c_h_o_m_p_1_1_wrapper.html#ae94071b38bb2cd68d4a281c9f93e9587" title="CHOMP::Wrapper::get\l_current_prediction_path" alt="" coords="611,332,775,373"/>
+<area shape="rect" id="node8" href="$class_c_h_o_m_p_1_1_solver.html#ac27fc3241bd65b38d832d9838ab64641" title="CHOMP::Solver::set\l_problem" alt="" coords="849,71,991,112"/>
+<area shape="rect" id="node9" href="$chomp__utils_8h.html#a18dbbf76a331741ef17e17e5550585df" title="path2vec" alt="" coords="883,137,957,163"/>
+<area shape="rect" id="node10" href="$chomp__utils_8h.html#a01e43aa8fc67413d2ad3ee7e840bb66e" title="linear_regression" alt="" coords="860,187,980,214"/>
+<area shape="rect" id="node11" href="$chomp__utils_8h.html#ada013a3d8e591b8122e95dfab24eace1" title="model_eval" alt="" coords="876,238,964,265"/>
+<area shape="rect" id="node13" href="$class_c_h_o_m_p_1_1_solver.html#a677d1b1adb6a2c4f490d47f5fcabfe0d" title="CHOMP::Solver::solve" alt="" coords="842,289,998,315"/>
+<area shape="rect" id="node14" href="$class_c_h_o_m_p_1_1_solver.html#a43e2f6c0f831b988ae6c578117343e5d" title="modified optimization solving routine " alt="" coords="839,339,1001,366"/>
+<area shape="rect" id="node17" href="$struct_c_h_o_m_p_1_1_prediction_trajectory.html#a3074031665bc857a9482849679fed32f" title="evalute the trajectory at time " alt="" coords="595,397,791,439"/>
+<area shape="rect" id="node18" href="$chomp__utils_8h.html#a0fa75528fdd2f1dc601c4d4e7da6a6b0" title="interpolate" alt="" coords="879,405,961,431"/>
+</map>
