@@ -6,13 +6,11 @@ optim_param: {descending_rate: 0.5,
                 max_iter: 300,
                 weight_prior: 0.7, 
                 term_cond: 0.00005,
-                gamma: 0.1,
-                n_step: 12}
+                gamma: 0.1
+                }
 
-pred_param: {prediction_size_max: 12,
-             prediction_size_min: 5, 
-             prediction_horizon: 4,
-             observation_size: 2,
+pred_param: {prediction_horizon: 4,
+             observation_size: 4,
              observation_horizon: 4}
              
 target_waypoint: {x: [3.4578, 6.7478, 8.3223, 11.4981], y:[4.1620, 8.0200, 3.9896, 8.0515]}

@@ -77,7 +77,7 @@ ChompForecaster::ChompForecaster():nh("~"),chomp_wrapper(nh),is_predicted(false)
     this->is_state_received = false;
 
     // parameter parsing 
-    nh.param("observation_size",pred_param.No,5);
+    nh.param("pred_param/observation_size",pred_param.No,5);
     nh.param("pred_param/prediction_size_max",pred_param.Np_max,12);
     nh.param("pred_param/prediction_size_min",pred_param.Np_min,5);
     nh.param("pred_param/prediction_horizon",pred_param.prediction_horizon,4.0);
