@@ -32,14 +32,14 @@ In this package, we support two map representation. One is octomap and the other
 
 Without loop, one shot simulation is performed. We can do tuning parameters in this node. In this node, we perform simulation on a specific map (map3.*) and with a specific prior points ([5,10] , [6,11]) and a goal([10,10]).
 
-```d
+```
 roscd chomp_predict
 rosrun chomp_predict chomp_predict_basic_test_node ./worlds/map3.vxblx (or map3.bt) 
 ```
 
 2) prediction simulation from rosbag 
 
-```d
+```
 roslaunch chomp_predict chomp_predict_sim 
 # in other terminal 
 roscd chomp_predict/data
@@ -48,7 +48,7 @@ rosbag play -r 0.5 map3_target_move_record.bag
 
 ### 1.2 node 
 
-0) parameters (see ./params/chomp_param_map3.yaml)
+#### 0) parameters (see ./params/chomp_param_map3.yaml)
 
 * cost_param/r_safe: the obstacle cost will be zero outside of this distance
 * cost_param/ground_reject_height: the ground level(z) of target (which is assumed to move on 2D plane)
@@ -79,13 +79,13 @@ rosbag play -r 0.5 map3_target_move_record.bag
 
   
 
-1) Topics
+#### 1) Topics
 
-Subscribed  : 
+**Subscribed**  : 
 
 * /target_pose [geometry_msgs/PoseStamped]
 
-Published : 
+**Published** : 
 
 - /chomp_predict_sim/chomp_solution_path [nav_msgs/Path]
 
