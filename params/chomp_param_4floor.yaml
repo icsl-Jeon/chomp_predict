@@ -1,0 +1,17 @@
+cost_param: {r_safe: 1.0,ground_reject_height: 0.5}
+
+optim_param: {descending_rate: 0.5,
+                descending_rate_min: 0.3,
+                descending_rate_max: 0.7,
+                max_iter: 300,
+                weight_prior: 0.7, 
+                term_cond: 0.00005,
+                gamma: 0.1
+                }
+
+pred_param: {prediction_horizon: 4,
+             observation_size: 4,
+             observation_horizon: 4}
+             
+target_waypoint: {x: [6.71, 2.80, -2.01, -3.83], y:[1.05, 0.10, -0.69, -3.28]}
+
