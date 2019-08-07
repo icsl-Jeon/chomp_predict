@@ -27,7 +27,7 @@ namespace CHOMP{
             
             // map 
             DynamicEDTOctomap *edf_ptr; // Euclidean Distance Field 
-            voxblox::EsdfServer voxblox_server;  // voxblox server 
+            voxblox::EsdfServer *voxblox_server;  // voxblox server 
             
             // related parameters 
             double ground_rejection_height;            

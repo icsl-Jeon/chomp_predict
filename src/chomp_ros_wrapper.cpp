@@ -2,7 +2,7 @@
 
 using namespace CHOMP;
 
-Wrapper::Wrapper(const ros::NodeHandle& nh_global):nh("~"),voxblox_server(nh,nh_global){    
+Wrapper::Wrapper(const ros::NodeHandle& nh_global):nh("~"){    
     // parameter parsing 
     nh.param("cost_param/r_safe",r_safe,3.4);
     nh.param("cost_param/ground_reject_height",ground_rejection_height,0.5);
@@ -92,10 +92,13 @@ void Wrapper::load_map(octomap::OcTree* octree_ptr){
 };
 
 void Wrapper::load_map(string file_name){    
+    // we will create voxblox server only if it is voxblox mode. It talks too much.
+    ros::NodeHandle nh_global;
+    voxblox_server = new voxblox::EsdfServer (nh,nh_global);    
     // EDT map scale = octomap  
-    voxblox_server.loadMap(file_name);
-    dx = voxblox_server.getEsdfMapPtr()->voxel_size(); // voxel_size 
-    cout<<"resolution of ESDF : "<<dx<<"/ block size: "<<voxblox_server.getEsdfMapPtr()->block_size()<<endl;
+    voxblox_server->loadMap(file_name);
+    dx = voxblox_server->getEsdfMapPtr()->voxel_size(); // voxel_size 
+    cout<<"resolution of ESDF : "<<dx<<"/ block size: "<<voxblox_server->getEsdfMapPtr()->block_size()<<endl;
     is_map_load = true;
 };
 
@@ -205,7 +208,7 @@ VectorXd Wrapper::prepare_chomp(MatrixXd M,VectorXd h,nav_msgs::Path prior_path,
         if (map_type == 0) // octomap 
             solver.set_problem(M,h,this->edf_ptr,cost_param);
         else
-            solver.set_problem(M,h,&(this->voxblox_server),cost_param);
+            solver.set_problem(M,h,(this->voxblox_server),cost_param);
         
         // Intiial guess generation 
         VectorXd ts = VectorXd::LinSpaced(N,0,1);   
@@ -287,10 +290,10 @@ void Wrapper::publish_routine(){
 
     // esdf publish 
     if(this->map_type == 1){
-        this->voxblox_server.setSliceLevel(ground_rejection_height);
-        this->voxblox_server.publishSlices();
-        this->voxblox_server.publishPointclouds();
-        this->voxblox_server.publishTsdfSurfacePoints();
+        this->voxblox_server->setSliceLevel(ground_rejection_height);
+        this->voxblox_server->publishSlices();
+        this->voxblox_server->publishPointclouds();
+        this->voxblox_server->publishTsdfSurfacePoints();
     }
 }
 
