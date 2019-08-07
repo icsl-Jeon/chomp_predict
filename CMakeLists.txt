@@ -21,6 +21,7 @@ link_libraries(${OCTOMAP_LIBRARIES})
 find_package(Eigen3 REQUIRED NO_MODULE)
 
 catkin_package(
+ CATKIN_DEPENDS voxblox_ros
  INCLUDE_DIRS include
  LIBRARIES chomp_predict
 )
@@ -29,6 +30,13 @@ include_directories(
 include
   ${catkin_INCLUDE_DIRS}
 )
+
+
+add_library(${PROJECT_NAME}
+			src/chomp_predict.cpp 
+				src/chomp_utils.cpp
+				src/chomp_subroutine.cpp
+				src/chomp_ros_wrapper.cpp)
 
 # module1 : standalone node 
 add_executable(chomp_predict_basic_test_node 
