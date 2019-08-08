@@ -69,7 +69,7 @@ Vector3d PredictionTrajectory::eval_at_time(double t){
     return output;
 }
 
-ChompForecaster::ChompForecaster():nh("~"),chomp_wrapper(nh),is_predicted(false){
+ChompForecaster::ChompForecaster():nh("~"),chomp_wrapper(nh),is_predicted(false),accum_error(0){
     
     vector<double> target_waypoint_x;
     vector<double> target_waypoint_y;    
@@ -379,6 +379,56 @@ void ChompForecaster::run(){
     }
 }
 
+void ChompForecaster::session(){
+
+    bool trigger_condition;   
+    double duration_from_last_trigger;
+    double dt = (ros::Time::now() - last_session_time).toSec();
+
+    if (get_predict_condition()){
+        ROS_INFO_ONCE("[CHOMP] received enough observation. start prediction");
+        // this is the first time to predict  
+        if(not is_predicted)
+            trigger_condition = true;
+        // not first time
+        else{
+            // Check the trigger condition for the next prediction                     
+            duration_from_last_trigger = (ros::Time::now() - last_prediction_time).toSec(); 
+            accum_error += dt * (pow(eval_prediction(ros::Time::now()).x - observation_queue.back().pose.position.x,2) 
+                                        + pow(eval_prediction(ros::Time::now()).y - observation_queue.back().pose.position.y,2));  // the MSE integration
+
+            trigger_condition = (duration_from_last_trigger > pred_param.prediction_horizon - 0.01 ) or 
+                                (accum_error > pred_param.trigger_tol_accum_error );
+        }
+
+    // if trigger condition, then predict 
+    if(trigger_condition){
+        predict_with_obsrv_queue();
+        // reset 
+        last_prediction_time = ros::Time::now();
+        accum_error = 0;
+    }
+
+    // check whether target reaches the imminent waypoint. If reached, move to the next one. 
+    if (last_obsrv_to_goal() < REACH_TOL and (target_waypoints.size()>1)){
+        to_next_target_waypoint(); is_goal_moved = true;
+    }
+    else 
+        is_goal_moved = false;
+    
+        
+    // publish routine 
+    this->chomp_wrapper.publish_routine(); //inner loop(chomp_ros_wrapper) publisher 
+    this->publish_routine(); // outer loop(chomp_predictor) publisher 
+
+
+    }
+    else
+        ROS_INFO_ONCE("[CHOMP] wating target state callback... ");
+
+    last_session_time = ros::Time::now();
+
+}
 /**
  * @brief Once prediction model is acquired, then we can evaluate the prediction in time 
  * 

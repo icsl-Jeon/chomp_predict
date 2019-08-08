@@ -39,6 +39,7 @@ namespace CHOMP{
 
         private:               
             bool map_mode; // 0 : offline , 1: online build 
+            double accum_error;
             ros::NodeHandle nh;
             PredictParam pred_param; // prediction parameter 
             string world_frame_id;
@@ -54,6 +55,7 @@ namespace CHOMP{
 
             // routine 
             ros::Time last_callback_time;
+            ros::Time last_session_time;
             ros::Time last_prediction_time; // check point for prediction 
             ros::Time init_time; // initial time when program started 
 
@@ -79,6 +81,7 @@ namespace CHOMP{
             // flags 
             bool is_state_received;
             bool is_predicted; 
-            void run(); 
+            void run();
+            void session(); // one session in a loop 
     };
 }

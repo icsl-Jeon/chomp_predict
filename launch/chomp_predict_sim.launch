@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
-<arg name="world_name" default="4floor_map"/>
+<arg name="world_name" default="map3"/>
 <arg name="format" default="bt"/> <!--vxblx (voxblox) or bt (octomap)-->
 <arg name="world_frame_id" default="/world"/>
 
@@ -52,7 +52,7 @@
 		<!--comment one of the following two lines-->
 		<param name= "map_file_name" value = "$(find chomp_predict)/worlds/$(arg world_name).$(arg format)" />
 	    
-		<rosparam command="load" file="$(find chomp_predict)/params/chomp_param_4floor.yaml" />		
+		<rosparam command="load" file="$(find chomp_predict)/params/chomp_param_map3.yaml" />		
 		<param name="update_mesh_every_n_sec" value="10" /> <!--not used-->
 	</node>
 
