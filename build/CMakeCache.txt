@@ -270,6 +270,9 @@ catkin_DIR:PATH=/opt/ros/kinetic/share/catkin/cmake
 //Value Computed by CMake
 chomp_predict_BINARY_DIR:STATIC=/home/jbs/catkin_ws/src/chomp_predict/build
 
+//Dependencies for the target
+chomp_predict_LIB_DEPENDS:STATIC=general;/usr/local/lib/libdynamicedt3d.so;general;/opt/ros/kinetic/lib/liboctomap.so;general;/opt/ros/kinetic/lib/liboctomath.so;
+
 //Value Computed by CMake
 chomp_predict_SOURCE_DIR:STATIC=/home/jbs/catkin_ws/src/chomp_predict
 

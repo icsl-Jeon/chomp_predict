@@ -75,7 +75,7 @@ namespace CHOMP{
             void predict_with_obsrv_queue(); // obtain with current observation queue set                                  
             geometry_msgs::Point eval_prediction(ros::Time eval_time); // evaluate preidction at eval_time 
             void publish_routine(); // publish routine  
-
+            bool get_predict_condition(); // is it ready to predict? 
             // flags 
             bool is_state_received;
             bool is_predicted; 

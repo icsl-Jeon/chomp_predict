@@ -112,7 +112,7 @@ ChompForecaster::ChompForecaster():nh("~"),chomp_wrapper(nh),is_predicted(false)
         exit(-1);
     }
     for (int n = 0; n<target_waypoint_x.size();n++){
-        printf("[CHOMP] %dth target waypoints: [%f, %f, %f]\n",n+1,target_waypoint_x[n],target_waypoint_y[n]);
+        printf("[CHOMP] %dth target waypoints: [%f, %f]\n",n+1,target_waypoint_x[n],target_waypoint_y[n]);
         geometry_msgs::Point point;
         point.x = target_waypoint_x[n];
         point.y = target_waypoint_y[n];
@@ -394,6 +394,10 @@ geometry_msgs::Point ChompForecaster::eval_prediction(ros::Time eval_time){
     p.y = output(1); 
     p.z = output(2);
     return p;
+}
+
+bool ChompForecaster::get_predict_condition(){
+    return (is_state_received and observation_queue.size() >= pred_param.No); 
 }
 
 

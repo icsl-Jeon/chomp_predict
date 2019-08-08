@@ -18,10 +18,10 @@ Wrapper::Wrapper(const ros::NodeHandle& nh_global):nh("~"){
     nh.param("optim_param/n_step",optim_param_default.n_step,10);
 
     nh.param<string>("world_frame_id",world_frame_id,"/world");    
-    pub_path_cur_solution = nh.advertise<nav_msgs::Path>("chomp_solution_path",1);
-    pub_vis_goal= nh.advertise<visualization_msgs::Marker>("chomp_goal",1);
-    pub_vis_observations = nh.advertise<visualization_msgs::Marker>("chomp_obsrv",1);
-    pub_marker_pnts_path = nh.advertise<visualization_msgs::Marker>("chomp_sol_pnts",1);
+    pub_path_cur_solution = nh.advertise<nav_msgs::Path>("predictor/chomp_solution_path",1);
+    pub_vis_goal= nh.advertise<visualization_msgs::Marker>("predictor/chomp_goal",1);
+    pub_vis_observations = nh.advertise<visualization_msgs::Marker>("predictor/chomp_obsrv",1);
+    pub_marker_pnts_path = nh.advertise<visualization_msgs::Marker>("predictor/chomp_sol_pnts",1);
 
 
 
