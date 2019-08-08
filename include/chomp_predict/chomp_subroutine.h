@@ -102,26 +102,22 @@ class Solver{
         MatrixXd b;
         // only one of the followings will be used for distnace query 
         DynamicEDTOctomap* edf_ptr = NULL; 
-        voxblox::EsdfServer* esdf_ptr = NULL; 
         CostParam cost_param; // cost param
 
 
         // sub moudles 
         // cost (edf should be given first)
         Vector2d evaluate_costs(VectorXd x); // evaluate costs at x (not weigthed). {prior,nonlinear} if provided      
-        Vector2d evaluate_costs2(VectorXd x); // evaluate costs at x  using voxblox batch evalution 
                 
         double cost_at_point(geometry_msgs::Point p); // c(x)
         double cost_obstacle(VectorXd x); 
         VectorXd grad_cost_obstacle(VectorXd x);        
-        inline VectorXd grad_and_cost_obstacle2(VectorXd x,Vector2d &  costs,OptimGrad& grad);        
         
     public:
         //constructor     
         Solver();
         // setting optimization problem
         void set_problem(MatrixXd A,VectorXd b,DynamicEDTOctomap*,CostParam);
-        void set_problem(MatrixXd A,VectorXd b,voxblox::EsdfServer*,CostParam);                      
         // solve and return the result
         OptimResult solve(VectorXd x0, OptimParam optimization_param); // run optimization routine          
         OptimResult solve2(VectorXd x0, OptimParam optimization_param); // run optimization routine using voxblox built-in function : batch evaluation                 

@@ -91,17 +91,6 @@ void Wrapper::load_map(octomap::OcTree* octree_ptr){
     is_map_load = true;
 };
 
-void Wrapper::load_map(string file_name){    
-    // we will create voxblox server only if it is voxblox mode. It talks too much.
-    ros::NodeHandle nh_global;
-    voxblox_server = new voxblox::EsdfServer (nh,nh_global);    
-    // EDT map scale = octomap  
-    voxblox_server->loadMap(file_name);
-    dx = voxblox_server->getEsdfMapPtr()->voxel_size(); // voxel_size 
-    cout<<"resolution of ESDF : "<<dx<<"/ block size: "<<voxblox_server->getEsdfMapPtr()->block_size()<<endl;
-    is_map_load = true;
-};
-
 /**
  * @brief build prior term from prior points (start_pnt) of length No+1(No observations and one final point) 
  * to make 1/2x'Mx+hx
@@ -205,10 +194,7 @@ VectorXd Wrapper::prepare_chomp(MatrixXd M,VectorXd h,nav_msgs::Path prior_path,
         cost_param.r_safe = r_safe;
 
         // complete problem with obstacle functions 
-        if (map_type == 0) // octomap 
-            solver.set_problem(M,h,this->edf_ptr,cost_param);
-        else
-            solver.set_problem(M,h,(this->voxblox_server),cost_param);
+        solver.set_problem(M,h,this->edf_ptr,cost_param);
         
         // Intiial guess generation 
         VectorXd ts = VectorXd::LinSpaced(N,0,1);   
@@ -243,15 +229,9 @@ VectorXd Wrapper::prepare_chomp(MatrixXd M,VectorXd h,nav_msgs::Path prior_path,
 bool Wrapper::solve_chomp(VectorXd x0){
 
     if (x0.size())
-        if (map_type == 0)
             recent_optim_result = solver.solve(x0,optim_param);    
-        else 
-            recent_optim_result = solver.solve2(x0,optim_param);
     else
-        if (map_type == 0)
             recent_optim_result = solver.solve(recent_optim_result.solution,optim_param);    
-        else
-            recent_optim_result = solver.solve2(recent_optim_result.solution,optim_param);
     
     // if solved, 
     VectorXd x_sol = recent_optim_result.solution;
@@ -289,12 +269,7 @@ void Wrapper::publish_routine(){
     pub_marker_pnts_path.publish(pnts_on_path_marker);
 
     // esdf publish 
-    if(this->map_type == 1){
-        this->voxblox_server->setSliceLevel(ground_rejection_height);
-        this->voxblox_server->publishSlices();
-        this->voxblox_server->publishPointclouds();
-        this->voxblox_server->publishTsdfSurfacePoints();
-    }
+    
 }
 
 // return path. the returned path will be endowed with times. This function returns the solution path in the form of matrix  

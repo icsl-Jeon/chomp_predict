@@ -7,7 +7,6 @@
 #include <octomap/OcTreeBase.h>
 #include <octomap/octomap_types.h>
 #include <dynamicEDT3D/dynamicEDTOctomap.h>
-#include <voxblox_ros/esdf_server.h>
 #include <cmath>
 #include <vector>
 #include <functional>

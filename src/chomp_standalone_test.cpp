@@ -14,7 +14,7 @@ int main(int argc,char *argv[]){
     // Check the number of parameters
     if (argc < 2) {
         // Tell the user how to run the program
-        std::cerr << "Usage: " << "NODE_NAME" << " OCTOMAP_FILE_NAME(.bt) or VOXBLOX_FILE_NAME(.vxblx)" << std::endl;
+        std::cerr << "Usage: " << "NODE_NAME" << " OCTOMAP_FILE_NAME(.bt) "<< std::endl;
         return 1;
     }
     // Print the octomap file name:
@@ -24,11 +24,8 @@ int main(int argc,char *argv[]){
         file_type = 1;
         
         }
-    else if(file_name.substr(file_name.find_last_of(".")+1)=="vxblx"){
-        std::cout << "Provided voxblox file: "<<file_name<< std::endl;
-        file_type = 0;}
     else{
-        std::cerr << "Usage: " << "NODE_NAME" << " OCTOMAP_FILE_NAME(.bt) or VOXBLOX_FILE_NAME(.vxblx)" << std::endl;
+        std::cerr << "Usage: " << "NODE_NAME" << " OCTOMAP_FILE_NAME(.bt) " << std::endl;
         return 1;
     }
 
@@ -41,20 +38,12 @@ int main(int argc,char *argv[]){
 
     // 1. Create wrapper object 
 
-        if (file_type){ 
             // octomap read
-            OcTree* tree = new OcTree(file_name);
-            std::cerr<<"octree of size " << tree->size() <<" is opened!"<<std::endl;
-            std::cerr<<"Now, create edf from the octree.."<<std::endl;
-            chomp_wrapper.load_map(tree);
-            chomp_wrapper.map_type = 0; // set octomap representation 
-        }else{ 
-            // voxblox
-            chomp_wrapper.load_map(file_name);
-            chomp_wrapper.map_type = 1; // set voblox representation         
-        }
-            // 1. Build matrix and vector for optimization  
-
+        OcTree* tree = new OcTree(file_name);
+        std::cerr<<"octree of size " << tree->size() <<" is opened!"<<std::endl;
+        std::cerr<<"Now, create edf from the octree.."<<std::endl;
+        chomp_wrapper.load_map(tree);
+        chomp_wrapper.map_type = 0; // set octomap representation 
         nav_msgs::Path prior_path;
         geometry_msgs::PoseStamped pose_stamp;
                  

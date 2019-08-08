@@ -7,7 +7,6 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   geometry_msgs
   nav_msgs
-  voxblox_ros
 )
 
 find_package(dynamicEDT3D REQUIRED)
@@ -21,7 +20,7 @@ link_libraries(${OCTOMAP_LIBRARIES})
 find_package(Eigen3 REQUIRED NO_MODULE)
 
 catkin_package(
- CATKIN_DEPENDS voxblox_ros
+ CATKIN_DEPENDS 
  INCLUDE_DIRS include
  LIBRARIES chomp_predict
 )
