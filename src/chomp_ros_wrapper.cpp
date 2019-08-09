@@ -16,6 +16,9 @@ Wrapper::Wrapper(const ros::NodeHandle& nh_global):nh("~"){
     nh.param("optim_param/term_cond",optim_param_default.termination_cond,1e-2);
     nh.param("optim_param/gamma",optim_param_default.gamma,0.4);
     nh.param("optim_param/n_step",optim_param_default.n_step,10);
+    
+    nh.param("optim_param/N_iter_print",optim_param_default.N_iter_print,10);
+    nh.param("optim_param/sleep_millisec",optim_param_default.sleep_span,10);
 
     nh.param<string>("world_frame_id",world_frame_id,"/world");    
     pub_path_cur_solution = nh.advertise<nav_msgs::Path>("predictor/chomp_solution_path",1);

@@ -6,7 +6,9 @@ optim_param: {descending_rate: 0.5,
                 max_iter: 300,
                 weight_prior: 0.7, 
                 term_cond: 0.00005,
-                gamma: 0.1
+                gamma: 0.1,
+                N_iter_print: 100,
+                sleep_millisec: 10
                 }
 
 pred_param: {prediction_horizon: 4,

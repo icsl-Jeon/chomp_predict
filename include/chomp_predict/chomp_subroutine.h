@@ -1,5 +1,6 @@
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/LU>
+#include <thread>
 #include "chomp_utils.h"
 
 
@@ -66,6 +67,8 @@ struct OptimParam{
     double weight_prior; // weight for prior
     double gamma; // discount
     int n_step; // discount
+    int N_iter_print; // print iteration period 
+    int sleep_span; // should sleep during optim iteration
 };
 
 // information after optimization (record for history)
@@ -120,7 +123,6 @@ class Solver{
         void set_problem(MatrixXd A,VectorXd b,DynamicEDTOctomap*,CostParam);
         // solve and return the result
         OptimResult solve(VectorXd x0, OptimParam optimization_param); // run optimization routine          
-        OptimResult solve2(VectorXd x0, OptimParam optimization_param); // run optimization routine using voxblox built-in function : batch evaluation                 
 
 };
 

@@ -29,8 +29,7 @@ OptimResult Solver::solve(VectorXd x0, OptimParam optim_param){
     int max_iter = optim_param.max_iter;
     double weight_prior = optim_param.weight_prior;
     double learning_rate = optim_param.descending_rate;
-
-
+    int N_iter_print  = optim_param.N_iter_print; 
     VectorXd x_prev = x0;
     VectorXd x;    
 
@@ -66,8 +65,12 @@ OptimResult Solver::solve(VectorXd x0, OptimParam optim_param){
         x = x_prev + update; 
 
         iter++;
+        // better to put sleep here 
+
+
         innovation = (x-x_prev).norm();  
-        if((iter % 15 == 0) or (iter == 1)){
+
+        if((iter % 100 == 0) or (iter == 1)){
         // print 
         printf("[CHOMP] iter %d = obst_cost : %f / prior_cost %f / total_cost %f // innovation: %f\n",iter,
                 nonlinear_cost,weight_prior*prior_cost,weight_prior*prior_cost + nonlinear_cost,innovation);

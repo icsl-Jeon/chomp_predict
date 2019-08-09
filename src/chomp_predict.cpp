@@ -127,7 +127,7 @@ ChompForecaster::ChompForecaster():nh("~"),chomp_wrapper(nh),is_predicted(false)
 
     // map mode selection 
     string file_name;
-    nh.param<string>("map_file_name",file_name,"");
+    nh.param<string>("map_file_name",file_name,"/home/jbs/catkin_ws/src/chomp_predict/worlds/map3.bt");
     std::cout << "Provided octomap file: "<<file_name<< std::endl;
 
     octomap::OcTree* tree = new octomap::OcTree(file_name);
@@ -214,7 +214,6 @@ double ChompForecaster::last_obsrv_to_goal(){
 }
 
 nav_msgs::Path ChompForecaster::windowed_prediction_traj_eval(ros::Time time_now){
-
     double eval_t0 = (time_now - init_time).toSec(); 
     double eval_tf = eval_t0 + pred_param.prediction_horizon; 
     int N_step = 20;
@@ -428,7 +427,7 @@ void ChompForecaster::session(){
  */
 geometry_msgs::Point ChompForecaster::eval_prediction(ros::Time eval_time){    
     // time 
-    double t_eval_double = eval_time.toSec();
+    double t_eval_double = (eval_time - init_time).toSec();
     Vector3d output = prediction_traj.eval_at_time(t_eval_double);
     geometry_msgs::Point p; 
     p.x = output(0);
