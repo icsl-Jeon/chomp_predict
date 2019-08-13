@@ -82,6 +82,6 @@ namespace CHOMP{
             bool is_state_received;
             bool is_predicted; 
             void run();
-            void session(); // one session in a loop 
+            bool session(); // one session in a loop. If the prediction is triggered, it will return true 
     };
 }

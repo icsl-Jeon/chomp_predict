@@ -356,7 +356,7 @@ void ChompForecaster::run(){
 
             trigger_prediction = (duration_from_last_trigger > pred_param.prediction_horizon - 0.01 ) or 
                                 (accum_error > pred_param.trigger_tol_accum_error );
-
+			cout << "accum error: "<<accum_error <<endl; 
         }
 
 
@@ -369,7 +369,7 @@ void ChompForecaster::run(){
     }
 }
 
-void ChompForecaster::session(){
+bool ChompForecaster::session(){
 
     bool trigger_condition;   
     double duration_from_last_trigger;
@@ -389,6 +389,10 @@ void ChompForecaster::session(){
 
             trigger_condition = (duration_from_last_trigger > pred_param.prediction_horizon - 0.01 ) or 
                                 (accum_error > pred_param.trigger_tol_accum_error );
+            if (accum_error > pred_param.trigger_tol_accum_error)
+                ROS_INFO("[CHOMP] prediction accumulated SE exceeded. trigger new preidction.");
+
+			 // cout << "[CHOMP] accum error: "<<accum_error << endl; 
         }
 
     // if trigger condition, then predict 
@@ -417,7 +421,7 @@ void ChompForecaster::session(){
         ROS_INFO_ONCE("[CHOMP] wating target state callback... ");
 
     last_session_time = ros::Time::now();
-
+    return trigger_condition;
 }
 /**
  * @brief Once prediction model is acquired, then we can evaluate the prediction in time 

@@ -41,6 +41,8 @@ OptimResult Solver::solve(VectorXd x0, OptimParam optim_param){
     ros::Time tic,toc; 
     double time_sum = 0;
 
+    std::chrono::milliseconds timespan(optim_param.sleep_span); 
+    
     while (iter <= max_iter && innovation > term_cond){        
         // cost computation                 
         tic = ros::Time::now();    
@@ -66,11 +68,11 @@ OptimResult Solver::solve(VectorXd x0, OptimParam optim_param){
 
         iter++;
         // better to put sleep here 
-
+        //std::this_thread::sleep_for(timespan);
 
         innovation = (x-x_prev).norm();  
-
-        if((iter % 100 == 0) or (iter == 1)){
+        if((iter %  N_iter_print == 0) or (iter == 1)){
+       
         // print 
         printf("[CHOMP] iter %d = obst_cost : %f / prior_cost %f / total_cost %f // innovation: %f\n",iter,
                 nonlinear_cost,weight_prior*prior_cost,weight_prior*prior_cost + nonlinear_cost,innovation);
@@ -80,6 +82,8 @@ OptimResult Solver::solve(VectorXd x0, OptimParam optim_param){
         learning_rate,(time_sum /15.0));
         time_sum = 0;
         }
+        
+        
         // is it mature?
         if (iter > max_iter)
             std::cout<<"[CHOMP] reached maximum number of iteration."<<std::endl;
