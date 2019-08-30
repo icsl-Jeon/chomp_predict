@@ -47,6 +47,7 @@ namespace CHOMP{
             ros::Publisher pub_path_prediction_traj; // pub for path msg (path = prediction during a horizon)
             ros::Publisher pub_marker_waypoints; // pub for marker  
             ros::Subscriber sub_pose_target; // sub for poseStamped msgs for target state
+            ros::Subscriber sub_point_target; // sub for poseStamped msgs for target state
 
             // observation 
             list<geometry_msgs::PoseStamped>  observation_queue; // observation queue
@@ -74,6 +75,7 @@ namespace CHOMP{
         public:
             ChompForecaster(); // constructor  
             void callback_target_state(geometry_msgs::PoseStampedConstPtr pose_stamped_ptr); // target callback from observer
+            void callback_target_point(geometry_msgs::PointStampedConstPtr point_stamped_ptr); // target callback from observer
             void predict_with_obsrv_queue(); // obtain with current observation queue set                                  
             geometry_msgs::Point eval_prediction(ros::Time eval_time); // evaluate preidction at eval_time 
             void publish_routine(); // publish routine  
@@ -81,6 +83,7 @@ namespace CHOMP{
             // flags 
             bool is_state_received;
             bool is_predicted; 
+            bool is_pose = true; // if true, we will receive target state with poseStamped. If false, will receive point instead 
             void run();
             bool session(); // one session in a loop. If the prediction is triggered, it will return true 
     };

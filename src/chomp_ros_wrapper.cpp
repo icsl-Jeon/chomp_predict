@@ -81,7 +81,7 @@ void Wrapper::load_map(octomap::OcTree* octree_ptr){
     octomap::point3d boundary_max(x,y,z); 
     dx = octree_ptr->getResolution();
     double edf_max_dist = r_safe;
-    bool unknownAsOccupied = false;
+    bool unknownAsOccupied = true;
 
     // EDF completed
     edf_ptr = new DynamicEDTOctomap(edf_max_dist,octree_ptr,

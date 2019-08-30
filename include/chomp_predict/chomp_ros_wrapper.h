@@ -1,6 +1,7 @@
 #include <ros/ros.h>
 #include "chomp_predict/chomp_subroutine.h"
 #include <geometry_msgs/PoseStamped.h>
+#include <geometry_msgs/PointStamped.h>
 #include <geometry_msgs/Point.h>
 #include <visualization_msgs/MarkerArray.h>
 #include <nav_msgs/Path.h>
