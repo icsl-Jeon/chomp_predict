@@ -123,7 +123,7 @@ ChompForecaster::ChompForecaster():nh("~"),chomp_wrapper(nh),is_predicted(false)
 
     // register advertise and subscriber 
     pub_path_prediction_traj = nh.advertise<nav_msgs::Path>("prediction_traj",1);
-    pub_marker_waypoints = nh.advertise<visualization_msgs::Marker>("target_waypoints",1); 
+    pub_marker_waypoints = nh.advertise<visualization_msgs::Marker>("predictor/target_waypoints",1); 
     
     if (is_pose)
         sub_pose_target = nh.subscribe("/target_pose",2,&ChompForecaster::callback_target_state,this);
