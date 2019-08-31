@@ -87,6 +87,7 @@ ChompForecaster::ChompForecaster():nh("~"),chomp_wrapper(nh),is_predicted(false)
     nh.getParam("target_waypoint/x",target_waypoint_x);
     nh.getParam("target_waypoint/y",target_waypoint_y);
 
+    nh.param("is_pose",is_pose,true);
 
     // if no param available, this target waypoints are for map3.vxblx 
     if (not nh.hasParam("target_waypoint/x")){
@@ -123,8 +124,12 @@ ChompForecaster::ChompForecaster():nh("~"),chomp_wrapper(nh),is_predicted(false)
     // register advertise and subscriber 
     pub_path_prediction_traj = nh.advertise<nav_msgs::Path>("prediction_traj",1);
     pub_marker_waypoints = nh.advertise<visualization_msgs::Marker>("target_waypoints",1); 
-    sub_pose_target = nh.subscribe("/target_pose",2,&ChompForecaster::callback_target_state,this);
-
+    
+    if (is_pose)
+        sub_pose_target = nh.subscribe("/target_pose",2,&ChompForecaster::callback_target_state,this);
+    else
+        sub_point_target = nh.subscribe("/target_point",2,&ChompForecaster::callback_target_point,this);  
+    
     // map mode selection 
     string file_name;
     nh.param<string>("map_file_name",file_name,"/home/jbs/catkin_ws/chomp_predict/worlds/map3.vxblx");
@@ -268,6 +273,35 @@ void ChompForecaster::callback_target_state(geometry_msgs::PoseStampedConstPtr p
     // else, do not update
 }
 
+// update observation at every specified duration 
+void ChompForecaster::callback_target_point(geometry_msgs::PointStampedConstPtr point_stamped_ptr){
+        
+    if(((ros::Time::now() - last_callback_time).toSec())
+           > pred_param.observation_callback_duration()){  
+          
+        if( observation_queue.size() < pred_param.No) {// not full
+            geometry_msgs::PoseStamped pose_stamped;
+            pose_stamped.pose.position = (point_stamped_ptr->point);
+            pose_stamped.header.frame_id = world_frame_id;
+            pose_stamped.header.stamp = ros::Time::now(); 
+            observation_queue.push_back(pose_stamped);
+            is_state_received = true;
+        }
+        else{
+            //full
+            observation_queue.pop_front();
+            geometry_msgs::PoseStamped pose_stamped;
+            pose_stamped.pose.position = point_stamped_ptr->point;
+            pose_stamped.header.frame_id = world_frame_id;
+            pose_stamped.header.stamp = ros::Time::now(); 
+            observation_queue.push_back(pose_stamped);
+        }     
+        last_callback_time = ros::Time::now();
+    }
+    // else, do not update
+}
+
+
 // predict routine 
 void ChompForecaster::predict_with_obsrv_queue(){
 
@@ -379,7 +413,7 @@ void ChompForecaster::run(){
     }
 }
 
-void ChompForecaster::session(){
+bool ChompForecaster::session(){
 
     bool trigger_condition;   
     double duration_from_last_trigger;
@@ -427,7 +461,7 @@ void ChompForecaster::session(){
         ROS_INFO_ONCE("[CHOMP] wating target state callback... ");
 
     last_session_time = ros::Time::now();
-
+	return trigger_condition;
 }
 /**
  * @brief Once prediction model is acquired, then we can evaluate the prediction in time 

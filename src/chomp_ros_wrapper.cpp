@@ -94,7 +94,7 @@ void Wrapper::load_map(octomap::OcTree* octree_ptr){
 void Wrapper::load_map(string file_name){    
     // we will create voxblox server only if it is voxblox mode. It talks too much.
     ros::NodeHandle nh_global;
-    voxblox_server = new voxblox::EsdfServer (nh,nh_global);    
+    voxblox_server = new voxblox::EsdfServer (nh_global,nh);    
     // EDT map scale = octomap  
     voxblox_server->loadMap(file_name);
     dx = voxblox_server->getEsdfMapPtr()->voxel_size(); // voxel_size 
