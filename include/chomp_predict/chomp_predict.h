@@ -2,6 +2,7 @@
 #include <chomp_predict/chomp_ros_wrapper.h>
 #include <queue>
 #include <list>
+#include <iostream>
 
 const double V_MAX = 1.5; // the speed of the target is bounded 
 const double BIG_T = 1e+5; // big big time 
@@ -43,16 +44,19 @@ namespace CHOMP{
             ros::NodeHandle nh;
             PredictParam pred_param; // prediction parameter 
             string world_frame_id;
-            
+            string cal_time_write_dir; 
+
             ros::Publisher pub_path_prediction_traj; // pub for path msg (path = prediction during a horizon)
             ros::Publisher pub_marker_waypoints; // pub for marker  
+            ros::Publisher pub_pose_cur_pred; // current prediction (used for MSE)  
+            
             ros::Subscriber sub_pose_target; // sub for poseStamped msgs for target state
             ros::Subscriber sub_point_target; // sub for poseStamped msgs for target state
             // observation 
             list<geometry_msgs::PoseStamped>  observation_queue; // observation queue
             queue<geometry_msgs::Point> target_waypoints; // waypoints sequence. reached waypoints are deleted. 
             visualization_msgs::Marker marker_target_waypoints; // visualization marker 
-
+            
             // routine 
             ros::Time last_callback_time;
             ros::Time last_session_time;
@@ -71,6 +75,8 @@ namespace CHOMP{
             
             bool is_goal_moved =false;
             bool is_pose = true; // if true, we will receive target state with poseStamped. If false, will receive point instead 
+            bool is_log = false;
+
         public:
             ChompForecaster(); // constructor  
             void callback_target_state(geometry_msgs::PoseStampedConstPtr pose_stamped_ptr); // target callback from observer

@@ -84,6 +84,10 @@ ChompForecaster::ChompForecaster():nh("~"),chomp_wrapper(nh),is_predicted(false)
     nh.param("pred_param/observation_horizon",pred_param.observation_horizon,2.0);
     nh.param("pred_param/trigger_tol_accum_error",pred_param.trigger_tol_accum_error,2.0);    
     nh.param<string>("world_frame_id",world_frame_id,"/world");
+
+    nh.param<string>("cal_time_log_dir",cal_time_write_dir,"/home/jbs/");
+    nh.param("is_log",is_log,false);
+
     nh.getParam("target_waypoint/x",target_waypoint_x);
     nh.getParam("target_waypoint/y",target_waypoint_y);
 
@@ -124,7 +128,8 @@ ChompForecaster::ChompForecaster():nh("~"),chomp_wrapper(nh),is_predicted(false)
     // register advertise and subscriber 
     pub_path_prediction_traj = nh.advertise<nav_msgs::Path>("prediction_traj",1);
     pub_marker_waypoints = nh.advertise<visualization_msgs::Marker>("predictor/target_waypoints",1); 
-    
+    pub_pose_cur_pred = nh.advertise<geometry_msgs::PoseStamped>("predictor/pred_point_at_cur_time",1); 
+
     if (is_pose)
         sub_pose_target = nh.subscribe("/target_pose",2,&ChompForecaster::callback_target_state,this);
     else
@@ -333,6 +338,18 @@ void ChompForecaster::predict_with_obsrv_queue(){
             chomp_wrapper.solve_chomp(VectorXd(0));
         }
         cout<<"optimizaton solved at "<<(ros::Time::now() - tic).toSec()<<" [sec]"<<endl;
+        
+        // file write
+        if (is_log){
+            std::ofstream wnpt_file;
+            wnpt_file.open((cal_time_write_dir+"/chomp_compute_time.txt").c_str(),ios_base::app);
+
+            if(wnpt_file.is_open()){
+                wnpt_file<<(ros::Time::now() - tic).toNSec()<<"\n";
+                wnpt_file.close();    
+            }else
+                cout<<"logging file for compute time is not opend"<<endl;
+        }
         // 3. TIme allocation and finishing  
         MatrixXd current_prediction = chomp_wrapper.get_current_prediction_path(); 
         VectorXd observation_time_stamp = get_observation_time_stamps();                                                     
@@ -354,9 +371,14 @@ void ChompForecaster::publish_routine(){
 
     
     pub_marker_waypoints.publish(marker_target_waypoints);    
-    if(is_predicted)
-        pub_path_prediction_traj.publish(windowed_prediction_traj_eval(ros::Time::now()));
-
+    if(is_predicted){
+        nav_msgs::Path pred_traj = windowed_prediction_traj_eval(ros::Time::now());
+        pub_path_prediction_traj.publish(pred_traj);
+        geometry_msgs::PoseStamped cur_pred_point = *pred_traj.poses.begin();
+        cur_pred_point.header.frame_id = world_frame_id;
+        cur_pred_point.header.stamp = ros::Time::now();
+        pub_pose_cur_pred.publish(cur_pred_point);
+    }   
 }
 
 /**
@@ -397,7 +419,7 @@ void ChompForecaster::run(){
             duration_from_last_trigger = (ros::Time::now() - last_prediction_time).toSec(); 
             accum_error += 1.0/loop_fps * (pow(eval_prediction(ros::Time::now()).x - observation_queue.back().pose.position.x,2) 
                                         + pow(eval_prediction(ros::Time::now()).y - observation_queue.back().pose.position.y,2));  // the MSE integration
-
+            cout << "accumulated error: " <<accum_error << endl;
             trigger_prediction = (duration_from_last_trigger > pred_param.prediction_horizon - 0.01 ) or 
                                 (accum_error > pred_param.trigger_tol_accum_error );
 

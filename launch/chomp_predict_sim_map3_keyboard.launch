@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+<!--keyboard operation for turtlebot -->
+<!--This module requires gazebo and turtlebot_gazebo package -->
+
+<arg name="world_name" default="map3"/>
+<arg name="format" default="vxblx"/> <!--vxblx (voxblox) or bt (octomap)-->
+<arg name="world_frame_id" default="/world"/>
+
+	<!--visualization module-->
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find chomp_predict)/rviz/rviz_chomp_predictor.rviz"/>	
+
+	<!-- octomap server -->
+	<node pkg="octomap_server" type="octomap_tracking_server_node" name="octomap_talker" output="screen" args="$(find chomp_predict)/worlds/$(arg world_name).bt"> 
+	
+
+	<!--node pkg="octomap_server" type="octomap_tracking_server_node" name="octomap_talker" output="screen"-->
+
+		<param name="resolution" value="0.25" />
+		<param name="frame_id" type="string" value="world" />
+		<param name="sensor_model/max_range" value="4.0" />
+		<param name="save_directory" value="$(optenv OCTOMAP_SAVE_DIR ./)" />
+		<param name="track_changes" value="true"/>
+		<param name="listen_changes" value="false"/>
+		<param name="topic_changes" value="/octomap_tracking_server/changeset" />
+		<!-- added by JBS -->
+		
+		<param name="height_map" value="false" />
+		
+		<param name="color/r" value="0.4" />
+		<param name="color/g" value="0.4" />
+		<param name="color/b" value="0.4" />
+		<param name="color/a" value="0.3" />
+		
+		<param name="occupancy_max_z" value="" />
+		<param name="occupancy_min_z" value="0.2" />
+		<param name="filter_ground" value="true" />
+		<param name="base_frame_id" value="/world" />
+		
+		<!--param name="change_id_frame" value="$(arg changeIdFrame)" /-->
+		<param name="min_change_pub" value="0" />
+		<!--In case of no bt file, let's -->
+		<!--remap from="cloud_in" to="$(arg mav_name)/vi_sensor/camera_depth/depth/points" /-->
+	</node>
+
+
+
+     <!-- world generation -->
+
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find auto_chaser)/worlds/$(arg world_name).world" />
+    <arg name="paused" value="false"/> <!--if this enabled, ros time paused also-->
+    <arg name="gui" value="false"/> 
+    </include>
+	
+	<!--tf from gazebo world and 2 pose from the tf -->
+    <include file = "$(find gazebo2rviz)/launch/gazebo2tf.launch"/>
+    <node name="tf2pose" pkg="px4_code" type="tf2poseStamped_node" output="screen">
+        <param name="map_frame" value="world"/>
+          <param name="base_frame" value="/target__base_footprint"/>
+          <param name="output_pose_topic" value="/target_pose"/>
+      </node>
+
+    
+    <!--target spawn at defined position -->
+
+	<include file="$(find turtlebot_gazebo)/launch/includes/kobuki.launch.xml">
+		<arg name="base" value="kobuki"/>
+		<arg name="stacks" value="hexagons"/>
+		<arg name="robot_name" value="target"/>	 
+		<arg name="3d_sensor" value="kinect"/>
+		<arg name="init_pose" value="-x 2.5 -y 1.0"/>
+	</include>
+
+
+	<node pkg="turtlebot_teleop" type="turtlebot_teleop_key" name="turtlebot_teleop_keyboard"  output="screen" launch-prefix="xterm -e">
+		<param name="scale_linear" value="0.5" type="double"/>
+		<param name="scale_angular" value="1.5" type="double"/>
+		<remap from="turtlebot_teleop_keyboard/cmd_vel" to="cmd_vel_mux/input/teleop"/>
+	</node> 
+
+	
+
+
+
+	<!--prediction module(set map3.vxblx for voxblox map and map3.bt for octomap)-->
+
+	<node name="chomp_predict_sim" pkg="chomp_predict" type="chomp_predict_node" output="screen">
+		<!--comment one of the following two lines-->
+		<param name= "map_file_name" value = "$(find chomp_predict)/worlds/$(arg world_name).$(arg format)" />
+
+		<!--voxblox -->>
+	    <param name="tsdf_voxel_size" value="0.2" /> 
+	    <param name="verbose" value="false" /> 
+
+
+		<rosparam command="load" file="$(find chomp_predict)/params/chomp_param_$(arg world_name).yaml" />		
+		<param name="update_mesh_every_n_sec" value="10" /> 
+		<param name="is_pose" value="true" /> 
+	</node>
+
+	<!--traj_gen for arbitaray target trajectory (no output will appear in terminal)-->
+<!--
+	<node pkg="traj_gen" type="traj_gen_client" name="traj_gen_ui">
+		<param name="world_frame_id" value="$(arg world_frame_id)" />
+		<remap from="/traj_gen_ui/control_pose" to="/target_pose" /> 
+	</node>
+-->
+</launch>
