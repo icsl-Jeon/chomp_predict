@@ -17,12 +17,14 @@ Wrapper::Wrapper(const ros::NodeHandle& nh_global):nh("~"){
     nh.param("optim_param/gamma",optim_param_default.gamma,0.4);
     nh.param("optim_param/n_step",optim_param_default.n_step,10);
 
+
     nh.param<string>("world_frame_id",world_frame_id,"/world");    
     pub_path_cur_solution = nh.advertise<nav_msgs::Path>("predictor/chomp_solution_path",1);
     pub_vis_goal= nh.advertise<visualization_msgs::Marker>("predictor/chomp_goal",1);
     pub_vis_observations = nh.advertise<visualization_msgs::Marker>("predictor/chomp_obsrv",1);
     pub_marker_pnts_path = nh.advertise<visualization_msgs::Marker>("predictor/chomp_sol_pnts",1);
 
+    nh.param("is_voxblox_pub",is_voxblox_pub,true);
 
 
     pnts_on_path_marker.action = 0;
@@ -289,7 +291,7 @@ void Wrapper::publish_routine(){
     pub_marker_pnts_path.publish(pnts_on_path_marker);
 
     // esdf publish 
-    if(this->map_type == 1){
+    if(this->map_type == 1 and is_voxblox_pub){
         this->voxblox_server->setSliceLevel(ground_rejection_height);
         this->voxblox_server->publishSlices();
         this->voxblox_server->publishPointclouds();

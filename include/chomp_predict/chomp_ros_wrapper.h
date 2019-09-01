@@ -39,6 +39,7 @@ namespace CHOMP{
             int dim = 2;
             // flags 
             bool is_map_load = false; // is map loaded             
+            bool is_voxblox_pub = true; 
             // chomp solver 
             Solver solver;
 
