@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+<arg name="world_name" default="4floor0902_2"/>
+<arg name="bag_file" default="$(find chomp_predict)/data/$(arg world_name)_target_move_record.bag"/>
+<arg name="format" default="bt"/> <!--vxblx (voxblox) or bt (octomap)-->
+<arg name="world_frame_id" default="/world"/>
+
+	<node name="player" pkg="rosbag" type="play" output="screen" args=" -r 1.0 $(arg bag_file)">
+		<remap from = "/cicle_detector/target_position" to ="/target_point"/>
+	</node>
+
+	<!--visualization module-->
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find chomp_predict)/rviz/rviz_chomp_predictor.rviz"/>	
+
+	<!-- octomap server -->
+	<node pkg="octomap_server" type="octomap_tracking_server_node" name="octomap_talker" output="screen" args="$(find chomp_predict)/worlds/$(arg world_name).bt"> 
+	
+
+	<!--node pkg="octomap_server" type="octomap_tracking_server_node" name="octomap_talker" output="screen"-->
+
+		<param name="resolution" value="0.25" />
+		<param name="frame_id" type="string" value="map" />
+		<param name="sensor_model/max_range" value="4.0" />
+		<param name="save_directory" value="$(optenv OCTOMAP_SAVE_DIR ./)" />
+		<param name="track_changes" value="true"/>
+		<param name="listen_changes" value="false"/>
+		<param name="topic_changes" value="/octomap_tracking_server/changeset" />
+		<!-- added by JBS -->
+		
+		<param name="height_map" value="false" />
+		
+		<param name="color/r" value="0.4" />
+		<param name="color/g" value="0.4" />
+		<param name="color/b" value="0.4" />
+		<param name="color/a" value="0.3" />
+		
+		<param name="occupancy_max_z" value="" />
+		<param name="occupancy_min_z" value="-0.2" />
+		<param name="filter_ground" value="true" />
+		<param name="base_frame_id" value="/world" />
+		
+		<!--param name="change_id_frame" value="$(arg changeIdFrame)" /-->
+		<param name="min_change_pub" value="0" />
+		<!--In case of no bt file, let's -->
+		<!--remap from="cloud_in" to="$(arg mav_name)/vi_sensor/camera_depth/depth/points" /-->
+	</node>
+
+
+
+	<!--prediction module(set map3.vxblx for voxblox map and map3.bt for octomap)-->
+
+	<node name="chomp_predict_sim" pkg="chomp_predict" type="chomp_predict_node" output="screen">
+		<!--comment one of the following two lines-->
+		<param name= "map_file_name" value = "$(find chomp_predict)/worlds/$(arg world_name).$(arg format)" />
+		<param name= "world_frame_id" value = "/map" />
+		<param name= "world_frame" value = "/map" />
+
+		<!--voxblox -->>
+	    <param name="tsdf_voxel_size" value="0.1" /> 
+	    <param name="verbose" value="false" /> 
+	    <param name="is_voxblox_pub" value="true" /> 
+	    <param name="slice_level" value="-0.1" /> 
+
+
+		<rosparam command="load" file="$(find chomp_predict)/params/chomp_param_4floor0902.yaml" />		
+		<param name="update_mesh_every_n_sec" value="10" /> <!--not used-->
+		<param name="is_pose" value="false" /> <!--not used-->
+		<remap from = "/target_point" to = "/cicle_detector/target_position"/>
+	</node>
+
+	<!--traj_gen for arbitaray target trajectory (no output will appear in terminal)-->
+<!--
+	<node pkg="traj_gen" type="traj_gen_client" name="traj_gen_ui">
+		<param name="world_frame_id" value="$(arg world_frame_id)" />
+		<remap from="/traj_gen_ui/control_pose" to="/target_pose" /> 
+	</node>
+-->
+</launch>
