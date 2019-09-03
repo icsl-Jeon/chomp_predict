@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
-<arg name="world_name" default="4floor0902_2"/>
+<arg name="world_name" default="4floor0903_base"/>
 <arg name="bag_file" default="$(find chomp_predict)/data/$(arg world_name)_target_move_record.bag"/>
 <arg name="format" default="bt"/> <!--vxblx (voxblox) or bt (octomap)-->
 <arg name="world_frame_id" default="/world"/>

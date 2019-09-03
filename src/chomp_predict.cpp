@@ -63,6 +63,9 @@ Vector3d PredictionTrajectory::eval_at_time(double t){
     VectorXd x_path = pred_path.block(0,0,pred_path.rows(),1);
     VectorXd y_path = pred_path.block(0,1,pred_path.rows(),1);
     VectorXd z_path = pred_path.block(0,2,pred_path.rows(),1);
+
+
+
     output(0) = interpolate(time_seq,x_path,t,false);
     output(1) = interpolate(time_seq,y_path,t,false);
     output(2) = interpolate(time_seq,z_path,t,false);            
@@ -486,15 +489,15 @@ bool ChompForecaster::session(){
 	return trigger_condition;
 }
 /**
- * @brief Once prediction model is acquired, then we can evaluate the prediction in time 
  * 
+ * @brief Once prediction model is acquired, then we can evaluate the prediction in time 
  * @param eval_time 
  * @return geometry_msgs::Point 
  */
 geometry_msgs::Point ChompForecaster::eval_prediction(ros::Time eval_time){    
     // time 
     double t_eval_double = eval_time.toSec();
-    Vector3d output = prediction_traj.eval_at_time(t_eval_double);
+    Vector3d output = prediction_traj.eval_at_time(t_eval_double-init_time.toSec());
     geometry_msgs::Point p; 
     p.x = output(0);
     p.y = output(1); 
