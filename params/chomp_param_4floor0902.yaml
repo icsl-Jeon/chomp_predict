@@ -7,7 +7,7 @@ optim_param: {descending_rate: 1.0,
                 n_step: 8,
                 weight_prior: 0.5 , 
                 term_cond: 0.00005,
-                gamma: 0.2
+                gamma: 0.4
                 }
 
 pred_param: {prediction_horizon: 4,
