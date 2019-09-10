@@ -422,7 +422,7 @@ void ChompForecaster::run(){
             duration_from_last_trigger = (ros::Time::now() - last_prediction_time).toSec(); 
             accum_error += 1.0/loop_fps * (pow(eval_prediction(ros::Time::now()).x - observation_queue.back().pose.position.x,2) 
                                         + pow(eval_prediction(ros::Time::now()).y - observation_queue.back().pose.position.y,2));  // the MSE integration
-            cout << "accumulated error: " <<accum_error << endl;
+            //cout << "accumulated error: " <<accum_error << endl;
             trigger_prediction = (duration_from_last_trigger > pred_param.prediction_horizon - 0.01 ) or 
                                 (accum_error > pred_param.trigger_tol_accum_error );
 
@@ -455,7 +455,7 @@ bool ChompForecaster::session(){
             duration_from_last_trigger = (ros::Time::now() - last_prediction_time).toSec(); 
             accum_error += dt * (pow(eval_prediction(ros::Time::now()).x - observation_queue.back().pose.position.x,2) 
                                         + pow(eval_prediction(ros::Time::now()).y - observation_queue.back().pose.position.y,2));  // the MSE integration
-			cout << "[Predictor] accum error: "<<accum_error <<endl; 
+			//cout << "[Predictor] accum error: "<<accum_error <<endl; 
             trigger_condition = (duration_from_last_trigger > pred_param.prediction_horizon - 0.01 ) or 
                                 (accum_error > pred_param.trigger_tol_accum_error );
         }

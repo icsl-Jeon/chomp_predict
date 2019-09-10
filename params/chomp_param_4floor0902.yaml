@@ -4,10 +4,10 @@ optim_param: {descending_rate: 1.0,
                 descending_rate_min: 0.3,
                 descending_rate_max: 0.7,
                 max_iter: 500,
-                n_step: 8,
-                weight_prior: 0.5 , 
-                term_cond: 0.00005,
-                gamma: 0.4
+                n_step: 10,
+                weight_prior: 1.0 , 
+                term_cond: 0.0005,
+                gamma: 1.8
                 }
 
 pred_param: {prediction_horizon: 4,
