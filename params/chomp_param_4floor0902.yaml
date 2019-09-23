@@ -5,9 +5,9 @@ optim_param: {descending_rate: 1.0,
                 descending_rate_max: 0.7,
                 max_iter: 500,
                 n_step: 10,
-                weight_prior: 0 , 
-                term_cond: 0.005,
-                gamma: 1.4
+               weight_prior: 1.0 , 
+                term_cond: 0.0005,
+                gamma: 1.8
                 }
 
 pred_param: {prediction_horizon: 4,
