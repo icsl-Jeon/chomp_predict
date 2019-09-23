@@ -68,7 +68,7 @@ namespace CHOMP{
             PredictionTrajectory prediction_traj;                        
 
             // sub modules 
-            VectorXd get_observnitation_time_stamps(); // observation time stamps 
+            VectorXd get_observation_time_stamps(); // observation time stamps 
             void to_next_target_waypoint(); // change the target waypoint to the next one 
             double last_obsrv_to_goal(); // distance to goal from the last observation 
             nav_msgs::Path windowed_prediction_traj_eval(ros::Time); // from now to PredictParam::prediction_horizon

@@ -10,7 +10,7 @@
 	</node>
 
 	<!--visualization module-->
-	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find chomp_predict)/rviz/rviz_chomp_predictor.rviz"/>	
+	<node name="rviz1" pkg="rviz" type="rviz" args="-d $(find chomp_predict)/rviz/rviz_chomp_predictor.rviz"/>	
 
 	<!-- octomap server -->
 	<node pkg="octomap_server" type="octomap_tracking_server_node" name="octomap_talker" output="screen" args="$(find chomp_predict)/worlds/$(arg world_name).bt"> 
