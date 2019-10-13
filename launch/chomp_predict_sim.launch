@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+<!-- This launch tests the prediction algorithm by loading map (../worlds) and playing the target movement data(../data).   -->
+
+<arg name="world_name" default="4floor0826"/> <!--test with "map3" or "4floor0826"-->
+<arg name="bag_file" default="$(find chomp_predict)/data/$(arg world_name)_target_move_record.bag"/>
+<arg name="format" default="bt"/> <!--vxblx (voxblox) or bt (octomap recommanded..!)-->
+<arg name="world_frame_id" default="/world"/>
+<arg name="is_pose" default="false"/> <!--if "map3" true / if "4floor0826" false -->
+<arg name="rviz"  default="true"/> 
+
+
+	<!-- 1. rosbag play target movement in the environment-->
+	<node name="player" pkg="rosbag" type="play"  args=" -r 1.0 $(arg bag_file)">
+		<remap from = "/cicle_detector/target_position" to ="/target_point"/> <!--valid only if 4floor0826-->
+	</node>
+
+	<!-- 2. visualization module-->
+	<node if = "$(arg rviz)" name="rviz" pkg="rviz" type="rviz" args="-d $(find chomp_predict)/rviz/rviz_chomp_predictor.rviz"/>	
+
+	<!-- 3. octomap server -->
+	<node pkg="octomap_server" type="octomap_tracking_server_node" name="octomap_talker" output="screen" args="$(find chomp_predict)/worlds/$(arg world_name).bt"> 
+	
+		<param name="resolution" value="0.25" />
+		<param name="frame_id" type="string" value="world" />
+		<param name="sensor_model/max_range" value="4.0" />
+		<param name="save_directory" value="$(optenv OCTOMAP_SAVE_DIR ./)" />
+		<param name="track_changes" value="true"/>
+		<param name="listen_changes" value="false"/>
+		<param name="topic_changes" value="/octomap_tracking_server/changeset" />
+		<!-- added by JBS -->
+		
+		<param name="height_map" value="false" />
+		
+		<param name="color/r" value="0.4" />
+		<param name="color/g" value="0.4" />
+		<param name="color/b" value="0.4" />
+		<param name="color/a" value="0.3" />
+		
+		<param name="occupancy_max_z" value="" />
+		<param name="occupancy_min_z" value="0.2" />
+		<param name="filter_ground" value="true" />
+		<param name="base_frame_id" value="/world" />
+		
+		<param name="min_change_pub" value="0" />
+	</node>
+
+
+
+	<!--4. prediction module-->
+
+	<node name="chomp_predict_sim" pkg="chomp_predict" type="chomp_predict_node" output="screen">
+		<!--comment one of the following two lines-->
+		<param name= "map_file_name" value = "$(find chomp_predict)/worlds/$(arg world_name).$(arg format)" />
+
+		<!--voxblox (if formap == vxblx , important)-->
+	    <param name="tsdf_voxel_size" value="0.2" /> 
+	    <param name="verbose" value="false" /> 
+
+		<rosparam command="load" file="$(find chomp_predict)/params/chomp_param_$(arg world_name).yaml" />		
+		<param name="update_mesh_every_n_sec" value="10" /> 
+		<param name="is_pose" value="$(arg is_pose)" /> 
+	</node>
+</launch>

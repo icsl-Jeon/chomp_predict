@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['assignment',['assignment',['../namespace__setup__util.html#ad56c24837fa4eddc63c03fbc7035628f',1,'_setup_util']]]
+  ['build_5fmatrix',['build_matrix',['../class_c_h_o_m_p_1_1_wrapper.html#ab51d0a655ed4b03ca3225c0af737f2dc',1,'CHOMP::Wrapper']]]
 ];

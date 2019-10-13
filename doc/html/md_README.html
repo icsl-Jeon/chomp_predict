@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.11"/>
-<title>target prediction: chomp_predict</title>
+<title>chomp_predict: chomp_predict</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">target prediction
+   <div id="projectname">chomp_predict
    </div>
   </td>
  </tr>
@@ -80,11 +80,64 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">chomp_predict </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h2>1. Usage</h2>
-<h3>1) simple test</h3>
-<p>Without loop, one shot simulation is performed. We can do tuning parameters from this node.</p>
-<div class="fragment"><div class="line">roscd chomp_predict</div><div class="line">rosrun chomp_predict chomp_predict_basic_test_node ./worlds/map3.vxblx </div></div><!-- fragment --><h3>2) prediction simulation from rosbag</h3>
-<div class="fragment"><div class="line">roslaunch chomp_predict chomp_predict_sim </div><div class="line"><span class="preprocessor"># in other terminal </span></div><div class="line">roscd chomp_predict/data</div><div class="line">rosbag play -r 0.3 map3_target_move_recode.bag</div></div><!-- fragment --> </div></div><!-- contents -->
+<div class="textblock"><hr/>
+<p>This package presents a method for moving target movement prediction based on Covariant Hamiltonian Optimization in order to tackle obstacle environments. We consider scenarios such as chasing or autonomous video-graphy where an actor(target) is assigned a set of sparse via-points in a workplace. In this case, it is required to predict the future movement of target reliably so that an autonomous shooter could plan a chasing path efficiently in real-time. In this project, an optimization is formulated by leveraging observation history and prior knowledge of the waypoints of target along with assumptions on behavior. The optimization is solved on covariant framework to ensure the smooth path update during iterations. After obtaining the geometric path prediction from optimization, a time parametrization is preformed to complete the path into a trajectory for prediction.</p>
+<p>In this package, we support two map representation. One is octomap and the other is voxblox. The user can compare</p>
+<div class="image">
+<img src="https://github.com/icsl-Jeon/chomp_predict/blob/master/img/chomp_predict_intro.gif" />
+</div>
+ <h2>0. Install</h2>
+<h4>(1) Dependencies</h4>
+<h4>a. <a href="https://github.com/ethz-asl/voxblox">voxblox_ros</a></h4>
+<h4>b. <a href="https://github.com/OctoMap/octomap">octomap</a></h4>
+<h4>c. <a href="https://github.com/OctoMap/octomap">dyanmicEDT3D</a></h4>
+<h2>1. Usage</h2>
+<h3>1.1 run first program</h3>
+<p>0) Check doxygen in ./doc/index.html</p>
+<p>1) simple test (for map3)</p>
+<p>Without loop, one shot simulation is performed. We can do tuning parameters in this node. In this node, we perform simulation on a specific map (map3.*) and with a specific prior points ([5,10] , [6,11]) and a goal([10,10]).</p>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;roscd chomp_predict</div><div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;rosrun chomp_predict chomp_predict_basic_test_node ./worlds/map3.vxblx (or map3.bt) </div></div><!-- fragment --><p>2) prediction simulation from rosbag</p>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;roslaunch chomp_predict chomp_predict_sim </div><div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;# in other terminal </div><div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;roscd chomp_predict/data</div><div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;rosbag play -r 0.5 map3_target_move_record.bag</div></div><!-- fragment --><h3>1.2 node</h3>
+<h4>0) parameters (see ./params/chomp_param_map3.yaml)</h4>
+<ul>
+<li>cost_param/r_safe: the obstacle cost will be zero outside of this distance</li>
+<li>cost_param/ground_reject_height: the ground level(z) of target (which is assumed to move on 2D plane)</li>
+<li>optim_param/descending_rate: step size of update</li>
+<li>optim_param/descending_min[|max]: do not change. They will not be used (TODO)</li>
+<li>optim_param/max_iter: maximum iteration</li>
+<li>optim_param/weight_prior: relative importance to fitting observation history, penalty for high-order derivatives and intermittent goal</li>
+<li>optim_param/term_cond: termination condition (cost_prev - cost)</li>
+<li>optim_param/gamma: relative importance to more recent fitting points. exp(gamma * n/No) where n &lt;= No</li>
+<li>pred_param/prediction_horizon: the time window [sec] for evaluation of prediction. Total 20 points will be evaluated between [t_cur,t_cur +prediction_horizon ]</li>
+<li>pred_param/observation_size: size of observation (/target_pose) queue. They become points to be fitted in prior term</li>
+<li>pred_param/observation_horizon: time window [sec] to be looked back for the past</li>
+<li>target_waypoint: {x: [3.4578, 6.7478, 8.3223, 11.4981], y:[4.1620, 8.0200, 3.9896, 8.0515]}</li>
+</ul>
+<h4>1) Topics</h4>
+<p><b>Subscribed</b> :</p>
+<ul>
+<li>/target_pose [geometry_msgs/PoseStamped]</li>
+</ul>
+<p><b>Published</b> :</p>
+<ul>
+<li>/chomp_predict_sim/chomp_solution_path [nav_msgs/Path]</li>
+<li>/chomp_predict_sim/chomp_goal [visualization_msgs/Marker]</li>
+<li>/chomp_predict_sim/chomp_obsrv [visualization_msgs/Marker]</li>
+<li>/chomp_predict_sim/chomp_sol_pnts [visualization_msgs/Marker]</li>
+<li><p class="startli">/chomp_predict_sim/target_waypoints [visualization_msgs/Marker]</p>
+<p class="startli"><em>Belows are important only in voxblox mode</em></p><ul>
+<li>/chomp_predict_sim/esdf_slice [sensor_msgs/PointCloud2]</li>
+<li>/chomp_predict_sim/occupied_nodes [visualization_msgs/MarkerArray]</li>
+<li>/chomp_predict_sim/prediction_traj [nav_msgs/Path]</li>
+<li>/chomp_predict_sim/surface_pointcloud [sensor_msgs/PointCloud2]</li>
+<li>/chomp_predict_sim/traversable [sensor_msgs/PointCloud2]</li>
+<li>/chomp_predict_sim/tsdf_map_out [voxblox_msgs/Layer]</li>
+<li>/chomp_predict_sim/tsdf_pointcloud [sensor_msgs/PointCloud2]</li>
+<li>/chomp_predict_sim/tsdf_slice [sensor_msgs/PointCloud2] </li>
+</ul>
+</li>
+</ul>
+</div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

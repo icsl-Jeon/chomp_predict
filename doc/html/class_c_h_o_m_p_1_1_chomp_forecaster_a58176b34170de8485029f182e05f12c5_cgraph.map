@@ -1,8 +1,4 @@
 <map id="CHOMP::ChompForecaster::ChompForecaster" name="CHOMP::ChompForecaster::ChompForecaster">
-<area shape="rect" id="node2" href="$class_c_h_o_m_p_1_1_chomp_forecaster.html#ac05e634464c8859c8cc3e8bdb1a40ded" title="CHOMP::ChompForecaster\l::callback_target_state" alt="" coords="243,13,427,54"/>
-<area shape="rect" id="node4" href="$class_c_h_o_m_p_1_1_wrapper.html#a095c001d0a11f0fa4229e38f602e5931" title="CHOMP::Wrapper::load_map" alt="" coords="239,79,432,105"/>
-<area shape="rect" id="node5" href="$struct_c_h_o_m_p_1_1_prediction_trajectory.html#a3074031665bc857a9482849679fed32f" title="evalute the trajectory at time " alt="" coords="237,130,433,171"/>
-<area shape="rect" id="node7" href="$class_c_h_o_m_p_1_1_wrapper.html#aa4af50daa2bae57af10cdd344571c5af" title="CHOMP::Wrapper::get\l_ground_height" alt="" coords="258,195,413,237"/>
-<area shape="rect" id="node3" href="$struct_c_h_o_m_p_1_1_predict_param.html#ade19c94318f817105bf8b98725edb25f" title="CHOMP::PredictParam\l::observation_callback\l_duration" alt="" coords="481,5,640,61"/>
-<area shape="rect" id="node6" href="$chomp__utils_8h.html#a0fa75528fdd2f1dc601c4d4e7da6a6b0" title="interpolate" alt="" coords="519,137,602,164"/>
+<area shape="rect" id="node2" href="$struct_c_h_o_m_p_1_1_prediction_trajectory.html#a3074031665bc857a9482849679fed32f" title="evalute the trajectory at time " alt="" coords="237,5,433,47"/>
+<area shape="rect" id="node3" href="$class_c_h_o_m_p_1_1_wrapper.html#ab51d0a655ed4b03ca3225c0af737f2dc" title="build prior term from prior points (start_pnt) of length No+1(No observations and one final point) to..." alt="" coords="253,71,417,112"/>
 </map>

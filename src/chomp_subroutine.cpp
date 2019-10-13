@@ -285,7 +285,8 @@ double Solver::cost_at_point(geometry_msgs::Point p){
 }
 
 
-// evalute cost of a path 
+// evalute cost of a path (only point wise penalty)
+/**
 double Solver::cost_obstacle(VectorXd x){    
     // length(x) = dim x H
     double cost = 0;
@@ -300,6 +301,28 @@ double Solver::cost_obstacle(VectorXd x){
 
     return cost;
 }
+**/
+// evalute cost of a path (integral penalty)
+double Solver::cost_obstacle(VectorXd x){    
+    // length(x) = dim x H
+    double cost = 0;
+    int H = x.size()/2;
+    for(int i = 0;i<H-1;i++){
+            geometry_msgs::Point p1;
+            p1.x = x(2*i);
+            p1.y = x(2*i+1);      
+            p1.z = cost_param.ground_height;                          
+            
+            geometry_msgs::Point p2;
+            p2.x = x(2*(i+1));
+            p2.y = x(2*(i+1)+1);             
+            p2.z = cost_param.ground_height;                          
+            cost += (cost_at_point(p1) + cost_at_point(p2))/2 * sqrt(pow(p1.x - p2.x,2)+pow(p1.y - p2.y,2));        
+        }
+
+    return cost;
+}
+
 // evaluate gradient of cost of a path 
 VectorXd Solver::grad_cost_obstacle(VectorXd x){
     // length(x) = dim x H

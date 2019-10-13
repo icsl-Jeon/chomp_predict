@@ -37,7 +37,6 @@ Wrapper::Wrapper(const ros::NodeHandle& nh_global):nh("~"){
     pnts_on_path_marker.color.b = 0.8;
     pnts_on_path_marker.color.g = 1.;    
     pnts_on_path_marker.color.a = 0.8;
-
 };
 
 
