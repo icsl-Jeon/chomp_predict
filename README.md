@@ -8,6 +8,13 @@ this project, an optimization is formulated by leveraging observation history an
 
 In this package, we support two map representation. One is octomap (EDT) and the other is voxblox (SEDT). The user can compare the performance of the two. In our implementation, *octomap is more preferable.* The main difference of them is that voxblox can compute **signed** distance field which gives negative value inside of obstacle. In contrast, all the distance value inside of obstacle is zero, which might be disadvantageous to pull out a trajectory which crosses obstacles. In our implementation, however,  the difference was negligible.  
 
+<p align = "center">
+<img src= "https://github.com/icsl-Jeon/chomp_predict/blob/master/img/chomp_predict_intro.gif" width="600">
+</p>
+
+
+
+
 #### (1) Dependencies
 
 #### 	a. [voxblox_ros](<https://voxblox.readthedocs.io/en/latest/pages/Installation.html>) 
@@ -36,6 +43,10 @@ rosrun chomp_predict chomp_predict_basic_test_node ./worlds/map3.vxblx (or map3.
 2) prediction simulation from rosbag 
 
 This launch file can test two different scenarios (map3.(bt/vxblx) / 4floor0826.(bt/vxblx))
+
+<p align = "center">
+<img src= "https://github.com/icsl-Jeon/chomp_predict/blob/master/img/two_maps.png" width="400">
+</p>
 
 ```
 roslaunch chomp_predict chomp_predict_sim.launch 
