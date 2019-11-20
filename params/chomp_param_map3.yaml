@@ -16,5 +16,5 @@ pred_param: {prediction_horizon: 4,
              observation_horizon: 4,
              trigger_tol_accum_error: 0.6}
              
-target_waypoint: {x: [3.4578, 6.7478, 8.3223, 11.4981], y:[4.1620, 8.0200, 3.9896, 8.0515]}
+target_waypoint: {x: [3.4578, 6.7478, 9.3223, 11.4981], y:[4.1620, 8.0200, 2.9896, 8.0515]}
 
