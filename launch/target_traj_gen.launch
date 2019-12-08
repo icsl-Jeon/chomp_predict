@@ -3,8 +3,7 @@
 
 <!-- This launch tests the prediction algorithm by loading map (../worlds) and playing the target movement data(../data).   -->
 
-<arg name="world_name" default="map3"/> <!--test with "map3" or "4floor0826"-->
-<arg name="bag_file" default="$(find chomp_predict)/data/$(arg world_name)_target_move_record.bag"/>
+<arg name="world_name" default="map4"/> <!--test with "map3" or "4floor0826"-->
 <arg name="format" default="bt"/> <!--vxblx (voxblox) or bt (octomap recommanded..!)-->
 <arg name="world_frame_id" default="/world"/>
 <arg name="is_pose" default="true"/> 
