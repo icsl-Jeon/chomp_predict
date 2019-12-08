@@ -86,5 +86,8 @@ namespace CHOMP{
             bool is_pose = true; // if true, we will receive target state with poseStamped. If false, will receive point instead 
             void run();
             bool session(); // one session in a loop. If the prediction is triggered, it will return true 
+            
+            void write(string log_path); // record error squard
+
     };
 }

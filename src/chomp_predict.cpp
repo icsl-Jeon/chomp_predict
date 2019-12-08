@@ -447,13 +447,13 @@ bool ChompForecaster::session(){
         
     // publish routine 
     this->chomp_wrapper.publish_routine(); //inner loop(chomp_ros_wrapper) publisher 
-    this->publish_routine(); // outer loop(chomp_predictor) publisher 
 
 
     }
     else
         ROS_INFO_ONCE("[CHOMP] wating target state callback... ");
 
+    this->publish_routine(); // outer loop(chomp_predictor) publisher 
     last_session_time = ros::Time::now();
     return trigger_condition;
 }
@@ -478,5 +478,21 @@ bool ChompForecaster::get_predict_condition(){
     return (is_state_received and observation_queue.size() >= pred_param.No); 
 }
 
+
+void ChompForecaster::write(string log_path){
+
+    double error = (pow(eval_prediction(ros::Time::now()).x - observation_queue.back().pose.position.x,2) 
+                                        + pow(eval_prediction(ros::Time::now()).y - observation_queue.back().pose.position.y,2)); 
+
+    std::ofstream wnpt_file;
+        wnpt_file.open((log_path+"/prediction_error_history.txt").c_str(),ios_base::app);
+    
+    if(wnpt_file.is_open()){
+        wnpt_file<<error<<"\n";
+        wnpt_file.close();    
+    }else
+        cerr<<"logging file for target error prediction is not opend"<<endl;        
+
+}
 
 
